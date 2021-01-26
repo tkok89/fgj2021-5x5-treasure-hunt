@@ -90,7 +90,8 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Text)
 		{
 			sf::Text *text = static_cast<sf::Text *>(i.font);
-			text->setString(i.strPtr);
+			if (i.strPtr)
+				text->setString(i.strPtr);
 			text->setPosition(pos);
 			text->setCharacterSize(unsigned(i.fontHeight * g_resolution.y));
 			text->setFillColor(sfColor(i.color));

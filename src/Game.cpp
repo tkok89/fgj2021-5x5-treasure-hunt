@@ -18,11 +18,6 @@ Game::Game(const sf::Texture& pawnTexture, const sf::Texture& blockTexture, cons
 	m_guiText.setFont(font);
 }
 
-static float ss(float t)
-{
-	return std::sin(t) * 0.25f + 0.4f;
-}
-
 void Game::update(sf::Time elapsedTime)
 {
 	// Put game update logic here
@@ -88,12 +83,13 @@ void Game::gui(sf::RenderWindow& window)
 		i.color.g = 0.1f;
 		i.color.b = 0.9f;
 		i.color.a = 1.0f;
-		//GuiRendering::render(i);
 
-		GuiRendering::pushClipRect(ss(t) - 0.5f, ss(t + 1) - 0.5f, ss(t + 2), ss(t + 2.5f));
-		//GuiRendering::pushClipRect(-0.2f, -0.2f, ss(t + 2), ss(t + 2.5f));
-		//GuiRendering::pushClipRect(ss(t + 2) - 0.5f, ss(t + 2.5f)-0.5f, 0.5f, 0.5f);
-		//GuiRendering::pushClipRect(-0.15f, -0.15f, 0.3f, 0.3f);
+		auto ss = [t](float offset)
+		{
+			return std::sin(t + offset) * 0.25f + 0.4f;
+		};
+
+		GuiRendering::pushClipRect(ss(0) - 0.5f, ss(1) - 0.5f, ss(2), ss(2.5f));
 		GuiRendering::render(i);
 		GuiRendering::popClipRect();
 	}
@@ -117,6 +113,15 @@ void Game::gui(sf::RenderWindow& window)
 		i.outlineColor.g = 1.0f;
 		i.outlineColor.b = 1.0f;
 		i.outlineColor.a = 0.6f;
+		GuiRendering::render(i);
+
+		i.strPtr = nullptr;
+		i.font = &m_moveText;
+		i.fontHeight = 0.03f;
+		i.color = { 1 };
+		i.outlineColor = { 0,0,0,1 };
+		i.x = -0.2f;
+		i.y = -0.2f;
 		GuiRendering::render(i);
 	}
 	GuiRendering::endThread();
