@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+/vs_proj/.vs
+/vs_proj/Release
+/vs_proj/Debug
+/vs_proj/*.user
