@@ -6,6 +6,7 @@
 #include "GuiRenderInfo.h"
 #include "Menu.h"
 #include <algorithm>
+#include <cmath>
 
 Game::Game(const sf::Texture& pawnTexture, const sf::Texture& blockTexture, const sf::Texture& pointTexture, const sf::Font& font)
 {

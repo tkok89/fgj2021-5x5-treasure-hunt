@@ -1,0 +1,72 @@
+cmake_minimum_required(VERSION 3.12)
+
+project(ggj21)
+
+set(CMAKE_CXX_STANDARD 17)
+
+file(GLOB_RECURSE GGJ21_SOURCES src/*.cpp src/*.c)
+
+add_compile_definitions(
+	SFML_STATIC
+)
+
+add_executable(ggj21 ${GGJ21_SOURCES})
+
+if (WIN32)
+	target_include_directories(ggj21 PRIVATE "SFML_VS2017-2.5.1/include/")
+
+	set(LIBS_DIR "SFML_VS2017-2.5.1/lib")
+	
+	find_library(SFML_SYSTEM_D   sfml-system   ${LIBS_DIR})
+	find_library(SFML_GRAPHICS_D sfml-graphics ${LIBS_DIR})
+	find_library(SFML_AUDIO_D    sfml-audio    ${LIBS_DIR})
+	find_library(SFML_WINDOW_D   sfml-window   ${LIBS_DIR})
+
+	find_library(SFML_SYSTEM     sfml-system   ${LIBS_DIR})
+	find_library(SFML_GRAPHICS   sfml-graphics ${LIBS_DIR})
+	find_library(SFML_AUDIO      sfml-audio    ${LIBS_DIR})
+	find_library(SFML_WINDOW     sfml-window   ${LIBS_DIR})
+else()
+	target_include_directories(ggj21 BEFORE PRIVATE "external/include/")
+	
+	set(LIBS_DIR "external/lib")
+	find_library(SFML_SYSTEM   sfml-system   ${LIBS_DIR})
+	find_library(SFML_GRAPHICS sfml-graphics ${LIBS_DIR})
+	find_library(SFML_AUDIO    sfml-audio    ${LIBS_DIR})
+	find_library(SFML_WINDOW   sfml-window   ${LIBS_DIR})
+endif()
+
+if (WIN32)
+	target_link_libraries(
+		ggj21
+		
+		general    opengl32
+		general    freetype
+		general    winmm
+		general    gdi32
+		
+		optimized  ${SFML_GRAPHICS}
+		debug      ${SFML_GRAPHICS_D}
+
+		optimized  ${SFML_WINDOW}
+		debug      ${SFML_WINDOW_D}
+
+		optimized  ${SFML_SYSTEM}
+		debug      ${SFML_SYSTEM_D}
+
+		optimized  ${SFML_AUDIO}
+		debug      ${SFML_AUDIO_D}
+	)
+else()
+	target_link_libraries(
+		ggj21
+
+		GL
+		freetype
+		${SFML_SYSTEM}
+		${SFML_GRAPHICS}
+		${SFML_AUDIO}
+		${SFML_WINDOW}
+	)
+endif()
+

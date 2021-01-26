@@ -5,6 +5,7 @@
 #include "SfmlGuiRendering.h"
 #include "GuiRenderInfo.h"
 #include <assert.h>
+#include <string>
 #include <vector>
 #include <unordered_map>
 #include <SFML/Graphics/Transformable.hpp>
