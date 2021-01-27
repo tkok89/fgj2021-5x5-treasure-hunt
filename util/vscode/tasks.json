@@ -1,0 +1,15 @@
+{
+	// Buildaa tää paske
+
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Buildaa",
+			"type": "shell",
+			"command": "ninja -C ${workspaceFolder}/build-linux/",
+			"problemMatcher": [
+					"$gcc"
+			]
+		}
+	]
+}

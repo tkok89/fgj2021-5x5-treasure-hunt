@@ -1,0 +1,8 @@
+Esimerkki launch.json ja tasks.json, joilla kivasti kääntyy ja debuggailut toimii Linuxilla Visual Studio Codea käytettäessä.
+
+Kopsaa nää filut sun omaan .vscode/ hakemistoon.
+
+Nämä konffit olettaa että buildijärjestelmänä on käyttössä Ninja.
+
+VSCodessa kun painaa F5 niin pitäisi kääntyä ja lähteä debuggeri käyntiin.
+
