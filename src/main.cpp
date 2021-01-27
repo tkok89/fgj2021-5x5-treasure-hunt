@@ -3,9 +3,12 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
+#include "workingdir.h"
 
 int main()
 {
+	std::cout << "Working directory: " << getWorkingDir() << std::endl;
+
 	sf::RenderWindow window{ sf::VideoMode(1280, 720), Game::getName() };
 	window.setKeyRepeatEnabled(false);
 
