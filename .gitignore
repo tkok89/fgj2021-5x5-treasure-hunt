@@ -28,10 +28,14 @@
 *.exe
 *.out
 *.app
+
+# IDE crap
 /vs_proj/.vs
 /vs_proj/Release
 /vs_proj/Debug
 /vs_proj/*.user
+.vs/
+CMakeSettings.json
 
 # Build artifacts
 build/
