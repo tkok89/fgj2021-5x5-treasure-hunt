@@ -17,6 +17,8 @@ if (WIN32)
 
 	set(LIBS_DIR "SFML_VS2017-2.5.1/lib")
 	
+	find_library(FREETYPE        freetype      ${LIBS_DIR})
+	
 	find_library(SFML_SYSTEM_D   sfml-system   ${LIBS_DIR})
 	find_library(SFML_GRAPHICS_D sfml-graphics ${LIBS_DIR})
 	find_library(SFML_AUDIO_D    sfml-audio    ${LIBS_DIR})
@@ -41,7 +43,7 @@ if (WIN32)
 		ggj21
 		
 		general    opengl32
-		general    freetype
+		general    ${FREETYPE}
 		general    winmm
 		general    gdi32
 		
