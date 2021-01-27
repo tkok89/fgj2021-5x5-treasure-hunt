@@ -13,21 +13,21 @@ add_compile_definitions(
 add_executable(ggj21 ${GGJ21_SOURCES})
 
 if (WIN32)
-	target_include_directories(ggj21 PRIVATE "SFML_VS2017-2.5.1/include/")
+	target_include_directories(ggj21 PRIVATE "external/include/")
 
-	set(LIBS_DIR "SFML_VS2017-2.5.1/lib")
+	set(LIBS_DIR "external/lib")
 	
-	find_library(FREETYPE        freetype      ${LIBS_DIR})
+	find_library(FREETYPE        freetype          ${LIBS_DIR})
 	
-	find_library(SFML_SYSTEM_D   sfml-system   ${LIBS_DIR})
-	find_library(SFML_GRAPHICS_D sfml-graphics ${LIBS_DIR})
-	find_library(SFML_AUDIO_D    sfml-audio    ${LIBS_DIR})
-	find_library(SFML_WINDOW_D   sfml-window   ${LIBS_DIR})
+	find_library(SFML_SYSTEM_D   sfml-system-s-d   ${LIBS_DIR})
+	find_library(SFML_GRAPHICS_D sfml-graphics-s-d ${LIBS_DIR})
+	find_library(SFML_AUDIO_D    sfml-audio-s-d    ${LIBS_DIR})
+	find_library(SFML_WINDOW_D   sfml-window-s-d   ${LIBS_DIR})
 
-	find_library(SFML_SYSTEM     sfml-system   ${LIBS_DIR})
-	find_library(SFML_GRAPHICS   sfml-graphics ${LIBS_DIR})
-	find_library(SFML_AUDIO      sfml-audio    ${LIBS_DIR})
-	find_library(SFML_WINDOW     sfml-window   ${LIBS_DIR})
+	find_library(SFML_SYSTEM     sfml-system-s     ${LIBS_DIR})
+	find_library(SFML_GRAPHICS   sfml-graphics-s   ${LIBS_DIR})
+	find_library(SFML_AUDIO      sfml-audio-s      ${LIBS_DIR})
+	find_library(SFML_WINDOW     sfml-window-s     ${LIBS_DIR})
 else()
 	target_include_directories(ggj21 BEFORE PRIVATE "external/include/")
 	

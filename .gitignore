@@ -36,6 +36,7 @@
 /vs_proj/*.user
 .vs/
 CMakeSettings.json
+out/
 
 # Build artifacts
 build/
