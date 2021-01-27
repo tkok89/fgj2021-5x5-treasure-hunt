@@ -1,0 +1,16 @@
+# Esimerkki launch.vs.json jos ei jaksa ite säätää
+# Kopsaa tämä polkuun <projectRoot>/.vs/launch.vs.json
+
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "ggj21.exe",
+      "name": "ggj21.exe",
+      "currentDir": "${projectDir}"
+    }
+  ]
+}
