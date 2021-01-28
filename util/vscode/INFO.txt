@@ -2,7 +2,7 @@ Esimerkki launch.json ja tasks.json, joilla kivasti kääntyy ja debuggailut toi
 
 Kopsaa nää filut sun omaan .vscode/ hakemistoon.
 
-Nämä konffit olettaa että buildijärjestelmänä on käyttössä Ninja.
+Nämä konffit olettaa että buildijärjestelmänä on käyttössä Ninja ja buildi filut on sijoitettu hakemistoon build-linux/.
 
 VSCodessa kun painaa F5 niin pitäisi kääntyä ja lähteä debuggeri käyntiin.
 
