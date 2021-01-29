@@ -1,4 +1,4 @@
-#include"GridViz.h"
+#include "GridViz.h"
 
 #include "Grid.h"
 #include "GuiRendering.h"
