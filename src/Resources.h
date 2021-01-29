@@ -14,9 +14,5 @@ struct Resources
 	std::unordered_map<int, sf::Texture> tileTextures;
 
 private:
-	Resources()
-	{
-		tileTextures[0].loadFromFile("assets/block.png");;
-		tileTextures[1].loadFromFile("assets/pawn.png");
-	}
+	Resources();
 };
