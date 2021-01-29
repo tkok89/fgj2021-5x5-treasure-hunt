@@ -4,6 +4,7 @@
 #include "GuiRenderingState.h"
 #include "SfmlGuiRendering.h"
 #include "GuiRenderInfo.h"
+#include "GridViz.h"
 #include "Menu.h"
 #include <algorithm>
 #include <cmath>
@@ -28,6 +29,8 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::draw(sf::RenderWindow& window)
 {
+	GridViz::render(grid, sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(1, 1));
+
 	void *menuStatePtr;
 	Menu::render(menuStatePtr);
 

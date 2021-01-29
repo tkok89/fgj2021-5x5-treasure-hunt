@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Grid.h"
 #include <SFML/Graphics.hpp>
 
 class Game
@@ -21,6 +22,8 @@ public:
 	}
 
 private:
+
+	Grid grid;
 
 	sf::Sprite m_pawnSprite;
 	sf::Sprite m_blockSprite;
