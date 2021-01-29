@@ -2,7 +2,7 @@
 
 #include "Grid.h"
 #include <SFML/Graphics.hpp>
-
+#include <SFML/System/Clock.hpp>
 class Game
 {
 public:
@@ -23,6 +23,16 @@ public:
 private:
 
 	Grid grid;
-
+	struct SlidingTiles
+	{
+		void start(sf::Vector2u moveThisRow, float tileLength);
+		float updateSlide();
+		float tileLength = 0.0f;
+		sf::Vector2u moveThisRow;
+		sf::Clock tileClock;
+		sf::Time duration = sf::seconds(1u);
+		bool active = false;
+	};
 	sf::Text m_guiText;
+	SlidingTiles slidingTiles;
 };

@@ -9,7 +9,7 @@
 #include "Resources.h"
 #include <algorithm>
 #include <cmath>
-
+#include "math.h"
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
@@ -21,6 +21,10 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::draw(sf::RenderWindow& window)
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		slidingTiles.start(;
+	}
 	GridViz::render(grid, sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(1, 1));
 
 	void *menuStatePtr;
@@ -45,4 +49,27 @@ void Game::gui(sf::RenderWindow& window)
 	//static sf::Clock clock;
 	//float t = clock.getElapsedTime().asSeconds();
 
+}
+
+float Game::SlidingTiles::updateSlide()
+{
+	const sf::Time elapsedTime = tileClock.getElapsedTime();
+	if (elapsedTime > duration)
+	{
+		active = false;
+		moveThisRow.x = ~0u;
+		moveThisRow.y = ~0u;
+		return 0.0f;
+	}
+	const float phase = elapsedTime / duration;
+	const float sqt = phase * phase;
+	return sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
+}
+
+void Game::SlidingTiles::start(sf::Vector2u moveThisRowParam, float tileLengthParam)
+{
+	bool active = true;
+	tileClock.restart();
+	moveThisRow = moveThisRowParam;
+	tileLength = tileLengthParam;
 }
