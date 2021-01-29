@@ -36,27 +36,7 @@ void Game::draw(sf::RenderWindow& window)
 
 	SfmlGuiRendering::flush(window);
 
-	// Replace everything here with own drawing logic
-
-	//m_pawnSprite.setPosition(100.0f, 100.0f);
-	//window.draw(m_pawnSprite);
-
-	m_blockSprite.setPosition(200.0f, 300.0f);
-	window.draw(m_blockSprite);
-	m_blockSprite.setPosition(120.0f, 340.0f);
-	window.draw(m_blockSprite);
-
-	m_pointSprite.setPosition(500.0f, 200.0f);
-	window.draw(m_pointSprite);
-	m_pointSprite.setPosition(580.0f, 200.0f);
-	window.draw(m_pointSprite);
-
 	gui(window);
-}
-
-void Game::onJumpAction()
-{
-	m_jumpTimerSeconds = 1.0f;
 }
 
 void Game::setMovement(sf::Vector2i direction)

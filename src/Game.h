@@ -25,13 +25,5 @@ private:
 
 	Grid grid;
 
-	sf::Sprite m_pawnSprite;
-	sf::Sprite m_blockSprite;
-	sf::Sprite m_pointSprite;
-
-	sf::Text m_jumpText;
-	sf::Text m_moveText;
 	sf::Text m_guiText;
-
-	float m_jumpTimerSeconds = 0.0f;
 };
