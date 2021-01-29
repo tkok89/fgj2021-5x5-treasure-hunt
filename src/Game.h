@@ -20,6 +20,11 @@ public:
 		return "FGJ 2021";
 	}
 
+	static sf::Vector2f getResolution()
+	{
+		return { 1280, 720 };
+	}
+
 private:
 
 	Grid grid;
