@@ -11,6 +11,7 @@ int main()
 
 	sf::RenderWindow window{ sf::VideoMode(1280, 720), Game::getName() };
 	window.setKeyRepeatEnabled(false);
+	window.setFramerateLimit(60);
 
 	sf::Texture pawnTexture;
 	if (!pawnTexture.loadFromFile("assets/pawn.png"))
