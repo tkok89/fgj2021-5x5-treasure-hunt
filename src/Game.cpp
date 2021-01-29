@@ -70,7 +70,6 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::draw(sf::RenderWindow& window)
 {
-<<<<<<< Updated upstream
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		slidingTiles.start(sf::Vector2i(1u, 1u), tileSize.x);
@@ -78,12 +77,7 @@ void Game::draw(sf::RenderWindow& window)
 	if (slidingTiles.active)
 		slidingTiles.updateSlide();
 
-<<<<<<< HEAD
-=======
-	GridViz::render(grid, gridPos, gridSize, slidingTiles.moveThisRow, slidingTiles.currentPos);
-=======
->>>>>>> Stashed changes
->>>>>>> 132a21b6296c5440e31eaa8e340c7895c19a1426
+
 	sf::Vector2f p = getMousePos();
 	bool up = p.y < gridPos.y;
 	bool down = p.y > gridPos.y + gridSize.y;
