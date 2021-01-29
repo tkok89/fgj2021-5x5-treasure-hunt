@@ -7,6 +7,7 @@ struct GuiRendering
 {
 	static void render(const GuiRenderInfo &guiRenderInfo);
 	static void text(void *font, const char *text, float fontHeight, float x, float y);
+	static void image(const void *image, float x, float y, float w, float h);
 
 	static void pushClipRect(float x, float y, float w, float h);
 	static void pushAntiClipRect();

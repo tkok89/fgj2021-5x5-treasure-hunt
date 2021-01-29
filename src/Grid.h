@@ -94,6 +94,7 @@ struct Grid
 	}
 };
 
-#define ForGrid(p_i, p_tile) \
+// HUOM: Vuotaa Tile-pointterin scopen ulkopuolelle
+#define ForGrid(p_tile) \
 Tile *p_tile = &grid(0,0); \
-for (int p_i = 0, x = 0, y = 0; p_i < GridSize * GridSize; ++p_i, x = p_i % GridSize, y = p_i / GridSize, p_tile = grid.getOptional(x, y))
+for (int p_tile##I = 0, p_tile##X = 0, p_tile##Y = 0; p_tile##I < GridSize * GridSize; ++p_tile##I, p_tile##X = p_tile##I % GridSize, p_tile##Y = p_tile##I / GridSize, p_tile = grid.getOptional(tileX, tileY))

@@ -61,6 +61,23 @@ void GuiRendering::text(void *font, const char *text, float fontHeight, float x,
 	render(guiRenderInfo);
 }
 
+void GuiRendering::image(const void *image, float x, float y, float w, float h)
+{
+	assert(image);
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Image;
+	guiRenderInfo.image = image;
+	guiRenderInfo.x = x;
+	guiRenderInfo.y = y;
+	guiRenderInfo.w = w;
+	guiRenderInfo.h = h;
+	guiRenderInfo.uvX = 0;
+	guiRenderInfo.uvY = 0;
+	guiRenderInfo.uvW = 1;
+	guiRenderInfo.uvH = 1;
+	render(guiRenderInfo);
+}
+
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();
