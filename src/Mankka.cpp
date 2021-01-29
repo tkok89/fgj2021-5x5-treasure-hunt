@@ -9,14 +9,9 @@
 namespace
 {
 
-struct SoundVarianceGroup
-{
-	std::vector<uint32_t> pool;
-};
-
 struct SoundPreset
 {
-	SoundVarianceGroup varianceGroup;
+	std::vector<SoundResourceName> pool;
 };
 
 }
@@ -29,6 +24,63 @@ struct Mankka::MankkaState
 Mankka::Mankka()
 {
 	state.reset(new MankkaState());
+
+	state->presets[SoundPresetName::bonk] =
+	{
+		{ SoundResourceName::bonk }
+	};
+
+	state->presets[SoundPresetName::hajotus] =
+	{
+		{ SoundResourceName::break_ }
+	};
+
+	state->presets[SoundPresetName::button_press] =
+	{
+		{ SoundResourceName::button_press }
+	};
+
+	state->presets[SoundPresetName::gameover] =
+	{
+		{ SoundResourceName::gameover }
+	};
+
+	state->presets[SoundPresetName::monster_move] =
+	{
+		{
+			SoundResourceName::miu,
+			SoundResourceName::mjau
+		}
+	};
+
+	state->presets[SoundPresetName::monster_ded] =
+	{
+		{ SoundResourceName::monster_ded }
+	};
+
+	state->presets[SoundPresetName::mouse_hit_wall] =
+	{
+		{ SoundResourceName::mouse_hit_wall }
+	};
+
+	state->presets[SoundPresetName::mouse_eat] =
+	{
+		{ SoundResourceName::mouse_mus_mus }
+	};
+
+	state->presets[SoundPresetName::movetiles] =
+	{
+		{
+			SoundResourceName::movetiles_1,
+			SoundResourceName::movetiles_2,
+			SoundResourceName::movetiles_3,
+		}
+	};
+
+	state->presets[SoundPresetName::bonk] =
+	{
+		{ SoundResourceName::bonk }
+	};
 }
 
 Mankka &Mankka::getMankka()
