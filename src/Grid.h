@@ -2,14 +2,15 @@
 
 #include <vector>
 #include <assert.h>
-#include "Game.h" // :)
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 enum { GridSize = 5 };
 
 const sf::Vector2f tileSize = sf::Vector2f(1, 1) / float(GridSize + 2);
 const sf::Vector2f gridPos = sf::Vector2f(-0.5f, -0.5f) + tileSize;
 const sf::Vector2f gridSize = tileSize * float(GridSize);
-sf::Vector2f getMousePos() { sf::Vector2i p = sf::Mouse::getPosition(); sf::Vector2f r = Game::getResolution(); return sf::Vector2f(p.x / r.x, p.y / r.y); }
+extern sf::Vector2f getMousePos();
 
 struct Tile
 {
