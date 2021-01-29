@@ -1,5 +1,7 @@
 #include "Resources.h"
+
 #include <iostream>
+#include <assert.h>
 
 #ifdef TARGET_OS_MAC
 #include "ResourcePath.hpp"
@@ -11,9 +13,12 @@ std::string resourcePath(void){
 
 Resources::Resources()
 {
-	tileTextures[0].loadFromFile(resourcePath() + "assets/block.png");
+    bool success = false;
+    success = tileTextures[0].loadFromFile(resourcePath() + "assets/block.png");
+    assert(success);
     
-	tileTextures[1].loadFromFile(resourcePath() + "assets/pawn.png");
+    success = tileTextures[1].loadFromFile(resourcePath() + "assets/pawn.png");
+    assert(success);
     
     if (!font.loadFromFile(resourcePath() + "assets/Vera.ttf"))
     {

@@ -17,9 +17,6 @@ Game::Game()
 
 void Game::update(sf::Time elapsedTime)
 {
-	// Put game update logic here
-
-	m_jumpTimerSeconds -= elapsedTime.asSeconds();
 }
 
 void Game::draw(sf::RenderWindow& window)
@@ -36,72 +33,16 @@ void Game::draw(sf::RenderWindow& window)
 
 void Game::setMovement(sf::Vector2i direction)
 {
-	sf::String text;
+	const char *text;
 	text = (direction.x < 0 ? "left " : (direction.x > 0 ? "right " : ""));
-	text += (direction.y < 0 ? "up" : (direction.y > 0 ? "down" : ""));
-	m_moveText.setString(text);
+	text = (direction.y < 0 ? "up" : (direction.y > 0 ? "down" : ""));
+
+	GuiRendering::text(&m_guiText, text, 0.02f, -0.3f, -0.45f);
 }
 
 void Game::gui(sf::RenderWindow& window)
 {
-	static sf::Clock clock;
-	float t = clock.getElapsedTime().asSeconds();
+	//static sf::Clock clock;
+	//float t = clock.getElapsedTime().asSeconds();
 
-	GuiRendering::startThread();
-	{
-		GuiRenderInfo i;
-		i.type = GuiRenderInfoType::Image;
-		i.image = m_pawnSprite.getTexture();
-		i.x = -0.2f;
-		i.y = -0.2f;
-		i.w = 0.4f;
-		i.h = 0.4f;
-		i.uvW = 1;
-		i.uvH = 1;
-		i.color.r = 0.7f;
-		i.color.g = 0.1f;
-		i.color.b = 0.9f;
-		i.color.a = 1.0f;
-
-		auto ss = [t](float offset)
-		{
-			return std::sin(t + offset) * 0.25f + 0.4f;
-		};
-
-		GuiRendering::pushClipRect(ss(0) - 0.5f, ss(1) - 0.5f, ss(2), ss(2.5f));
-		GuiRendering::render(i);
-		GuiRendering::popClipRect();
-	}
-	{
-		GuiRenderInfo i;
-		i.type = GuiRenderInfoType::Text;
-		i.strPtr = "Hello!";
-		i.strLen = 6;
-		i.x = -0.4f;
-		i.y = -0.4f;
-		i.w = 0.7f;
-		i.h = 0.7f;
-		i.font = &m_guiText;
-		i.fontHeight = 0.1f;
-		i.color.r = 0.7f;
-		i.color.g = 0.1f;
-		i.color.b = 0.9f;
-		i.color.a = 1.0f;
-		i.outline = 2;
-		i.outlineColor.r = 1.0f;
-		i.outlineColor.g = 1.0f;
-		i.outlineColor.b = 1.0f;
-		i.outlineColor.a = 0.6f;
-		GuiRendering::render(i);
-
-		i.strPtr = nullptr;
-		i.font = &m_moveText;
-		i.fontHeight = 0.03f;
-		i.color = { 1 };
-		i.outlineColor = { 0,0,0,1 };
-		i.x = -0.2f;
-		i.y = -0.2f;
-		GuiRendering::render(i);
-	}
-	GuiRendering::endThread();
 }

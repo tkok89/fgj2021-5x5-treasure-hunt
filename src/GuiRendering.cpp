@@ -44,7 +44,21 @@ static int getActiveThreadNumber()
 
 void GuiRendering::render(const GuiRenderInfo &guiRenderInfo)
 {
+	assert(guiRenderInfo.image || guiRenderInfo.font);
 	getState().state.pushGuiRenderInfo(guiRenderInfo);
+}
+
+void GuiRendering::text(void *font, const char *text, float fontHeight, float x, float y)
+{
+	assert(font);
+	assert(text);
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Text;
+	guiRenderInfo.font = font;
+	guiRenderInfo.fontHeight = fontHeight;
+	guiRenderInfo.x = x;
+	guiRenderInfo.y = y;
+	render(guiRenderInfo);
 }
 
 static bool isActiveThread()

@@ -25,9 +25,6 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-				game.onJumpAction();
-
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 				window.close();
 		}

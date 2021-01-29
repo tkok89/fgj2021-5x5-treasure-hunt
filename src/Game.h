@@ -13,7 +13,6 @@ public:
 	void draw(sf::RenderWindow& window);
 	void gui(sf::RenderWindow& window);
 
-	void onJumpAction();
 	void setMovement(sf::Vector2i direction);
 
 	static sf::String getName()
