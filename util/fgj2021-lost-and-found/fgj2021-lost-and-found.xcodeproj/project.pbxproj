@@ -1,0 +1,380 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */; };
+		B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */; };
+		B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8525C49A090071EC58 /* Menu.cpp */; };
+		B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */; };
+		B1E67D9525C49A090071EC58 /* GuiRendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8825C49A090071EC58 /* GuiRendering.cpp */; };
+		B1E67D9625C49A090071EC58 /* workingdir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8A25C49A090071EC58 /* workingdir.cpp */; };
+		B1E67D9725C49A090071EC58 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8F25C49A090071EC58 /* main.cpp */; };
+		B1E67D9825C49A090071EC58 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D9025C49A090071EC58 /* Game.cpp */; };
+		B1E67D9F25C49A120071EC58 /* Vera.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1E67D9B25C49A120071EC58 /* Vera.ttf */; };
+		B1E67DA025C49A120071EC58 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = B1E67D9C25C49A120071EC58 /* point.png */; };
+		B1E67DA125C49A120071EC58 /* block.png in Resources */ = {isa = PBXBuildFile; fileRef = B1E67D9D25C49A120071EC58 /* block.png */; };
+		B1E67DA225C49A120071EC58 /* pawn.png in Resources */ = {isa = PBXBuildFile; fileRef = B1E67D9E25C49A120071EC58 /* pawn.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fgj2021-lost-and-found.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1E67D6E25C499FA0071EC58 /* fgj2021-lost-and-found-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fgj2021-lost-and-found-Info.plist"; path = "../fgj2021-lost-and-found-Info.plist"; sourceTree = "<group>"; };
+		B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		B1E67D7125C499FA0071EC58 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuIRenderingState.cpp; sourceTree = "<group>"; };
+		B1E67D8525C49A090071EC58 /* Menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		B1E67D8625C49A090071EC58 /* GuiRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiRendering.h; sourceTree = "<group>"; };
+		B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SfmlGuiRendering.cpp; sourceTree = "<group>"; };
+		B1E67D8825C49A090071EC58 /* GuiRendering.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiRendering.cpp; sourceTree = "<group>"; };
+		B1E67D8925C49A090071EC58 /* SfmlGuiRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SfmlGuiRendering.h; sourceTree = "<group>"; };
+		B1E67D8A25C49A090071EC58 /* workingdir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = workingdir.cpp; sourceTree = "<group>"; };
+		B1E67D8B25C49A090071EC58 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		B1E67D8C25C49A090071EC58 /* GuiRenderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiRenderInfo.h; sourceTree = "<group>"; };
+		B1E67D8D25C49A090071EC58 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		B1E67D8E25C49A090071EC58 /* workingdir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = workingdir.h; sourceTree = "<group>"; };
+		B1E67D8F25C49A090071EC58 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B1E67D9025C49A090071EC58 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		B1E67D9125C49A090071EC58 /* GuiRenderingState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiRenderingState.h; sourceTree = "<group>"; };
+		B1E67D9B25C49A120071EC58 /* Vera.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Vera.ttf; sourceTree = "<group>"; };
+		B1E67D9C25C49A120071EC58 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
+		B1E67D9D25C49A120071EC58 /* block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block.png; sourceTree = "<group>"; };
+		B1E67D9E25C49A120071EC58 /* pawn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pawn.png; sourceTree = "<group>"; };
+		B1E67DA525C49A2C0071EC58 /* fgj2021-lost-and-found.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "fgj2021-lost-and-found.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1E67D6625C499FA0071EC58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1E67D6025C499FA0071EC58 = {
+			isa = PBXGroup;
+			children = (
+				B1E67D9A25C49A120071EC58 /* assets */,
+				B1E67D8325C49A090071EC58 /* src */,
+				B1E67D6C25C499FA0071EC58 /* fgj2021-lost-and-found */,
+				B1E67D6B25C499FA0071EC58 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1E67D6B25C499FA0071EC58 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1E67D6C25C499FA0071EC58 /* fgj2021-lost-and-found */ = {
+			isa = PBXGroup;
+			children = (
+				B1E67DA525C49A2C0071EC58 /* fgj2021-lost-and-found.entitlements */,
+				B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */,
+				B1E67D7125C499FA0071EC58 /* ResourcePath.hpp */,
+				B1E67D6D25C499FA0071EC58 /* Supporting Files */,
+			);
+			path = "fgj2021-lost-and-found";
+			sourceTree = "<group>";
+		};
+		B1E67D6D25C499FA0071EC58 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1E67D6E25C499FA0071EC58 /* fgj2021-lost-and-found-Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B1E67D8325C49A090071EC58 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */,
+				B1E67D8525C49A090071EC58 /* Menu.cpp */,
+				B1E67D8625C49A090071EC58 /* GuiRendering.h */,
+				B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */,
+				B1E67D8825C49A090071EC58 /* GuiRendering.cpp */,
+				B1E67D8925C49A090071EC58 /* SfmlGuiRendering.h */,
+				B1E67D8A25C49A090071EC58 /* workingdir.cpp */,
+				B1E67D8B25C49A090071EC58 /* Game.h */,
+				B1E67D8C25C49A090071EC58 /* GuiRenderInfo.h */,
+				B1E67D8D25C49A090071EC58 /* Menu.h */,
+				B1E67D8E25C49A090071EC58 /* workingdir.h */,
+				B1E67D8F25C49A090071EC58 /* main.cpp */,
+				B1E67D9025C49A090071EC58 /* Game.cpp */,
+				B1E67D9125C49A090071EC58 /* GuiRenderingState.h */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		B1E67D9A25C49A120071EC58 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				B1E67D9B25C49A120071EC58 /* Vera.ttf */,
+				B1E67D9C25C49A120071EC58 /* point.png */,
+				B1E67D9D25C49A120071EC58 /* block.png */,
+				B1E67D9E25C49A120071EC58 /* pawn.png */,
+			);
+			name = assets;
+			path = ../../assets;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1E67D6925C499FA0071EC58 /* fgj2021-lost-and-found */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1E67D7F25C499FA0071EC58 /* Build configuration list for PBXNativeTarget "fgj2021-lost-and-found" */;
+			buildPhases = (
+				B1E67D6525C499FA0071EC58 /* Sources */,
+				B1E67D6625C499FA0071EC58 /* Frameworks */,
+				B1E67D6725C499FA0071EC58 /* Resources */,
+				B1E67D6825C499FA0071EC58 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "fgj2021-lost-and-found";
+			productName = "fgj2021-lost-and-found";
+			productReference = B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1E67D6125C499FA0071EC58 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1230;
+				ORGANIZATIONNAME = "Team Manilla";
+				TargetAttributes = {
+					B1E67D6925C499FA0071EC58 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+				};
+			};
+			buildConfigurationList = B1E67D6425C499FA0071EC58 /* Build configuration list for PBXProject "fgj2021-lost-and-found" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B1E67D6025C499FA0071EC58;
+			productRefGroup = B1E67D6B25C499FA0071EC58 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1E67D6925C499FA0071EC58 /* fgj2021-lost-and-found */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1E67D6725C499FA0071EC58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1E67DA225C49A120071EC58 /* pawn.png in Resources */,
+				B1E67DA125C49A120071EC58 /* block.png in Resources */,
+				B1E67D9F25C49A120071EC58 /* Vera.ttf in Resources */,
+				B1E67DA025C49A120071EC58 /* point.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B1E67D6825C499FA0071EC58 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This shell script simply copies required SFML dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# SETTINGS\nSFML_DEPENDENCIES_INSTALL_PREFIX=\"/Library/Frameworks\"\nCMAKE_INSTALL_FRAMEWORK_PREFIX=\"/Library/Frameworks\"\nCMAKE_INSTALL_LIB_PREFIX=\"/usr/local/lib\"\nFRAMEWORKS_FULL_PATH=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n# Are we building a project that uses frameworks or dylibs?\ncase \"$SFML_BINARY_TYPE\" in\n    DYLIBS)\n        frameworks=\"false\"\n        ;;\n    *)\n        frameworks=\"true\"\n        ;;\nesac\n\n# Echoes to stderr\nerror () # $* message to display\n{\n    echo $* 1>&2\n    exit 2\n}\n\nassert () # $1 is a boolean, $2...N is an error message\n{\n    if [ $# -lt 2 ]\n    then\n        error \"Internal error in assert: not enough args\"\n    fi\n\n    if [ $1 -ne 0 ]\n    then\n        shift\n        error \"$*\"\n    fi\n}\n\nforce_remove () # $@ is some paths\n{\n    test $# -ge 1\n    assert $? \"force_remove() requires at least one parameter\"\n    rm -fr $@\n    assert $? \"couldn't remove $@\"\n}\n\ncopy () # $1 is a source, $2 is a destination\n{\n    test $# -eq 2\n    assert $? \"copy() requires two parameters\"\n    ditto \"$1\" \"$2\"\n    assert $? \"couldn't copy $1 to $2\"\n}\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n    if [ -z \"$1\" ]\n    then\n        error \"require() requires one parameter!\"\n    else\n        # clean potentially old stuff\n        force_remove \"$dest/libsfml-$1\"*\n        force_remove \"$dest/sfml-$1.framework\"\n\n        # copy SFML libraries\n        if [ \"$frameworks\" = \"true\" ]\n        then\n            source=\"$CMAKE_INSTALL_FRAMEWORK_PREFIX/sfml-$1.framework\"\n            target=\"sfml-$1.framework\"\n        elif [ \"$SFML_LINK_DYLIBS_SUFFIX\" = \"-d\" ]\n        then\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1-d.dylib\"\n            target=\"`readlink $source`\"\n        else\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1.dylib\"\n            target=\"`readlink $source`\"\n        fi\n\n        copy \"$source\" \"$dest/$target\"\n\n        # copy extra dependencies\n        if [ \"$1\" = \"audio\" ]\n        then\n            # copy \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\" frameworks too\n            for f in \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\"\n            do\n                copy \"$SFML_DEPENDENCIES_INSTALL_PREFIX/$f.framework\" \"$dest/$f.framework\"\n            done\n        elif [ \"$1\" = \"graphics\" ]\n        then\n            copy \"$SFML_DEPENDENCIES_INSTALL_PREFIX/freetype.framework\" \"$dest/freetype.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\n                \n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1E67D6525C499FA0071EC58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1E67D9825C49A090071EC58 /* Game.cpp in Sources */,
+				B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */,
+				B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */,
+				B1E67D9525C49A090071EC58 /* GuiRendering.cpp in Sources */,
+				B1E67D9625C49A090071EC58 /* workingdir.cpp in Sources */,
+				B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */,
+				B1E67D9725C49A090071EC58 /* main.cpp in Sources */,
+				B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B1E67D7D25C499FA0071EC58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = FRAMEWORKS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Debug;
+		};
+		B1E67D7E25C499FA0071EC58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = FRAMEWORKS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Release;
+		};
+		B1E67D8025C499FA0071EC58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "fgj2021-lost-and-found/fgj2021-lost-and-found.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B5S4X95PR8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "fgj2021-lost-and-found/fgj2021-lost-and-found-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B1E67D8125C499FA0071EC58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "fgj2021-lost-and-found/fgj2021-lost-and-found.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B5S4X95PR8;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "fgj2021-lost-and-found/fgj2021-lost-and-found-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1E67D6425C499FA0071EC58 /* Build configuration list for PBXProject "fgj2021-lost-and-found" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1E67D7D25C499FA0071EC58 /* Debug */,
+				B1E67D7E25C499FA0071EC58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1E67D7F25C499FA0071EC58 /* Build configuration list for PBXNativeTarget "fgj2021-lost-and-found" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1E67D8025C499FA0071EC58 /* Debug */,
+				B1E67D8125C499FA0071EC58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1E67D6125C499FA0071EC58 /* Project object */;
+}
