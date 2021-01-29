@@ -6,18 +6,13 @@
 #include "GuiRenderInfo.h"
 #include "GridViz.h"
 #include "Menu.h"
+#include "Resources.h"
 #include <algorithm>
 #include <cmath>
 
-Game::Game(const sf::Texture& pawnTexture, const sf::Texture& blockTexture, const sf::Texture& pointTexture, const sf::Font& font)
+Game::Game()
 {
-	m_pawnSprite.setTexture(pawnTexture);
-	m_blockSprite.setTexture(blockTexture);
-	m_pointSprite.setTexture(pointTexture);
-
-	m_jumpText.setFont(font);
-	m_moveText.setFont(font);
-	m_guiText.setFont(font);
+	m_guiText.setFont(Resources::getResources().font);
 }
 
 void Game::update(sf::Time elapsedTime)
