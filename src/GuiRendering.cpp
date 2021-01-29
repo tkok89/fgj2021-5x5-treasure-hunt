@@ -58,6 +58,7 @@ void GuiRendering::text(void *font, const char *text, float fontHeight, float x,
 	guiRenderInfo.fontHeight = fontHeight;
 	guiRenderInfo.x = x;
 	guiRenderInfo.y = y;
+	guiRenderInfo.color = { 1,1,1,1 };
 	render(guiRenderInfo);
 }
 
@@ -75,6 +76,7 @@ void GuiRendering::image(const void *image, float x, float y, float w, float h)
 	guiRenderInfo.uvY = 0;
 	guiRenderInfo.uvW = 1;
 	guiRenderInfo.uvH = 1;
+	guiRenderInfo.color = { 1,1,1,1 };
 	render(guiRenderInfo);
 }
 
