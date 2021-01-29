@@ -72,9 +72,12 @@ void Game::draw(sf::RenderWindow& window)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		slidingTiles.start(;
+		slidingTiles.start(sf::Vector2u(1u, 1u), tileSize.x);
 	}
-	GridViz::render(grid, sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(1, 1));
+	if (slidingTiles.active)
+		slidingTiles.updateSlide();
+
+	GridViz::render(grid, gridPos, gridSize, slidingTiles.moveThisRow, slidingTiles.currentPos);
 	sf::Vector2f p = getMousePos();
 	bool up = p.y < gridPos.y;
 	bool down = p.y > gridPos.y + gridSize.y;
@@ -109,7 +112,7 @@ void Game::draw(sf::RenderWindow& window)
 		GuiRendering::image(&Resources::getResources().tileTextures[0], x, y, tileSize.x, tileSize.y);
 	}
 
-	GridViz::render(grid, gridPos, gridSize);
+	GridViz::render(grid, gridPos, gridSize, slidingTiles.moveThisRow, slidingTiles.currentPos);
 
 	void *menuStatePtr;
 	Menu::render(menuStatePtr);
@@ -135,7 +138,7 @@ void Game::gui(sf::RenderWindow& window)
 
 }
 
-float Game::SlidingTiles::updateSlide()
+void Game::SlidingTiles::updateSlide()
 {
 	const sf::Time elapsedTime = tileClock.getElapsedTime();
 	if (elapsedTime > duration)
@@ -143,11 +146,11 @@ float Game::SlidingTiles::updateSlide()
 		active = false;
 		moveThisRow.x = ~0u;
 		moveThisRow.y = ~0u;
-		return 0.0f;
+		return;
 	}
 	const float phase = elapsedTime / duration;
 	const float sqt = phase * phase;
-	return sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
+	currentPos =  sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
 }
 
 void Game::SlidingTiles::start(sf::Vector2u moveThisRowParam, float tileLengthParam)
