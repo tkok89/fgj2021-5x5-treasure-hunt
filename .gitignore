@@ -34,3 +34,6 @@ out/
 build/
 build-linux/
 *.xcuserstate
+*.kra
+*.kra~
+*.png~
