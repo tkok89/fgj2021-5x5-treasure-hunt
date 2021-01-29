@@ -31,8 +31,9 @@ private:
 	struct SlidingTiles
 	{
 		void start(sf::Vector2u moveThisRow, float tileLength);
-		float updateSlide();
+		void updateSlide();
 		float tileLength = 0.0f;
+		float currentPos = 0.0f;
 		sf::Vector2u moveThisRow;
 		sf::Clock tileClock;
 		sf::Time duration = sf::seconds(1u);
