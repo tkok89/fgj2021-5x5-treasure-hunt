@@ -18,6 +18,12 @@ if (WIN32)
 	set(LIBS_DIR "external/lib")
 	
 	find_library(FREETYPE        freetype          ${LIBS_DIR})
+	find_library(OGG             ogg               ${LIBS_DIR})
+	find_library(OPENAL          openal32          ${LIBS_DIR})
+	find_library(FLAC            flac              ${LIBS_DIR})
+	find_library(VORBIS          vorbis            ${LIBS_DIR})
+	find_library(VORBISFILE      vorbisfile        ${LIBS_DIR})
+	
 	
 	find_library(SFML_SYSTEM_D   sfml-system-s-d   ${LIBS_DIR})
 	find_library(SFML_GRAPHICS_D sfml-graphics-s-d ${LIBS_DIR})
@@ -44,6 +50,11 @@ if (WIN32)
 		
 		general    opengl32
 		general    ${FREETYPE}
+		general    ${OGG}
+		general    ${OPENAL}
+		general    ${FLAC}
+		general    ${VORBIS}
+		general    ${VORBISFILE}
 		general    winmm
 		general    gdi32
 		
@@ -65,6 +76,8 @@ else()
 
 		GL
 		freetype
+		ogg
+		openal32
 		${SFML_SYSTEM}
 		${SFML_GRAPHICS}
 		${SFML_AUDIO}
