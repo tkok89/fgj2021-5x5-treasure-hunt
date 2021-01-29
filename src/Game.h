@@ -6,7 +6,7 @@
 class Game
 {
 public:
-	Game(const sf::Texture& pawnTexture, const sf::Texture& blockTexture, const sf::Texture& pointTexture, const sf::Font& font);
+	Game();
 	~Game() = default;
 
 	void update(const sf::Time elapsedTime);

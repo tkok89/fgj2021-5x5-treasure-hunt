@@ -13,35 +13,8 @@ int main()
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(60);
 
-	sf::Texture pawnTexture;
-	if (!pawnTexture.loadFromFile("assets/pawn.png"))
-	{
-		std::cerr << "Error loading pawn.png" << std::endl;
-		return EXIT_FAILURE;
-	}
 
-	sf::Texture blockTexture;
-	if (!blockTexture.loadFromFile("assets/block.png"))
-	{
-		std::cerr << "Error loading block.png" << std::endl;
-		return EXIT_FAILURE;
-	}
-
-	sf::Texture pointTexture;
-	if (!pointTexture.loadFromFile("assets/point.png"))
-	{
-		std::cerr << "Error loading point.png" << std::endl;
-		return EXIT_FAILURE;
-	}
-
-	sf::Font font;
-	if (!font.loadFromFile("assets/Vera.ttf"))
-	{
-		std::cerr << "Error loading Vera.ttf" << std::endl;
-		return EXIT_FAILURE;
-	}
-
-	Game game(pawnTexture, blockTexture, pointTexture, font);
+	Game game;
 	sf::Clock clock;
 
 	while (window.isOpen())
