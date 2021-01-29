@@ -72,12 +72,11 @@ void Game::draw(sf::RenderWindow& window)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		slidingTiles.start(sf::Vector2u(1u, 1u), tileSize.x);
+		slidingTiles.start(sf::Vector2i(1u, 1u), tileSize.x);
 	}
 	if (slidingTiles.active)
 		slidingTiles.updateSlide();
 
-	GridViz::render(grid, gridPos, gridSize, slidingTiles.moveThisRow, slidingTiles.currentPos);
 	sf::Vector2f p = getMousePos();
 	bool up = p.y < gridPos.y;
 	bool down = p.y > gridPos.y + gridSize.y;
@@ -112,7 +111,7 @@ void Game::draw(sf::RenderWindow& window)
 		GuiRendering::image(&Resources::getResources().tileTextures[0], x, y, tileSize.x, tileSize.y);
 	}
 
-	GridViz::render(grid, gridPos, gridSize, slidingTiles.moveThisRow, slidingTiles.currentPos);
+	GridViz::render(grid, gridPos, gridSize, slidingTiles.getMoveRow(), slidingTiles.currentPos);
 
 	void *menuStatePtr;
 	Menu::render(menuStatePtr);
@@ -144,8 +143,8 @@ void Game::SlidingTiles::updateSlide()
 	if (elapsedTime > duration)
 	{
 		active = false;
-		moveThisRow.x = ~0u;
-		moveThisRow.y = ~0u;
+		moveThisRowToDirection.x = ~0u;
+		moveThisRowToDirection.y = ~0u;
 		return;
 	}
 	const float phase = elapsedTime / duration;
@@ -153,10 +152,10 @@ void Game::SlidingTiles::updateSlide()
 	currentPos =  sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
 }
 
-void Game::SlidingTiles::start(sf::Vector2u moveThisRowParam, float tileLengthParam)
+void Game::SlidingTiles::start(sf::Vector2i moveThisRowToDirectionParam, float tileLengthParam)
 {
 	bool active = true;
 	tileClock.restart();
-	moveThisRow = moveThisRowParam;
+	moveThisRowToDirection = moveThisRowToDirectionParam;
 	tileLength = tileLengthParam;
 }
