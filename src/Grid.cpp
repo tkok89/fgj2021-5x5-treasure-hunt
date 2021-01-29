@@ -5,6 +5,6 @@
 sf::Vector2f getMousePos()
 {
     sf::Vector2i p = sf::Mouse::getPosition();
-    sf::Vector2f r = Game::getResolution();
-    return sf::Vector2f(p.x / r.x, p.y / r.y);
+    float r = Game::getResolution().y;
+    return sf::Vector2f(p.x / r, p.y / r) - sf::Vector2f(0.5f, 0.5f);
 }

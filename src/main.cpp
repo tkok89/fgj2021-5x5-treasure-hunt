@@ -9,10 +9,9 @@ int main()
 {
 	std::cout << "Working directory: " << getWorkingDir() << std::endl;
 
-	sf::RenderWindow window{ sf::VideoMode(1280, 720), Game::getName() };
+	sf::RenderWindow window{ sf::VideoMode(int(Game::getResolution().x), int(Game::getResolution().y)), Game::getName() };
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(60);
-
 
 	Game game;
 	sf::Clock clock;
