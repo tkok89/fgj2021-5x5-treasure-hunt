@@ -77,7 +77,7 @@ else()
 		GL
 		freetype
 		ogg
-		openal32
+		openal
 		${SFML_SYSTEM}
 		${SFML_GRAPHICS}
 		${SFML_AUDIO}
