@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
-enum class SoundResourceName
+enum class SoundResourceName : uint32_t
 {
 	bonk,
 	break_,
