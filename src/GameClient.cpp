@@ -181,17 +181,17 @@ void GameClient::update()
 	}
 }
 
-void listenerThread(short port, bool &accept, short &clientAmount)
+void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 {
 	sf::TcpListener listener;
 	if (listener.listen(port) != sf::Socket::Done)
 	{
-		printf("I failed to bind to port %u\n", port);
+		printf("I failed to bind to port %hu\n", port);
 		return;
 	}
 	else
 	{
-		printf("Listening to port %u . . .", port);
+		printf("Listening to port %hu . . .", port);
 	}
 	while (accept)
 	{
@@ -207,7 +207,7 @@ void listenerThread(short port, bool &accept, short &clientAmount)
 	}
 }
 
-void GameClient::startAcceptingConnections(short port)
+void GameClient::startAcceptingConnections(unsigned short port)
 {
 	if (acceptConnectionsThread != nullptr)
 	{
@@ -226,11 +226,11 @@ void GameClient::stopAcceptingConnections()
 	acceptingConnections = false;
 }
 
-void GameClient::connectToHost(std::string ip, short port)
+void GameClient::connectToHost(std::string ip, unsigned short port)
 {
 	resetState();
 	
-	printf("Connecting to address %s:%u ... ", ip.c_str(), port);
+	printf("Connecting to address %s:%hu ... ", ip.c_str(), port);
 	sf::Socket::Status status = clientSocket.connect(ip, port);
 	if (status != sf::Socket::Done)
 	{

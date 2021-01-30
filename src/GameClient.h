@@ -28,9 +28,9 @@ public:
 	void join();
 
 	void update();
-	void startAcceptingConnections(short port);
+	void startAcceptingConnections(unsigned short port);
 	void stopAcceptingConnections();
-	void connectToHost(std::string ip, short port);
+	void connectToHost(std::string ip, unsigned short port);
 	void sendPosition(sf::Vector2f position);
 	void sendGameState(GameNetState state);
 	static GameClient& getClient();
