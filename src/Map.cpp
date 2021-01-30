@@ -77,7 +77,7 @@ void Map::draw()
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 	
-	//mapVisShader->setUniform("");
+	mapVisShader->setUniform("mapTex", texture);
 	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
 	
 	GuiRendering::popClipRect();
