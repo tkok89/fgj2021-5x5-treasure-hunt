@@ -8,5 +8,5 @@ void main()
 
 	vec4 mapPx = texture2D(mapTex, uv);
 
-	gl_FragColor = vec4(uv.x, uv.y, 1, 1);
+	gl_FragColor = vec4(mapPx.r, mapPx.g, mapPx.b, 1);
 }
