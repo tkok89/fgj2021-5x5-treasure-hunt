@@ -21,6 +21,8 @@ void Game::update(sf::Time elapsedTime)
 {
 	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
 	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
+	
+	Mankka::getMankka().play(MusicEnvName::ingame);
 }
 
 void Game::draw(sf::RenderWindow& window)
