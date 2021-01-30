@@ -102,6 +102,9 @@ void Player::updatePlayer(float deltaTime){
     
     // get nearest collision
     sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+    // if closer than player size move back
+    sf::Vector2f direction = collisionPosition - sf::Vector2f(posX, posY);
+    float distance = distanceXY(0, 0, direction.x, direction.y);
     
     // get back, if in wall
     posX = newPosX;
@@ -111,7 +114,8 @@ void Player::updatePlayer(float deltaTime){
     debugstring = "x " + std::to_string(posX) +
     " y " + std::to_string(posY) +
     " cPX " + std::to_string(collisionPosition.x) +
-    " cPY " + std::to_string(collisionPosition.y);
+    " cPY " + std::to_string(collisionPosition.y) +
+    " distance " + std::to_string(distance);
 }
 
 void Player::drawPlayer(bool debug){
@@ -130,8 +134,8 @@ void Player::drawPlayer(bool debug){
     }
     latestDirection = direction;
     
-    float playerSize  = Camera::worldToScreenSize(sf::Vector2f(0.1f,0.1f)).x;
-    GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX, posY), playerSize, playerSize);
+    float playerSizeOnScreen  = Camera::worldToScreenSize(sf::Vector2f(size,size)).x;
+    GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
     if(debug) GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
     
     sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));

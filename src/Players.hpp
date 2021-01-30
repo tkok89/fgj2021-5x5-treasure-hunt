@@ -18,6 +18,8 @@ struct Player {
     OrthogonalDirection latestDirection = OrthogonalDirection::Down;
     void updatePlayer(float deltaTime);
     void drawPlayer(bool debug);
+private:
+    float size = 1.00000f;
 };
 
 void initializePlayers ();
