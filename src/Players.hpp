@@ -12,4 +12,4 @@
 
 void initializePlayers ();
 void updatePlayers(float deltaTime);
-void drawPlayers();
+void drawPlayers(bool showDebugText);

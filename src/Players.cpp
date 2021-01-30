@@ -105,7 +105,7 @@ struct Player {
         latestDirection = direction;
         
         GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), posX, posY, 0.1f, 0.1f);
-        GuiRendering::text(debugstring.c_str(), 0.02f, posX, posY - 0.1f);
+        if(debug) GuiRendering::text(debugstring.c_str(), 0.02f, posX, posY - 0.1f);
     }
 
 } player1, player2, player3, player4;
@@ -131,9 +131,9 @@ void initializePlayers () {
     player1.activePlayer = true;
 }
 
-void drawPlayers(){
+void drawPlayers(bool showDebugText){
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
-        players[i]->drawPlayer(true);
+        players[i]->drawPlayer(showDebugText);
     }
 }
 
