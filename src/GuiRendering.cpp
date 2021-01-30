@@ -140,6 +140,10 @@ void GuiRendering::line(float x0, float y0, float x1, float y1)
 	render(guiRenderInfo);
 }
 
+void GuiRendering::line(sf::Vector2f pos0, sf::Vector2f pos1){
+    line(pos0.x,pos0.y,pos1.x, pos1.y);
+}
+
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();

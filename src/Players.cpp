@@ -10,7 +10,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "GuiRendering.h"
 #include "Camera.h"
-
+#include "Map.h"
 #include <cmath>
 
 namespace
@@ -75,7 +75,7 @@ Player& getPlayer(int index){
 
 void Player::updatePlayer(float deltaTime){
     if(!activePlayer) return;
-    //read input
+    // read input
     float horizontalMove = 0;
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
         horizontalMove -= 1;
@@ -90,27 +90,28 @@ void Player::updatePlayer(float deltaTime){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
         verticalMove += 1;
     }
-    //lerp input
+    // lerp input
     inputVelocityX =clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
     inputVelocityY =clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
-    //accelerate
+    // accelerate
     velocityX = lerp(inputVelocityX * maxSpeed, velocityX, accelerationLerp);
     velocityY = lerp(inputVelocityY * maxSpeed, velocityY, accelerationLerp);
-    //move
+    // move
     float newPosX = posX + velocityX * deltaTime;
     float newPosY = posY + velocityY * deltaTime;
-    // try new position
-    // float distance = worldCollision(this);
+    
+    // get nearest collision
+    sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+    
     // get back, if in wall
     posX = newPosX;
     posY = newPosY;
     //new position ready, check if any world object is nearby
     
-    debugstring = "iVX " + std::to_string(inputVelocityX) +
-    " iVY " + std::to_string(inputVelocityY) +
-    " hM " + std::to_string(horizontalMove) +
-    " vM " + std::to_string(verticalMove) +
-    " posx " + std::to_string(posX);
+    debugstring = "x " + std::to_string(posX) +
+    " y " + std::to_string(posY) +
+    " cPX " + std::to_string(collisionPosition.x) +
+    " cPY " + std::to_string(collisionPosition.y);
 }
 
 void Player::drawPlayer(bool debug){
@@ -131,4 +132,7 @@ void Player::drawPlayer(bool debug){
     
     GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX, posY), 0.1f, 0.1f);
     if(debug) GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
+    
+    sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+    GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
 }
