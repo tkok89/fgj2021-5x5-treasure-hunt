@@ -6,7 +6,7 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include "Grid.h"
 
-enum class SoundResourceName
+enum class SoundResourceName : uint32_t
 {
 	bonk,
 	break_,

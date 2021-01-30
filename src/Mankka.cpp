@@ -1,8 +1,12 @@
 #include "Mankka.h"
 
+#include <assert.h>
+#include <random>
 #include <vector>
+#include <iostream>
 #include <unordered_map>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 #include "Resources.h"
 
@@ -14,15 +18,24 @@ struct SoundPreset
 	std::vector<SoundResourceName> pool;
 };
 
+struct PlaybackState
+{
+	std::unordered_map<SoundResourceName, sf::Sound> sounds;
+};
+
 }
 
 struct Mankka::MankkaState
 {
 	std::unordered_map<SoundPresetName, SoundPreset> presets;
+	std::unordered_map<SoundPresetName, PlaybackState> playbackStates;
+	std::default_random_engine rng;
 };
 
 Mankka::Mankka()
 {
+	auto &resources = Resources::getResources();
+
 	state.reset(new MankkaState());
 
 	state->presets[SoundPresetName::bonk] =
@@ -77,10 +90,35 @@ Mankka::Mankka()
 		}
 	};
 
-	state->presets[SoundPresetName::bonk] =
+	state->presets[SoundPresetName::mouse_dead] =
 	{
-		{ SoundResourceName::bonk }
+		{ SoundResourceName::o_oui }
 	};
+
+	state->presets[SoundPresetName::peepeep] =
+	{
+		{ SoundResourceName::peepeep }
+	};
+
+
+	state->presets[SoundPresetName::togglebutton] =
+	{
+		{
+			SoundResourceName::togglebutton_1,
+			SoundResourceName::togglebutton_2
+		}
+	};
+
+	for (const auto &presetsIt : state->presets)
+	{
+		for (SoundResourceName resName : presetsIt.second.pool)
+		{
+			sf::SoundBuffer &buf = resources.soundEffects[resName];
+			state->playbackStates[presetsIt.first].sounds[resName] = sf::Sound(buf);
+		}
+
+		assert(presetsIt.second.pool.size() > 0);
+	}
 }
 
 Mankka &Mankka::getMankka()
@@ -91,5 +129,20 @@ Mankka &Mankka::getMankka()
 
 void Mankka::play(SoundPresetName presetId)
 {
-	//state->
+	const auto &pool = state->presets[presetId].pool;
+	PlaybackState &pbs = state->playbackStates[presetId];
+
+	std::uniform_int_distribution<size_t> distribution(0, pool.size() - 1);
+	size_t pickIndex = distribution(state->rng);
+
+	std::cout << pickIndex << std::endl;
+
+	SoundResourceName effectName = pool[pickIndex];
+
+	pbs.sounds[effectName].play();
+}
+
+void Mankka::test()
+{
+	play(SoundPresetName::movetiles);
 }

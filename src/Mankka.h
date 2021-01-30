@@ -6,7 +6,7 @@
 enum class SoundPresetName : uint32_t
 {
 	bonk,
-	hajotus, // =break
+	hajotus, // =break_
 	button_press,
 	gameover,
 	monster_move, // miu, mjau
@@ -22,12 +22,14 @@ enum class SoundPresetName : uint32_t
 class Mankka
 {
 public:
-	Mankka();
 	static Mankka &getMankka();
 
 	void play(SoundPresetName presetId);
+	void test();
 
 private:
+	Mankka();
+
 	struct MankkaState;
 	std::unique_ptr<MankkaState> state;
 };
