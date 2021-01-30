@@ -11,6 +11,7 @@ struct Map
 	Map();
 	void draw();
 	sf::Vector2f nearestCollision(sf::Vector2f pos);
+	sf::Vector2f nearestCollectible(sf::Vector2f pos);
 	sf::Color getColor(sf::Vector2f pos);
 
 	sf::Image image;

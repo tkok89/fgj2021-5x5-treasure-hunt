@@ -12,6 +12,7 @@ Map *g_map = nullptr;
 Map::Map()
 {
 	image.loadFromFile(Resources::getResources().mapName);
+	texture.loadFromImage(image);
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 	g_map = this;
 }
@@ -69,11 +70,9 @@ void Map::draw()
 		Camera::setCameraPos(cameraPos + hackOffset);
 	}
 
-
-
 	float r = g_resolution.x / g_resolution.y;
 	GuiRendering::pushClipRect(-0.5f * r, -0.5f, r, 1.0f);
-	texture.loadFromImage(image);
+	
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 	
@@ -82,31 +81,23 @@ void Map::draw()
 	
 	GuiRendering::popClipRect();
 
-	sf::Vector2f zero;
-	sf::Vector2f wZero = Camera::screenToWorldPos(zero);
-	sf::Vector2f mouse = getMousePos();
-	sf::Vector2f wMouse = Camera::screenToWorldPos(mouse);
-
-	sf::Vector2f worldZero = Camera::screenToWorldPos(sf::Vector2f());
-	sf::Vector2f worldMouse = Camera::screenToWorldPos(getMousePos());
-
-	drawColor(getMousePos(), Map::getColor(worldMouse));
+	const sf::Vector2f mousePos = getMousePos();
+	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
+	drawColor(mousePos, Map::getColor(worldMouse));
 	sf::Vector2f collision = Map::nearestCollision(worldMouse);
 	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
 	if (collision.x > -200 && collision.y > -200)
 	{
 		drawColor(collisionOnScreen, sf::Color::Red);
-		GuiRendering::line(getMousePos().x, getMousePos().y, collisionOnScreen.x, collisionOnScreen.y);
+		GuiRendering::line(mousePos.x, mousePos.y, collisionOnScreen.x, collisionOnScreen.y);
 
-		sf::Vector2f d = collisionOnScreen - mouse;
+		sf::Vector2f d = collisionOnScreen - mousePos;
 		float r = sqrtf(d.x * d.x + d.y * d.y);
-		GuiRendering::circle(getMousePos().x, getMousePos().y, r);
+		GuiRendering::circle(mousePos.x, mousePos.y, r);
 	}
-
-
 }
 
-sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
+static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image &image, bool acceptBorders)
 {
 	sf::Vector2i center = worldToMapPos(pos);
 	int nearestDist = 1000000;
@@ -124,15 +115,17 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 		int y = center.y + iy;
 		if (x < 0 || x >= (int)image.getSize().x || y < 0 || y >= (int)image.getSize().y)
 		{
-			nearestDist = dist;
-			nearest.x = x;
-			nearest.y = y;
+			if (acceptBorders)
+			{
+				nearestDist = dist;
+				nearest.x = x;
+				nearest.y = y;
+			}
 			continue;
 		}
 
 		sf::Color c = image.getPixel(x, y);
-		sf::Color wall{ 0xb9, 0x7a, 0x57, 0xFF };
-		if (c == wall)
+		if (c == item)
 		{
 			nearestDist = dist;
 			nearest.x = x;
@@ -142,6 +135,18 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 	}
 
 	return mapToWorldPos(nearest);
+}
+
+sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
+{
+	sf::Color wall{ 0xb9, 0x7a, 0x57, 0xFF };
+	return nearestColorImpl(pos, wall, image, true);
+}
+
+sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
+{
+	sf::Color collectible{ 0xed, 0x1c, 0x24, 0xFF };
+	return nearestColorImpl(pos, collectible, image, false);
 }
 
 sf::Color Map::getColor(sf::Vector2f pos)
