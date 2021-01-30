@@ -18,7 +18,7 @@ struct GuiRendering
     static void image(const void *image, sf::Vector2f position, float w, float h);
     static void line(float x0, float y0, float x1, float y1);
     static void line(sf::Vector2f pos0, sf::Vector2f pos1);
-	static void circle(float x, float y, float r);
+	static void circle(float x, float y, float r, bool filled = true);
 
 	static void pushClipRect(float x, float y, float w, float h);
 	static void pushAntiClipRect();

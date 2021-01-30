@@ -144,14 +144,14 @@ void GuiRendering::line(sf::Vector2f pos0, sf::Vector2f pos1){
     line(pos0.x,pos0.y,pos1.x, pos1.y);
 }
 
-void GuiRendering::circle(float x, float y, float r)
+void GuiRendering::circle(float x, float y, float r, bool filled)
 {
 	GuiRenderInfo guiRenderInfo;
 	guiRenderInfo.type = GuiRenderInfoType::Circle;
 	guiRenderInfo.x = x;
 	guiRenderInfo.y = y;
 	guiRenderInfo.w = r;
-	guiRenderInfo.h = r;
+	guiRenderInfo.h = filled ? 1 : 0;
 	guiRenderInfo.color = { 1,1,1,1 };
 	render(guiRenderInfo);
 }

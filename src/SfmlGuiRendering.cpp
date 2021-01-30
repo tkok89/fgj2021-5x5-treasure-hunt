@@ -138,13 +138,18 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Circle)
 		{
 			float r = i.w * g_resolution.y;
+			bool filled = i.h == 0;
 			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
 			sf::RenderStates states = sf::RenderStates::Default;
 
 			const int polyCount = 33;
 			sf::Vertex vertices[polyCount] = {};
 			const sf::Color color = sfColor(i.color);
-			vertices[0].position = pos;
+			if (filled)
+				vertices[0].position = pos;
+			else
+				vertices[0].position = pos + sf::Vector2f(0, r);
+
 			vertices[0].color = sf::Color::Red;
 			vertices[0].color = sf::Color::Red;
 			vertices[0].texCoords = sf::Vector2f(0, 0);
@@ -157,7 +162,10 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 				vertices[i].texCoords = sf::Vector2f(1, 1);
 			}
 
-			renderTarget.draw(vertices, polyCount, sf::TriangleFan, states);
+			if (filled)
+				renderTarget.draw(vertices, polyCount, sf::TriangleFan, states);
+			else
+				renderTarget.draw(vertices, polyCount, sf::LineStrip, states);
 		}
 	}
 }
