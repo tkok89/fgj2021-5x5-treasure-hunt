@@ -23,12 +23,21 @@ struct PlaybackState
 	std::unordered_map<SoundResourceName, sf::Sound> sounds;
 };
 
+struct MusicState
+{
+	MusicEnvName env = MusicEnvName::silence;
+	MusicResourceName resourceName;
+	std::unique_ptr<sf::Music> playingMusic;
+};
+
 }
 
 struct Mankka::MankkaState
 {
 	std::unordered_map<SoundPresetName, SoundPreset> presets;
 	std::unordered_map<SoundPresetName, PlaybackState> playbackStates;
+	std::unordered_map<MusicEnvName, MusicResourceName> musicEnvs;
+	MusicState musicState;
 	std::default_random_engine rng;
 };
 
@@ -119,6 +128,12 @@ Mankka::Mankka()
 
 		assert(presetsIt.second.pool.size() > 0);
 	}
+
+	// Music envs
+
+	state->musicEnvs = {
+		{ MusicEnvName::ingame, MusicResourceName::thebiisi }
+	};
 }
 
 Mankka &Mankka::getMankka()
@@ -138,6 +153,29 @@ void Mankka::play(SoundPresetName presetId)
 	SoundResourceName effectName = pool[pickIndex];
 
 	pbs.sounds[effectName].play();
+}
+
+void Mankka::play(MusicEnvName envName)
+{
+	if (state->musicState.env == envName)
+		return;
+
+	state->musicState.env = envName;
+
+	if (state->musicState.env == MusicEnvName::silence)
+	{
+		state->musicState.playingMusic.reset();
+	}
+	else
+	{
+		state->musicState.resourceName = state->musicEnvs[envName];
+
+		state->musicState.playingMusic =
+			Resources::getResources().getMusic(state->musicState.resourceName);
+
+		state->musicState.playingMusic->setLoop(true);
+		state->musicState.playingMusic->play();
+	}
 }
 
 void Mankka::test()

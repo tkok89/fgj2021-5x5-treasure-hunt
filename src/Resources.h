@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
 #include <unordered_map>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Music.hpp>
+
 #include "Global.h"
 
 enum class SoundResourceName : uint32_t
@@ -28,6 +31,11 @@ enum class SoundResourceName : uint32_t
 
 extern sf::Texture *g_placeholder;
 
+enum class MusicResourceName : uint32_t
+{
+	thebiisi
+};
+
 struct Resources
 {
 	static Resources &getResources()
@@ -41,6 +49,8 @@ struct Resources
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
 	sf::String mapName;
+
+	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
 
 	static std::string getResourcePath(const char *assetPath);
 
