@@ -19,12 +19,21 @@ enum class SoundPresetName : uint32_t
 	togglebutton, // togglebutton_1, togglebutton_2
 };
 
+enum class MusicEnvName : uint32_t
+{
+	silence,
+	ingame,
+	kidutuskammio
+};
+
 class Mankka
 {
 public:
 	static Mankka &getMankka();
 
 	void play(SoundPresetName presetId);
+	void play(MusicEnvName musicEnv);
+
 	void test();
 
 private:

@@ -4,27 +4,42 @@
 #include "GuiRenderingState.h"
 #include "SfmlGuiRendering.h"
 #include "GuiRenderInfo.h"
+#include "Mankka.h"
 #include "Resources.h"
 #include <algorithm>
 #include <cmath>
 #include <SFML/Window/Mouse.hpp>
+#include "Players.hpp"
 
-sf::Vector2f Game::resolution{ 1280,720 };
+sf::Vector2f g_resolution{ 1280,720 };
 
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
+    initializePlayers();
 }
 
 void Game::update(sf::Time elapsedTime)
 {
 	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
+	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
+	
+	Mankka::getMankka().play(MusicEnvName::ingame);
+    updatePlayers(elapsedTime.asSeconds());
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
+	GuiRendering::startThread();
 	GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
+	GuiRendering::text("lol", 0.02f, 0, 0);
 
+	sf::Vector2f cameraPos(0, 0);
+	map.draw(cameraPos);
+
+	GuiRendering::endThread();
+
+    drawPlayers();
 	SfmlGuiRendering::flush(window);
 
 	gui(window);
@@ -41,31 +56,5 @@ void Game::setMovement(sf::Vector2i direction)
 
 void Game::gui(sf::RenderWindow& window)
 {
-	//static sf::Clock clock;
-	//float t = clock.getElapsedTime().asSeconds();
 
-}
-
-void Game::SlidingTiles::updateSlide()
-{
-	const sf::Time elapsedTime = tileClock.getElapsedTime();
-	if (elapsedTime > duration)
-	{
-		active = false;
-		moveThisRowToDirection.x = 42;
-		moveThisRowToDirection.y = 42;
-		currentPos = 0.0f;
-		return;
-	}
-	const float phase = elapsedTime / duration;
-	const float sqt = phase * phase;
-	currentPos = sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
-}
-
-void Game::SlidingTiles::start(sf::Vector2i moveThisRowToDirectionParam, float tileLengthParam)
-{
-	active = true;
-	tileClock.restart();
-	moveThisRowToDirection = moveThisRowToDirectionParam;
-	tileLength = tileLengthParam;
 }

@@ -26,10 +26,14 @@ Resources::Resources()
     g_placeholder = &placeholder;
     assert(success);
 
+    mapName = resourcePath() + "assets/map.png";
+
     if (!font.loadFromFile(resourcePath() + "assets/Vera.ttf"))
     {
         std::cerr << "Error loading Vera.ttf" << std::endl;
     }
+
+    // Load sound effects
 
     success = soundEffects[SoundResourceName::bonk]
         .loadFromFile(resourcePath() + "assets/sounds/bonk.ogg");
@@ -94,4 +98,26 @@ Resources::Resources()
     success = soundEffects[SoundResourceName::togglebutton_2]
         .loadFromFile(resourcePath() + "assets/sounds/togglebutton_2.ogg");
     assert(success);
+}
+
+std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const
+{
+    auto getPath = [](MusicResourceName name) {
+        switch (name)
+        {
+        case MusicResourceName::thebiisi:
+            return getResourcePath("assets/music/thebiisi.ogg");
+
+        case MusicResourceName::pimpom:
+            return getResourcePath("assets/music/PIMPOM.ogg");
+        }
+    };
+
+    std::unique_ptr<sf::Music> music;
+    music.reset(new sf::Music());
+
+    bool success = music->openFromFile(getPath(resName));
+    assert(success);
+
+    return music;
 }

@@ -11,10 +11,16 @@
 #include <assert.h>
 
 static sf::Vector2f g_resolution = sf::Vector2f(1280, 720);
+static sf::Text g_text;
 
 void SfmlGuiRendering::setResolution(float x, float y)
 {
 	g_resolution = { x, y };
+}
+
+void SfmlGuiRendering::setDefaultFont(sf::Font &font)
+{
+	g_text.setFont(font);
 }
 
 template<typename T>
@@ -90,6 +96,8 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Text)
 		{
 			sf::Text *text = static_cast<sf::Text *>(i.font);
+			if (!text)
+				text = &g_text;
 			if (i.strPtr)
 				text->setString(i.strPtr);
 			text->setPosition(pos);
