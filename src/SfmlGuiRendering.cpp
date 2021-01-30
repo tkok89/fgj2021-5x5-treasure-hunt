@@ -150,8 +150,7 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 			else
 				vertices[0].position = pos + sf::Vector2f(0, r);
 
-			vertices[0].color = sf::Color::Red;
-			vertices[0].color = sf::Color::Red;
+			vertices[0].color = color;
 			vertices[0].texCoords = sf::Vector2f(0, 0);
 			for (int i = 1; i < polyCount; ++i)
 			{
