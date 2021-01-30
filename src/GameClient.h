@@ -2,15 +2,17 @@
 #include "SFML/Network.hpp"
 #include <thread>
 
-static bool imHost = false;
-static bool connectedToHost = false;
-static bool acceptingConnections = false;
-static bool gameOn = false;
-static short connectedClientAmount = 0u;
+struct NetPlayer
+{
+	short socketIndex = ~0u;
+	short id = 0;
+	sf::Vector2f position;
+};
 
+// The most current server state.
 struct GameNetState
 {
-	std::vector<sf::Vector2f> playerPositions;
+	std::vector<NetPlayer> players;
 };
 
 enum PacketType : sf::Uint8
@@ -31,8 +33,15 @@ public:
 	void connectToHost(std::string ip, short port);
 	void sendPosition(sf::Vector2f position);
 	void sendGameState(GameNetState state);
-
+	static GameClient& getClient();
+	static bool imHost;
+	static bool connectedToHost;
+	static bool acceptingConnections;
+	static bool gameOn;
+	static short connectedClientAmount;
+	static GameNetState gameNetState;
 private:
+	void resetState();
 	void updateGameState(GameNetState packet);
 	void updatePlayerPosition(short playerNumber, sf::Vector2f playerPosition);
 	std::thread *acceptConnectionsThread;

@@ -12,7 +12,20 @@ sf::TcpSocket sockets[8]
 	sf::TcpSocket()
 };
 
-void resetState()
+bool GameClient::imHost = false;
+bool GameClient::connectedToHost = false;
+bool GameClient::acceptingConnections = false;
+bool GameClient::gameOn = false;
+short GameClient::connectedClientAmount = 0u;
+GameNetState GameClient::gameNetState;
+
+GameClient& GameClient::getClient()
+{
+	static GameClient gameclient;
+	return gameclient;
+}
+
+void GameClient::resetState()
 {
 	imHost = false;
 	connectedToHost = false;
@@ -32,6 +45,17 @@ void GameClient::host()
 
 void GameClient::join()
 {
+	if (connectedToHost)
+	{
+		printf("cannot join, already connected!\n");
+		return;
+	}
+	if (imHost)
+	{
+		printf("cannot join while hosting\n");
+		return;
+	}
+
 	connectToHost(std::string("192.168.2.84"), 50000);
 }
 
@@ -55,36 +79,42 @@ sf::Packet& operator >>(sf::Packet& packet, sf::Vector2f &floatVec)
 
 sf::Packet& operator <<(sf::Packet& packet, const GameNetState& state)
 {
-	packet << sf::Uint8(state.playerPositions.size());
-	for (sf::Vector2f position : state.playerPositions)
-		packet << position;
+	packet << sf::Uint8(state.players.size());
+	for (NetPlayer player : state.players)
+		packet << player.position << player.id;
 	return packet;
 }
 
 sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 {
+	state.players.clear();
+
 	sf::Uint8 playerAmount;
 	packet >> playerAmount;
-	
+
 	for (sf::Uint8 number = 0; number < playerAmount; number++)
 	{
-		sf::Vector2f playerPosition;
-		packet >> playerPosition;
-		state.playerPositions.push_back(playerPosition);
+		NetPlayer player;
+		packet >> player.position >> player.id;
+		state.players.push_back(player);
 	}
 	return packet;
 }
 
 // client received
-void GameClient::updateGameState(GameNetState packet)
+void GameClient::updateGameState(GameNetState state)
 {
-
+	gameNetState = state;
 }
 
 // host received 
-void GameClient::updatePlayerPosition(short playerNumber, sf::Vector2f playerPosition)
+void GameClient::updatePlayerPosition(short socketIndex, sf::Vector2f playerPosition)
 {
-
+	for (NetPlayer &playah : gameNetState.players)
+	{
+		if(playah.socketIndex == socketIndex)
+			playah.position = playerPosition;
+	}
 }
 
 // Client -> host
@@ -125,11 +155,10 @@ void GameClient::update()
 		acceptConnectionsThread = nullptr;
 	}
 
-	short playerNumber = 0;
+	short i = 0;
 	for (sf::TcpSocket& socket : sockets)
 	{
-		playerNumber++;
-
+		const short socketIndex = i++;
 		sf::Packet receivedPacket;
 		socket.receive(receivedPacket);
 		PacketType packetType;
@@ -146,28 +175,34 @@ void GameClient::update()
 		case PacketUpdatePositionToHost:
 			sf::Vector2f position;
 			receivedPacket >> position;
-			updatePlayerPosition(playerNumber, position);
+			updatePlayerPosition(socketIndex, position);
 			break;
 		}
 	}
 }
 
-void listenerThread(short port)
+void listenerThread(short port, bool &accept, short &clientAmount)
 {
 	sf::TcpListener listener;
 	if (listener.listen(port) != sf::Socket::Done)
 	{
 		printf("I failed to bind to port %u\n", port);
+		return;
 	}
-	while (acceptingConnections)
+	else
 	{
-		if (listener.accept(sockets[connectedClientAmount]) != sf::Socket::Done)
+		printf("Listening to port %u . . .", port);
+	}
+	while (accept)
+	{
+		if (listener.accept(sockets[clientAmount]) != sf::Socket::Done)
 		{
-			printf("I failed to listen my friends :(\n");
+			printf("but I failed to listen my friends :(\n");
 		}
 		else
 		{
-			connectedClientAmount++;
+			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", sockets[clientAmount].getRemoteAddress().toString().c_str());
+			clientAmount++;
 		}
 	}
 }
@@ -183,7 +218,7 @@ void GameClient::startAcceptingConnections(short port)
 	resetState();
 
 	acceptingConnections = true;
-	acceptConnectionsThread = new std::thread(listenerThread, port);
+	acceptConnectionsThread = new std::thread(listenerThread, port, std::ref(acceptingConnections), std::ref(connectedClientAmount));
 }
 
 void GameClient::stopAcceptingConnections()

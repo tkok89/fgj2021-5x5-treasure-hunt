@@ -11,9 +11,11 @@
 #include <SFML/Window/Mouse.hpp>
 #include "Players.hpp"
 #include "Camera.h"
+#include "GameClient.h"
 
 sf::Vector2f g_resolution{ 1280,720 };
-
+sf::Clock syncClock;
+sf::Time syncCycle = sf::seconds(0.05f);
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
@@ -27,16 +29,33 @@ void Game::update(sf::Time elapsedTime)
 	
 	Mankka::getMankka().play(MusicEnvName::ingame);
     updatePlayers(elapsedTime.asSeconds());
-    
+
     // Update camera
     Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getPlayer(0).posX, getPlayer(0).posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
     debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		GameClient::getClient().host();
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+		GameClient::getClient().join();
+
+	if (syncClock.getElapsedTime() > syncCycle)
+	{
+		syncClock.restart();
+		if (GameClient::connectedToHost)
+			GameClient::getClient().sendPosition(getMousePos() + sf::Vector2f(0.05f, 0.05f));
+
+		if (GameClient::connectedClientAmount != 0u)
+		{
+			GameClient::getClient().sendGameState(GameClient::gameNetState);
+		}
+	}
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::startThread();
-	//GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
 
 	map.draw();
 
@@ -47,6 +66,16 @@ void Game::draw(sf::RenderWindow& window)
     drawPlayers(showDebugText);
     if(showDebugText)
         GuiRendering::text(debugText, 0.02f, -0.5, -0.5);
+
+	if (GameClient::connectedClientAmount != 0)
+	{
+		GameNetState netState = GameClient::gameNetState;
+		for (NetPlayer playah : netState.players)
+		{
+			GuiRendering::text("_o_", 0.02f, playah.position.x, playah.position.y);
+		}
+	}
+
 	SfmlGuiRendering::flush(window);
 }
 
