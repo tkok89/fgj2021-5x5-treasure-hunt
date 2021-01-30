@@ -9,12 +9,14 @@
 #include <algorithm>
 #include <cmath>
 #include <SFML/Window/Mouse.hpp>
+#include "Players.hpp"
 
 sf::Vector2f g_resolution{ 1280,720 };
 
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
+    initializePlayers();
 }
 
 void Game::update(sf::Time elapsedTime)
@@ -23,6 +25,7 @@ void Game::update(sf::Time elapsedTime)
 	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
 	
 	Mankka::getMankka().play(MusicEnvName::ingame);
+    updatePlayers(elapsedTime.asSeconds());
 }
 
 void Game::draw(sf::RenderWindow& window)
@@ -36,6 +39,7 @@ void Game::draw(sf::RenderWindow& window)
 
 	GuiRendering::endThread();
 
+    drawPlayers();
 	SfmlGuiRendering::flush(window);
 
 	gui(window);

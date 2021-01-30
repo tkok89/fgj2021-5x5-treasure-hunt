@@ -6,9 +6,10 @@
 //  Copyright © 2021 Team Manilla. All rights reserved.
 //
 
-#ifndef Players_hpp
-#define Players_hpp
+#pragma once
 
 #include <stdio.h>
 
-#endif /* Players_hpp */
+void initializePlayers ();
+void updatePlayers(float deltaTime);
+void drawPlayers();
