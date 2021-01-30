@@ -30,6 +30,14 @@ enum class SoundResourceName : uint32_t
 	togglebutton_2
 };
 
+enum OrthogonalDirection: uint32_t
+{
+    Left = 0,
+    Up = 1,
+    Right = 2,
+    Down = 3
+};
+
 extern sf::Texture *g_placeholder;
 
 enum class MusicResourceName : uint32_t
@@ -47,12 +55,14 @@ struct Resources
 	}
 
 	sf::Texture placeholder;
+    sf::Texture playerTextures[4];
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
 	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
+    sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
 
 	static std::string getResourcePath(const char *assetPath);
 

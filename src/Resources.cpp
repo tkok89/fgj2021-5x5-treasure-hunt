@@ -22,13 +22,23 @@ sf::Texture *g_placeholder = nullptr;
 Resources::Resources()
 {
     bool success = false;
-    success = placeholder.loadFromFile(resourcePath() + "assets/pawn.png");
+    success = placeholder.loadFromFile(getResourcePath("assets/pawn.png"));
     g_placeholder = &placeholder;
     assert(success);
+    
+    // Player textures
+    success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/main_character_left.png"));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/main_character_back.png"));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/main_character_right.png"));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/main_character_front.png"));
+    assert(success);
 
-    mapName = resourcePath() + "assets/map.png";
+    mapName = getResourcePath("assets/map.png");
 
-    if (!font.loadFromFile(resourcePath() + "assets/Vera.ttf"))
+    if (!font.loadFromFile(getResourcePath("assets/Vera.ttf")))
     {
         std::cerr << "Error loading Vera.ttf" << std::endl;
     }
@@ -36,68 +46,72 @@ Resources::Resources()
     // Load sound effects
 
     success = soundEffects[SoundResourceName::bonk]
-        .loadFromFile(resourcePath() + "assets/sounds/bonk.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/bonk.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::break_]
-        .loadFromFile(resourcePath() + "assets/sounds/break.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/break.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::button_press]
-        .loadFromFile(resourcePath() + "assets/sounds/button_press.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/button_press.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::gameover]
-        .loadFromFile(resourcePath() + "assets/sounds/gameover.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/gameover.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::miu]
-        .loadFromFile(resourcePath() + "assets/sounds/miu.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/miu.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::mjau]
-        .loadFromFile(resourcePath() + "assets/sounds/mjau.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/mjau.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::monster_ded]
-        .loadFromFile(resourcePath() + "assets/sounds/monster_ded.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/monster_ded.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::mouse_hit_wall]
-        .loadFromFile(resourcePath() + "assets/sounds/mouse_hit_wall.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/mouse_hit_wall.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::mouse_mus_mus]
-        .loadFromFile(resourcePath() + "assets/sounds/mouse_mus_mus.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/mouse_mus_mus.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::movetiles_1]
-        .loadFromFile(resourcePath() + "assets/sounds/movetiles_1.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/movetiles_1.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::movetiles_2]
-        .loadFromFile(resourcePath() + "assets/sounds/movetiles_2.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/movetiles_2.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::movetiles_3]
-        .loadFromFile(resourcePath() + "assets/sounds/movetiles_3.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/movetiles_3.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::o_oui]
-        .loadFromFile(resourcePath() + "assets/sounds/o_oui.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/o_oui.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::peepeep]
-        .loadFromFile(resourcePath() + "assets/sounds/peepeep.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/peepeep.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::togglebutton_1]
-        .loadFromFile(resourcePath() + "assets/sounds/togglebutton_1.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/togglebutton_1.ogg"));
     assert(success);
 
     success = soundEffects[SoundResourceName::togglebutton_2]
-        .loadFromFile(resourcePath() + "assets/sounds/togglebutton_2.ogg");
+        .loadFromFile(getResourcePath("assets/sounds/togglebutton_2.ogg"));
     assert(success);
+}
+
+sf::Texture& Resources::getPlayerTexture(int pIndex, OrthogonalDirection direction){ // 0 left, 1 up, 2 right, 3 down
+    return playerTextures[direction];
 }
 
 std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const

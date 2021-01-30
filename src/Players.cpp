@@ -16,7 +16,8 @@
 namespace
 {
 
-static const float maxSpeed = 10;
+static const float maxSpeed = 3;
+static const float idleSpeed = 0.01;
 static const float inputLerp = 0.5f;
 static const float accelerationLerp = 0.5f;
 static std::string debugstring;
@@ -45,6 +46,7 @@ struct Player {
     float posX, posY;
     float velocityX, velocityY;
     float inputVelocityX, inputVelocityY;
+    OrthogonalDirection latestDirection = OrthogonalDirection::Down;
     
     void updatePlayer(float deltaTime){
         if(!activePlayer) return;
@@ -88,8 +90,22 @@ struct Player {
     
     void drawPlayer(bool debug){
         if(!activePlayer) return;
-        GuiRendering::image(&Resources::getResources().placeholder, posX, posY, 0.1f, 0.1f);
-        GuiRendering::text(debugstring.c_str(), 0.02f, 0,0); // posX, posY - 0.1f);
+        // what direction
+        OrthogonalDirection direction = latestDirection;
+        if(abs( velocityX) > abs(velocityY)) {
+            if(abs(velocityX) > idleSpeed) {
+                direction = velocityX > 0 ? OrthogonalDirection::Right : OrthogonalDirection::Left;
+            }
+        }
+        else{
+            if(abs(velocityY) > idleSpeed) {
+                direction = velocityY > 0 ? OrthogonalDirection::Down : OrthogonalDirection::Up;
+            }
+        }
+        latestDirection = direction;
+        
+        GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), posX, posY, 0.1f, 0.1f);
+        GuiRendering::text(debugstring.c_str(), 0.02f, posX, posY - 0.1f);
     }
 
 } player1, player2, player3, player4;
