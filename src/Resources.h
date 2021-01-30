@@ -50,7 +50,7 @@ struct Resources
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
-	sf::String mapName;
+	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
 
