@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Map.h"
 #include <cmath>
+#include <string>
 
 namespace
 {
@@ -20,7 +21,6 @@ static const float maxSpeed = 10;
 static const float idleSpeed = 0.01;
 static const float inputLerp = 0.5f;
 static const float accelerationLerp = 0.5f;
-static std::string debugstring;
 
 inline float lerp(float a, float b, float t){
     return a * t + (1 - t) * b;
@@ -65,7 +65,7 @@ void drawPlayers(bool showDebugText){
 
 void updatePlayers(float deltaTime){
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
-        players[i].updatePlayer(deltaTime);
+        players[i].updatePlayer(deltaTime, i == ownPlayerId);
     }
 }
 
@@ -74,26 +74,28 @@ Player& getPlayer(int index){
 }
 
 
-void Player::updatePlayer(float deltaTime){
+void Player::updatePlayer(float deltaTime, bool ownPlayer){
     if(!activePlayer) return;
-    // read input
-    float horizontalMove = 0;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-        horizontalMove -= 1;
+    if(ownPlayer){
+        // read input
+        float horizontalMove = 0;
+        float verticalMove = 0;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+            horizontalMove -= 1;
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+            horizontalMove += 1;
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+            verticalMove -= 1;
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+            verticalMove += 1;
+        }
+        // lerp input
+        inputVelocityX = clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
+        inputVelocityY = clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-        horizontalMove += 1;
-    }
-    float verticalMove = 0;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-        verticalMove -= 1;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-        verticalMove += 1;
-    }
-    // lerp input
-    inputVelocityX =clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
-    inputVelocityY =clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
     // accelerate
     velocityX = lerp(inputVelocityX * maxSpeed, velocityX, accelerationLerp);
     velocityY = lerp(inputVelocityY * maxSpeed, velocityY, accelerationLerp);
@@ -106,7 +108,12 @@ void Player::updatePlayer(float deltaTime){
     // if closer than player size move back
     sf::Vector2f direction = collisionPosition - sf::Vector2f(newPosX, newPosY);
     float distance = distanceXY(0, 0, direction.x, direction.y);
-    if(distance < 0.5f * size){
+    if(distance < 0.001f || !Map::isInMapArea(newPosX, newPosY)){
+        // inside a wall
+        newPosX = Map::getShopPos().x;
+        newPosY = Map::getShopPos().y;
+    }
+    else if(distance < 0.5f * size){
         // Collision omg
         velocityX = 0;
         velocityY = 0;

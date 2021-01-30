@@ -6,6 +6,7 @@
 #include "Global.h"
 
 const sf::Vector2f mapSize(100, 100);
+const sf::Vector2f topLeft = mapSize * -0.5f;
 
 enum class Item
 {
@@ -32,6 +33,7 @@ struct Map
 	sf::Vector2f nearestCollectible(sf::Vector2f pos);
 	sf::Vector2f nearestShop(sf::Vector2f pos);
 	static sf::Vector2f getShopPos() { return g_map->shops.front(); }
+    static bool isInMapArea(float x, float y) { return x> topLeft.x && y > topLeft.y && x < topLeft.x + mapSize.x  &&  y < topLeft.y + mapSize.y;}
 	sf::Color getColor(sf::Vector2f pos);
 
 	Item pickupNearestCollectible(sf::Vector2f pos);
