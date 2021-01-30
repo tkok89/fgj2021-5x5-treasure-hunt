@@ -138,7 +138,7 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Circle)
 		{
 			float r = i.w * g_resolution.y;
-			bool filled = i.h == 0;
+			bool filled = i.h != 0;
 			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
 			sf::RenderStates states = sf::RenderStates::Default;
 
