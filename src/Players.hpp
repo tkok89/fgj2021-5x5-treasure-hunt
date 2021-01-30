@@ -22,7 +22,8 @@ private:
     float size = 1.00000f;
 };
 
-void initializePlayers ();
+void initializePlayers (float startX, float startY);
 void updatePlayers(float deltaTime);
 void drawPlayers(bool showDebugText);
 Player& getPlayer(int index);
+

@@ -58,8 +58,6 @@ int main()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 				++yInput;
-
-			game.setMovement(sf::Vector2i(xInput, yInput));
 		}
 
 		const sf::Time elapsedTime = clock.restart();

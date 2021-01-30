@@ -40,14 +40,15 @@ inline float clamp11(float x){
     return x;
 }
 
-static Player players[4];
+static Player players[8];
+static int ownPlayerId = 0;
 }
 
-void initializePlayers () {
+void initializePlayers (float startX, float startY) {
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
         players[i].index = 0;
-        players[i].posX = 0;
-        players[i].posY = 0;
+        players[i].posX = startX;
+        players[i].posY = startY;
         players[i].velocityX = 0;
         players[i].velocityY = 0;
         players[i].inputVelocityX =0;

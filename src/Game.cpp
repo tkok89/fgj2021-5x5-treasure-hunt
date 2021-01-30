@@ -19,7 +19,7 @@ sf::Time syncCycle = sf::seconds(0.1f);
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
-    initializePlayers();
+    initializePlayers(10,10);
 }
 
 void Game::update(sf::Time elapsedTime)
@@ -80,15 +80,6 @@ void Game::draw(sf::RenderWindow& window)
 	}
 
 	SfmlGuiRendering::flush(window);
-}
-
-void Game::setMovement(sf::Vector2i direction)
-{
-	const char *text;
-	text = (direction.x < 0 ? "left " : (direction.x > 0 ? "right " : ""));
-	text = (direction.y < 0 ? "up" : (direction.y > 0 ? "down" : ""));
-
-	GuiRendering::text(&m_guiText, text, 0.02f, -0.3f, -0.45f);
 }
 
 void Game::gui(sf::RenderWindow& window)
