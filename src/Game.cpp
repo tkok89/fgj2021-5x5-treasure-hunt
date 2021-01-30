@@ -85,7 +85,7 @@ void Game::draw(sf::RenderWindow& window)
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		slidingTiles.start(sf::Vector2i(1u, 1u), tileSize.x);
+		slidingTiles.start(sf::Vector2i(1u, 42), tileSize.x);
 	}
 	if (slidingTiles.active)
 		slidingTiles.updateSlide();
@@ -157,8 +157,9 @@ void Game::SlidingTiles::updateSlide()
 	if (elapsedTime > duration)
 	{
 		active = false;
-		moveThisRowToDirection.x = ~0u;
-		moveThisRowToDirection.y = ~0u;
+		moveThisRowToDirection.x = 42;
+		moveThisRowToDirection.y = 42;
+		currentPos = 0.0f;
 		return;
 	}
 	const float phase = elapsedTime / duration;
@@ -168,7 +169,7 @@ void Game::SlidingTiles::updateSlide()
 
 void Game::SlidingTiles::start(sf::Vector2i moveThisRowToDirectionParam, float tileLengthParam)
 {
-	bool active = true;
+	active = true;
 	tileClock.restart();
 	moveThisRowToDirection = moveThisRowToDirectionParam;
 	tileLength = tileLengthParam;
