@@ -20,15 +20,24 @@ public:
 		return "FGJ 2021";
 	}
 
+	static sf::Vector2f resolution;
 	static sf::Vector2f getResolution()
 	{
-		return { 1280, 720 };
+		return resolution;
+	}
+
+	static void setResolution(float x, float y)
+	{
+		resolution.x = x;
+		resolution.y = y;
 	}
 
 private:
 
 	Grid grid;
 	IncomingTiles incomingTiles;
+	Score score;
+
 	struct SlidingTiles
 	{
 		void start(sf::Vector2i moveThisRowToDirection, float tileLength);

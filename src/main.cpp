@@ -29,6 +29,14 @@ int main()
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 				window.close();
+
+			if (event.type == sf::Event::EventType::Resized)
+			{
+				float x = (float)event.size.width;
+				float y = (float)event.size.height;
+				Game::setResolution(x, y);
+				window.setView(sf::View(sf::FloatRect(0, 0, x, y)));
+			}
 		}
 
 		{ // Handle movement input

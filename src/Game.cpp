@@ -3,6 +3,7 @@
 #include "GuiRendering.h"
 #include "GuiRenderingState.h"
 #include "SfmlGuiRendering.h"
+#include "Input.h"
 #include "GuiRenderInfo.h"
 #include "GridViz.h"
 #include "Menu.h"
@@ -13,126 +14,23 @@
 
 Grid *g_grid = nullptr;
 IncomingTiles *g_incomingTiles = nullptr;
+Score *g_score = nullptr;
+
+sf::Vector2f Game::resolution{ 1280,720 };
 
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
 	g_grid = &grid;
 	g_incomingTiles = &incomingTiles;
-}
-
-static void updateCursorIcon()
-{
-	sf::Cursor cursor;
-	sf::Image image;
-	image.loadFromFile(Resources::getResourcePath("assets/main_character_right.png"));
-	cursor.loadFromPixels(image.getPixelsPtr(), image.getSize(), sf::Vector2u(0, 0));
-	g_window->setMouseCursor(cursor);
-}
-
-static void updateIncompingTileInput()
-{
-	Grid &grid = *g_grid;
-
-	sf::Vector2f p = getMousePos();
-	bool up = p.y < gridPos.y;
-	bool down = p.y > gridPos.y + gridSize.y;
-	bool left = p.x < gridPos.x;
-	bool right = p.x > gridPos.x + gridSize.x;
-	int directionsPressed = (up ? 1 : 0) + (down ? 1 : 0) + (left ? 1 : 0) + (right ? 1 : 0);
-	if (directionsPressed == 1)
-	{
-		sf::Vector2f colOrRow;
-		colOrRow.x = (p.x - gridPos.x) / tileSize.x;
-		colOrRow.y = (p.y - gridPos.y) / tileSize.y;
-		int col = int(colOrRow.x);
-		int row = int(colOrRow.y);
-		if (up)
-		{
-			for (int y = 1; y < GridSize; ++y)
-				grid(col, y - 1) = grid(col, y);
-
-			grid(col, GridSize - 1) = g_incomingTiles->up;
-		}
-		else if (down)
-		{
-			for (int y = 0; y + 1 < GridSize; ++y)
-				grid(col, y + 1) = grid(col, y);
-
-			grid(col, 0) = g_incomingTiles->down;
-		}
-		else if (left)
-		{
-			for (int x = 1; x + 1 < GridSize; ++x)
-				grid(x - 1, row) = grid(x, row);
-
-			grid(GridSize - 1, row) = g_incomingTiles->left;
-		}
-		else
-		{
-			for (int x = 0; x + 1 < GridSize; ++x)
-				grid(x + 1, row) = grid(x, row);
-
-			grid(0, row) = g_incomingTiles->right;
-		}
-	}
+	g_score = &score;
 }
 
 void Game::update(sf::Time elapsedTime)
 {
-	updateCursorIcon();
+	Input::update();
 
-	int xInput = 0;
-	int yInput = 0;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		--xInput;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		++xInput;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		--yInput;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		++yInput;
-
-}
-
-static void drawIncomingTileHover()
-{
-	sf::Vector2f p = getMousePos();
-	bool up = p.y < gridPos.y;
-	bool down = p.y > gridPos.y + gridSize.y;
-	bool left = p.x < gridPos.x;
-	bool right = p.x > gridPos.x + gridSize.x;
-	int directionsPressed = (up ? 1 : 0) + (down ? 1 : 0) + (left ? 1 : 0) + (right ? 1 : 0);
-	if (directionsPressed == 1)
-	{
-		sf::Vector2f colOrRow;
-		colOrRow.x = (p.x - gridPos.x) / tileSize.x;
-		colOrRow.y = (p.y - gridPos.y) / tileSize.y;
-		float x = gridPos.x + floorf(colOrRow.x) * tileSize.x;
-		float y = gridPos.y + floorf(colOrRow.y) * tileSize.y;
-
-		if (up)
-		{
-			y = gridPos.y - tileSize.y;
-		}
-		else if (down)
-		{
-			y = gridPos.y + gridSize.y;
-		}
-		else if (left)
-		{
-			x = gridPos.x - tileSize.x;
-		}
-		else
-		{
-			x = gridPos.x + gridSize.x;
-		}
-
-		GuiRendering::image(g_placeholder, x, y, tileSize.x, tileSize.y);
-	}
+	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
 }
 
 void Game::draw(sf::RenderWindow& window)
@@ -141,12 +39,14 @@ void Game::draw(sf::RenderWindow& window)
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		slidingTiles.start(sf::Vector2i(1u, 1u), tileSize.x);
+		slidingTiles.start(sf::Vector2i(1u, 42u), tileSize.x);
 	}
 	if (slidingTiles.active)
 		slidingTiles.updateSlide();
 
 	GridViz::render(grid, gridPos, gridSize, slidingTiles.getMoveRow(), slidingTiles.currentPos);
+
+	Input::drawIncomingTileHover();
 
 	void *menuStatePtr;
 	Menu::render(menuStatePtr);
@@ -178,18 +78,19 @@ void Game::SlidingTiles::updateSlide()
 	if (elapsedTime > duration)
 	{
 		active = false;
-		moveThisRowToDirection.x = ~0u;
-		moveThisRowToDirection.y = ~0u;
+		moveThisRowToDirection.x = 42;
+		moveThisRowToDirection.y = 42;
+		currentPos = 0.0f;
 		return;
 	}
 	const float phase = elapsedTime / duration;
 	const float sqt = phase * phase;
-	currentPos =  sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
+	currentPos = sqt / (2.0f * (sqt - phase) + 1.0f) * tileLength;
 }
 
 void Game::SlidingTiles::start(sf::Vector2i moveThisRowToDirectionParam, float tileLengthParam)
 {
-	bool active = true;
+	active = true;
 	tileClock.restart();
 	moveThisRowToDirection = moveThisRowToDirectionParam;
 	tileLength = tileLengthParam;
