@@ -13,8 +13,11 @@ Map *g_map = nullptr;
 
 Map::Map()
 {
-	image.loadFromFile(Resources::getResources().mapName);
-	texture.loadFromImage(image);
+	bool success = image.loadFromFile(Resources::getResources().mapName);
+	assert(success);
+
+	success = texture.loadFromImage(image);
+	assert(success);
 
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 
@@ -60,7 +63,7 @@ void Map::randomize()
 			treasures.push_back({ item, p });
 	}
 
-	std::uniform_int_distribution<int> itemDistribution(0, treasures.size() - 1);
+	std::uniform_int_distribution<int> itemDistribution(0, (int)treasures.size() - 1);
 	int afrikanTahdenPaikka = itemDistribution(rng);
 	treasures[afrikanTahdenPaikka].item = Item::AfrikanTahti;
 

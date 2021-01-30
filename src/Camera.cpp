@@ -1,6 +1,14 @@
 #include "Camera.h"
 
+#include <assert.h>
+
 sf::Vector2f g_cameraPos;
+void Camera::setCameraPos(sf::Vector2f p)
+{
+    assert(p == p);
+    g_cameraPos = p;
+}
+
 sf::Vector2f Camera::worldToScreenPos(sf::Vector2f worldPos)
 {
     return (worldPos - g_cameraPos) / g_screenHeightInWorldCoordinates;

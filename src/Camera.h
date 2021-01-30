@@ -8,7 +8,7 @@ extern sf::Vector2f g_cameraPos;
 
 struct Camera
 {
-	static void setCameraPos(sf::Vector2f p) { g_cameraPos = p; }
+	static void setCameraPos(sf::Vector2f p);
 	static sf::Vector2f getCameraPos() { return g_cameraPos; }
 
 	static sf::Vector2f worldToScreenPos(sf::Vector2f worldPos);
