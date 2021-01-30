@@ -19,6 +19,7 @@ namespace
 static const float maxSpeed = 10;
 static const float inputLerp = 0.5f;
 static const float accelerationLerp = 0.5f;
+static std::string debugstring;
 
 inline float lerp(float a, float b, float t){
     return a * t + (1 - t) * b;
@@ -62,6 +63,7 @@ struct Player {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             verticalMove += 1;
         }
+        //lerp input
         inputVelocityX =clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
         inputVelocityY =clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
         //accelerate
@@ -76,10 +78,18 @@ struct Player {
         posX = newPosX;
         posY = newPosY;
         //new position ready, check if any world object is nearby
+        
+        debugstring = " iVX " + std::to_string(inputVelocityX) +
+        " iVY " + std::to_string(inputVelocityY) +
+        " hM " + std::to_string(horizontalMove) +
+        " vM " + std::to_string(verticalMove) +
+        " posx " + std::to_string(posX);
     }
     
-    void drawPlayer(){
-        GuiRendering::image(&Resources::getResources().placeholder, posX, posY, 0.1, 0.1);
+    void drawPlayer(bool debug){
+        if(!activePlayer) return;
+        GuiRendering::image(&Resources::getResources().placeholder, posX, posY, 0.1f, 0.1f);
+        GuiRendering::text(debugstring.c_str(), 0.02f, 0,0); // posX, posY - 0.1f);
     }
 
 } player1, player2, player3, player4;
@@ -102,11 +112,12 @@ void initializePlayers () {
         players[i]->inputVelocityX =0;
         players[i]->inputVelocityY =0;
     }
+    player1.activePlayer = true;
 }
 
 void drawPlayers(){
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
-        players[i]->drawPlayer();
+        players[i]->drawPlayer(true);
     }
 }
 
