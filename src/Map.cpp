@@ -145,7 +145,7 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 
 sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
 {
-	sf::Color collectible{ 0xed, 0x1c, 0x24, 0xFF };
+	sf::Color collectible{ 0xFF, 0x00, 0x00, 0xFF };
 	return nearestColorImpl(pos, collectible, image, false);
 }
 
