@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		B1B8AE7725C49BDE00B4CBA8 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7625C49BDE00B4CBA8 /* Resources.cpp */; };
-		B1B8AE7F25C49D3D00B4CBA8 /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7925C49D3D00B4CBA8 /* Grid.cpp */; };
-		B1B8AE8025C49D3D00B4CBA8 /* GridViz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7B25C49D3D00B4CBA8 /* GridViz.cpp */; };
-		B1B8AE8125C49D3D00B4CBA8 /* DragAndDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7C25C49D3D00B4CBA8 /* DragAndDrop.cpp */; };
 		B1B8AE8625C49FE800B4CBA8 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B1B8AE8525C49FE800B4CBA8 /* assets */; };
+		B1B8AE8C25C5A40100B4CBA8 /* Players.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */; };
+		B1B8AE9525C5A4D400B4CBA8 /* Mankka.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9125C5A4D400B4CBA8 /* Mankka.cpp */; };
+		B1B8AE9625C5A4D400B4CBA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9325C5A4D400B4CBA8 /* Global.cpp */; };
+		B1B8AE9C25C5C05300B4CBA8 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */; };
 		B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */; };
 		B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */; };
-		B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8525C49A090071EC58 /* Menu.cpp */; };
 		B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */; };
 		B1E67D9525C49A090071EC58 /* GuiRendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8825C49A090071EC58 /* GuiRendering.cpp */; };
 		B1E67D9625C49A090071EC58 /* workingdir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8A25C49A090071EC58 /* workingdir.cpp */; };
@@ -25,19 +25,20 @@
 /* Begin PBXFileReference section */
 		B1B8AE7525C49BDE00B4CBA8 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
 		B1B8AE7625C49BDE00B4CBA8 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
-		B1B8AE7925C49D3D00B4CBA8 /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
-		B1B8AE7A25C49D3D00B4CBA8 /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
-		B1B8AE7B25C49D3D00B4CBA8 /* GridViz.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridViz.cpp; sourceTree = "<group>"; };
-		B1B8AE7C25C49D3D00B4CBA8 /* DragAndDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DragAndDrop.cpp; sourceTree = "<group>"; };
-		B1B8AE7D25C49D3D00B4CBA8 /* GridViz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViz.h; sourceTree = "<group>"; };
-		B1B8AE7E25C49D3D00B4CBA8 /* DragAndDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragAndDrop.h; sourceTree = "<group>"; };
 		B1B8AE8525C49FE800B4CBA8 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
+		B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Players.cpp; sourceTree = "<group>"; };
+		B1B8AE8B25C5A40100B4CBA8 /* Players.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Players.hpp; sourceTree = "<group>"; };
+		B1B8AE9125C5A4D400B4CBA8 /* Mankka.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mankka.cpp; sourceTree = "<group>"; };
+		B1B8AE9225C5A4D400B4CBA8 /* Mankka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mankka.h; sourceTree = "<group>"; };
+		B1B8AE9325C5A4D400B4CBA8 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Global.cpp; sourceTree = "<group>"; };
+		B1B8AE9425C5A4D400B4CBA8 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		B1B8AE9A25C5C05300B4CBA8 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
+		B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fgj2021-lost-and-found.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1E67D6E25C499FA0071EC58 /* fgj2021-lost-and-found-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fgj2021-lost-and-found-Info.plist"; path = "../fgj2021-lost-and-found-Info.plist"; sourceTree = "<group>"; };
 		B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		B1E67D7125C499FA0071EC58 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
 		B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuIRenderingState.cpp; sourceTree = "<group>"; };
-		B1E67D8525C49A090071EC58 /* Menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		B1E67D8625C49A090071EC58 /* GuiRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiRendering.h; sourceTree = "<group>"; };
 		B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SfmlGuiRendering.cpp; sourceTree = "<group>"; };
 		B1E67D8825C49A090071EC58 /* GuiRendering.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiRendering.cpp; sourceTree = "<group>"; };
@@ -45,7 +46,6 @@
 		B1E67D8A25C49A090071EC58 /* workingdir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = workingdir.cpp; sourceTree = "<group>"; };
 		B1E67D8B25C49A090071EC58 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		B1E67D8C25C49A090071EC58 /* GuiRenderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiRenderInfo.h; sourceTree = "<group>"; };
-		B1E67D8D25C49A090071EC58 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		B1E67D8E25C49A090071EC58 /* workingdir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = workingdir.h; sourceTree = "<group>"; };
 		B1E67D8F25C49A090071EC58 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B1E67D9025C49A090071EC58 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
@@ -104,28 +104,28 @@
 		B1E67D8325C49A090071EC58 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				B1B8AE7C25C49D3D00B4CBA8 /* DragAndDrop.cpp */,
-				B1B8AE7E25C49D3D00B4CBA8 /* DragAndDrop.h */,
+				B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */,
+				B1B8AE9A25C5C05300B4CBA8 /* Map.h */,
+				B1B8AE9325C5A4D400B4CBA8 /* Global.cpp */,
+				B1B8AE9425C5A4D400B4CBA8 /* Global.h */,
+				B1B8AE9125C5A4D400B4CBA8 /* Mankka.cpp */,
+				B1B8AE9225C5A4D400B4CBA8 /* Mankka.h */,
 				B1E67D9025C49A090071EC58 /* Game.cpp */,
 				B1E67D8B25C49A090071EC58 /* Game.h */,
-				B1B8AE7925C49D3D00B4CBA8 /* Grid.cpp */,
-				B1B8AE7A25C49D3D00B4CBA8 /* Grid.h */,
-				B1B8AE7B25C49D3D00B4CBA8 /* GridViz.cpp */,
-				B1B8AE7D25C49D3D00B4CBA8 /* GridViz.h */,
 				B1E67D8C25C49A090071EC58 /* GuiRenderInfo.h */,
 				B1E67D8825C49A090071EC58 /* GuiRendering.cpp */,
 				B1E67D8625C49A090071EC58 /* GuiRendering.h */,
 				B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */,
 				B1E67D9125C49A090071EC58 /* GuiRenderingState.h */,
 				B1E67D8F25C49A090071EC58 /* main.cpp */,
-				B1E67D8525C49A090071EC58 /* Menu.cpp */,
-				B1E67D8D25C49A090071EC58 /* Menu.h */,
 				B1B8AE7625C49BDE00B4CBA8 /* Resources.cpp */,
 				B1B8AE7525C49BDE00B4CBA8 /* Resources.h */,
 				B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */,
 				B1E67D8925C49A090071EC58 /* SfmlGuiRendering.h */,
 				B1E67D8A25C49A090071EC58 /* workingdir.cpp */,
 				B1E67D8E25C49A090071EC58 /* workingdir.h */,
+				B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */,
+				B1B8AE8B25C5A40100B4CBA8 /* Players.hpp */,
 			);
 			name = src;
 			path = ../../src;
@@ -220,18 +220,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1B8AE8025C49D3D00B4CBA8 /* GridViz.cpp in Sources */,
 				B1E67D9825C49A090071EC58 /* Game.cpp in Sources */,
-				B1B8AE8125C49D3D00B4CBA8 /* DragAndDrop.cpp in Sources */,
 				B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */,
 				B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */,
+				B1B8AE9625C5A4D400B4CBA8 /* Global.cpp in Sources */,
 				B1B8AE7725C49BDE00B4CBA8 /* Resources.cpp in Sources */,
+				B1B8AE9525C5A4D400B4CBA8 /* Mankka.cpp in Sources */,
+				B1B8AE9C25C5C05300B4CBA8 /* Map.cpp in Sources */,
 				B1E67D9525C49A090071EC58 /* GuiRendering.cpp in Sources */,
 				B1E67D9625C49A090071EC58 /* workingdir.cpp in Sources */,
-				B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */,
 				B1E67D9725C49A090071EC58 /* main.cpp in Sources */,
+				B1B8AE8C25C5A40100B4CBA8 /* Players.cpp in Sources */,
 				B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */,
-				B1B8AE7F25C49D3D00B4CBA8 /* Grid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +329,7 @@
 		B1E67D8025C499FA0071EC58 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = "fgj2021-lost-and-found/fgj2021-lost-and-found.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -344,6 +345,7 @@
 		B1E67D8125C499FA0071EC58 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_ENTITLEMENTS = "fgj2021-lost-and-found/fgj2021-lost-and-found.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -33,7 +33,8 @@ public:
 		g_resolution.x = x;
 		g_resolution.y = y;
 	}
-
+    
+    bool showDebugText = false;
 private:
 
 	sf::Text m_guiText;

@@ -22,7 +22,8 @@ enum class SoundPresetName : uint32_t
 enum class MusicEnvName : uint32_t
 {
 	silence,
-	ingame
+	ingame,
+	kidutuskammio
 };
 
 class Mankka

@@ -1,6 +1,7 @@
 #include "Map.h"
 
 #include "Camera.h"
+#include <cmath>
 #include "Resources.h"
 #include "GuiRendering.h"
 #include "GuiRenderInfo.h"
