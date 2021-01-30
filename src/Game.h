@@ -28,6 +28,7 @@ public:
 private:
 
 	Grid grid;
+	IncomingTiles incomingTiles;
 	struct SlidingTiles
 	{
 		void start(sf::Vector2i moveThisRowToDirection, float tileLength);

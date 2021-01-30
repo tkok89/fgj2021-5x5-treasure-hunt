@@ -5,6 +5,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <random>
+#include <sstream>
 
 enum { GridSize = 5 };
 
@@ -14,9 +16,51 @@ const sf::Vector2f gridSize = tileSize * float(GridSize);
 sf::Vector2f getMousePos();
 extern sf::RenderWindow *g_window;
 
+enum class TileType : int
+{
+	WallFree = 0b0000,
+	WallUp = 0b0001,
+	WallDown = 0b0010,
+	WallDownUp = 0b0011,
+	WallLeft = 0b0100,
+	WallLeftUp = 0b0101,
+	WallLeftDown = 0b0110,
+	WallLeftDownUp = 0b0111,
+	WallRight = 0b1000,
+	WallRightUp = 0b1001,
+	WallRightDown = 0b1010,
+	WallRightDownUp = 0b1011,
+	WallRightLeft = 0b1100,
+	WallRightLeftUp = 0b1101,
+	WallRightLeftDown = 0b1110,
+	WallRightLeftDownUp = 0b1111,
+	COUNT,
+};
+
+inline std::string getTileName(TileType tile)
+{
+	int t = int(tile);
+
+	std::stringstream s;
+	s << "wall";
+	if (tile == TileType::WallFree)
+		s << "_free";
+
+	if (t & int(TileType::WallUp))
+		s << "_up";
+	if (t & int(TileType::WallDown))
+		s << "_down";
+	if (t & int(TileType::WallLeft))
+		s << "_left";
+	if (t & int(TileType::WallRight))
+		s << "_right";
+
+	return s.str();
+}
+
 struct Tile
 {
-	int type = 0;
+	TileType type = TileType::WallFree;
 };
 
 struct ShapePart
@@ -102,6 +146,27 @@ struct Grid
 		return nullptr;
 	}
 };
+
+struct IncomingTiles
+{
+	Tile up;
+	Tile down;
+	Tile left;
+	Tile right;
+
+	static Tile randomTile()
+	{
+		static std::default_random_engine generator;
+		static std::uniform_int_distribution<int> distribution(int(TileType::WallFree), int(TileType::COUNT) - 1);
+		TileType tileType = TileType(distribution(generator));
+		Tile tile;
+		tile.type = tileType;
+		return tile;
+	}
+};
+
+extern Grid *g_grid;
+extern IncomingTiles *g_incomingTiles;
 
 // HUOM: Vuotaa Tile-pointterin scopen ulkopuolelle
 #define ForGrid(p_tile) \

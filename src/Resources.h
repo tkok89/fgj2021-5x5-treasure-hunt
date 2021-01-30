@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include "Grid.h"
 
 enum class SoundResourceName
 {
@@ -25,6 +26,8 @@ enum class SoundResourceName
 	togglebutton_2
 };
 
+extern sf::Texture *g_placeholder;
+
 struct Resources
 {
 	static Resources &getResources()
@@ -33,8 +36,9 @@ struct Resources
 		return resources;
 	}
 
-	std::unordered_map<int, sf::Texture> tileTextures;
-  sf::Font font;
+	sf::Texture placeholder;
+	std::unordered_map<TileType, sf::Texture> tileTextures;
+	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
 
