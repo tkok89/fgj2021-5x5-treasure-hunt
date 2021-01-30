@@ -107,6 +107,9 @@ std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const
         {
         case MusicResourceName::thebiisi:
             return getResourcePath("assets/music/thebiisi.ogg");
+
+        case MusicResourceName::pimpom:
+            return getResourcePath("assets/music/PIMPOM.ogg");
         }
     };
 

@@ -33,7 +33,8 @@ extern sf::Texture *g_placeholder;
 
 enum class MusicResourceName : uint32_t
 {
-	thebiisi
+	thebiisi,
+	pimpom
 };
 
 struct Resources
