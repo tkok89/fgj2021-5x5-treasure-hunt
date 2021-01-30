@@ -1,5 +1,6 @@
 #include "Map.h"
 
+#include <cmath>
 #include "Resources.h"
 #include "GuiRendering.h"
 #include <SFML/Window/Keyboard.hpp>
