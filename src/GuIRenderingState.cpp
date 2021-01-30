@@ -59,4 +59,9 @@ void GuiRenderingState::pushGuiRenderInfo(GuiRenderInfo i)
 		// TODO: Clipping for text
 		renderInfos.push_back(i);
 	}
+	else if (i.type == GuiRenderInfoType::Line)
+	{
+		// TODO: Clipping for lines
+		renderInfos.push_back(i);
+	}
 }

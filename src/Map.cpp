@@ -90,14 +90,6 @@ void Map::draw()
 	sf::Vector2f worldZero = Camera::screenToWorldPos(sf::Vector2f());
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(getMousePos());
 
-	//for (int i = 0; i < 2048 * 2048; i += 128)
-	//{
-	//	int x = i % 2048;
-	//	int y = ((i / 2048) / 128) * 128;
-	//	sf::Vector2f p = Camera::worldToScreenPos(mapToWorldPos(sf::Vector2i(x, y)));
-	//	drawColor(p, sf::Color::Black);
-	//}
-
 	drawColor(getMousePos(), Map::getColor(worldMouse));
 	sf::Vector2f collision = Map::nearestCollision(worldMouse);
 	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
