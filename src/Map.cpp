@@ -73,8 +73,8 @@ void Map::randomize()
 		std::uniform_real_distribution<float> distribution(0.4f, 0.6f);
 
 		sf::Vector2f p;
-		p.x = topLeft.x + tileSize.x * distribution(rng);
-		p.y = topLeft.y + tileSize.y * distribution(rng);
+		p.x = topLeft.x + mapSize.x * distribution(rng);
+		p.y = topLeft.y + mapSize.y * distribution(rng);
 		bool ok = false;
 		for (int retry = 0; retry < 200; ++retry)
 		{
@@ -85,8 +85,8 @@ void Map::randomize()
 				break;
 			}
 
-			p.x = topLeft.x + tileSize.x * distribution(rng);
-			p.y = topLeft.y + tileSize.y * distribution(rng);
+			p.x = topLeft.x + mapSize.x * distribution(rng);
+			p.y = topLeft.y + mapSize.y * distribution(rng);
 		}
 
 		assert(ok);

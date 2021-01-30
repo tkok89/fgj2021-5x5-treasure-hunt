@@ -23,6 +23,7 @@ struct Player {
     void drawPlayer(bool debug);
 private:
     float size = 0.951287f;
+    float closestEver = 100.001f;
 };
 
 void initializePlayers (float startX, float startY);

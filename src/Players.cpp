@@ -108,7 +108,10 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     // if closer than player size move back
     sf::Vector2f direction = collisionPosition - sf::Vector2f(newPosX, newPosY);
     float distance = distanceXY(0, 0, direction.x, direction.y);
-    if(distance < 0.001f || !Map::isInMapArea(newPosX, newPosY)){
+    if(distance < closestEver){
+        closestEver  = distance;
+    }
+    if(distance < 0.02f || !Map::isInMapArea(newPosX, newPosY)){
         // inside a wall
         newPosX = Map::getShopPos().x;
         newPosY = Map::getShopPos().y;
@@ -129,8 +132,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     
     debugstring = "x " + std::to_string(posX) +
     " y " + std::to_string(posY) +
-    " cPX " + std::to_string(collisionPosition.x) +
-    " cPY " + std::to_string(collisionPosition.y) +
+    " closestEver " + std::to_string(closestEver) +
     " distance " + std::to_string(distance);
 }
 
