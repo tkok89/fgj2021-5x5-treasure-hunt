@@ -48,9 +48,7 @@ void Game::update(sf::Time elapsedTime)
 		syncClock.restart();
 		if (GameClient::connectedToHost)
 			GameClient::getClient().sendPosition(getMousePos());
-		else if(GameClient::imHost)
-			GameClient::gameNetState.players[0].position = getMousePos();
-		
+
 		if (GameClient::connectedClientAmount != 0u)
 		{
 			GameClient::getClient().sendGameState(GameClient::gameNetState);

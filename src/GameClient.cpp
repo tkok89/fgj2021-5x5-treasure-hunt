@@ -40,6 +40,11 @@ void GameClient::resetState()
 
 void GameClient::host()
 {
+	if (connectedToHost)
+	{
+		printf("Cannot host, already connected to host!\n");
+		return;
+	}
 	startAcceptingConnections(50000);
 }
 
@@ -56,7 +61,7 @@ void GameClient::join()
 		return;
 	}
 
-	connectToHost(std::string("192.168.2.84"), 50000);
+	connectToHost(std::string("localhost"), 50000);
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
@@ -133,7 +138,7 @@ void GameClient::updatePlayerPosition(short socketIndex, sf::Vector2f playerPosi
 void GameClient::sendPosition(sf::Vector2f position)
 {
 	if (imHost)
-		return;
+		gameNetState.players[0].position = position;
 
 	sf::Packet positionPacket;
 	positionPacket << PacketUpdatePositionToHost;
