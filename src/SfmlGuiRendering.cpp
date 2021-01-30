@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Shader.hpp>
+#include <cmath>
 
 #include <assert.h>
 
