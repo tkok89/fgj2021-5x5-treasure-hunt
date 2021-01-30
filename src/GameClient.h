@@ -38,6 +38,7 @@ public:
 	void connectToHost(std::string ip, unsigned short port);
 	void sendPosition(sf::Vector2f position);
 	void sendGameState(GameNetState state);
+	NetPlayer *getMyPlayer();
 	static GameClient& getClient();
 	static bool imHost;
 	static bool connectedToHost;

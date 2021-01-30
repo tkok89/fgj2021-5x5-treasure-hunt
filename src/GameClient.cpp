@@ -26,6 +26,16 @@ GameClient& GameClient::getClient()
 	return gameclient;
 }
 
+NetPlayer *GameClient::getMyPlayer()
+{
+	for (NetPlayer& playah : GameClient::gameNetState.players)
+	{
+		if (playah.id = myPlayerId)
+			return &playah;
+	}
+	return nullptr;
+}
+
 void GameClient::resetState()
 {
 	imHost = false;
