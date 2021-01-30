@@ -2,6 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
+#include "Map.h"
+
+extern sf::Vector2f g_resolution;
+
 class Game
 {
 public:
@@ -19,19 +23,19 @@ public:
 		return "FGJ 2021";
 	}
 
-	static sf::Vector2f resolution;
 	static sf::Vector2f getResolution()
 	{
-		return resolution;
+		return g_resolution;
 	}
 
 	static void setResolution(float x, float y)
 	{
-		resolution.x = x;
-		resolution.y = y;
+		g_resolution.x = x;
+		g_resolution.y = y;
 	}
 
 private:
 
 	sf::Text m_guiText;
+	Map map;
 };

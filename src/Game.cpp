@@ -9,7 +9,7 @@
 #include <cmath>
 #include <SFML/Window/Mouse.hpp>
 
-sf::Vector2f Game::resolution{ 1280,720 };
+sf::Vector2f g_resolution{ 1280,720 };
 
 Game::Game()
 {
@@ -24,8 +24,14 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::draw(sf::RenderWindow& window)
 {
+	GuiRendering::startThread();
 	GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
 	GuiRendering::text("lol", 0.02f, 0, 0);
+
+	sf::Vector2f cameraPos(0, 0);
+	map.draw(cameraPos);
+
+	GuiRendering::endThread();
 
 	SfmlGuiRendering::flush(window);
 

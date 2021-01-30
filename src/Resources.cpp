@@ -26,6 +26,8 @@ Resources::Resources()
     g_placeholder = &placeholder;
     assert(success);
 
+    mapName = resourcePath() + "assets/map.png";
+
     if (!font.loadFromFile(resourcePath() + "assets/Vera.ttf"))
     {
         std::cerr << "Error loading Vera.ttf" << std::endl;

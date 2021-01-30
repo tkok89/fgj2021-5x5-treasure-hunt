@@ -40,6 +40,7 @@ struct Resources
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
+	sf::String mapName;
 
 	static std::string getResourcePath(const char *assetPath);
 
