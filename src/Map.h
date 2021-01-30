@@ -8,6 +8,8 @@ struct Map
 {
 	Map();
 	void draw(sf::Vector2f cameraPos);
+	float distanceToCollision();
+	sf::Vector2f nearestCollision(sf::Vector2f pos);
 
 	sf::Texture image;
 };
