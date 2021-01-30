@@ -28,17 +28,16 @@ void Game::update(sf::Time elapsedTime)
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::startThread();
-	GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
+	//GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
 	GuiRendering::text("lol", 0.02f, 0, 0);
 
-	sf::Vector2f cameraPos(0, 0);
-	map.draw(cameraPos);
+	map.draw();
+
+	gui(window);
 
 	GuiRendering::endThread();
 
 	SfmlGuiRendering::flush(window);
-
-	gui(window);
 }
 
 void Game::setMovement(sf::Vector2i direction)
