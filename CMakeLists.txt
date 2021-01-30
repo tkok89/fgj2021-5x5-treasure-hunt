@@ -29,11 +29,13 @@ if (WIN32)
 	find_library(SFML_GRAPHICS_D sfml-graphics-s-d ${LIBS_DIR})
 	find_library(SFML_AUDIO_D    sfml-audio-s-d    ${LIBS_DIR})
 	find_library(SFML_WINDOW_D   sfml-window-s-d   ${LIBS_DIR})
+	find_library(SFML_NETWORK_D   sfml-network-s-d   ${LIBS_DIR})
 
 	find_library(SFML_SYSTEM     sfml-system-s     ${LIBS_DIR})
 	find_library(SFML_GRAPHICS   sfml-graphics-s   ${LIBS_DIR})
 	find_library(SFML_AUDIO      sfml-audio-s      ${LIBS_DIR})
 	find_library(SFML_WINDOW     sfml-window-s     ${LIBS_DIR})
+	find_library(SFML_NETWORK   sfml-network-s   ${LIBS_DIR})
 else()
 	target_include_directories(ggj21 BEFORE PRIVATE "external/include/")
 	
@@ -42,6 +44,7 @@ else()
 	find_library(SFML_GRAPHICS sfml-graphics ${LIBS_DIR})
 	find_library(SFML_AUDIO    sfml-audio    ${LIBS_DIR})
 	find_library(SFML_WINDOW   sfml-window   ${LIBS_DIR})
+	find_library(SFML_NETWORK   sfml-network   ${LIBS_DIR})
 endif()
 
 if (WIN32)
@@ -57,7 +60,8 @@ if (WIN32)
 		general    ${VORBISFILE}
 		general    winmm
 		general    gdi32
-		
+		general    ws2_32
+
 		optimized  ${SFML_GRAPHICS}
 		debug      ${SFML_GRAPHICS_D}
 
@@ -69,6 +73,9 @@ if (WIN32)
 
 		optimized  ${SFML_AUDIO}
 		debug      ${SFML_AUDIO_D}
+
+		optimized  ${SFML_NETWORK}
+		debug      ${SFML_NETWORK_D}
 	)
 else()
 	target_link_libraries(
@@ -82,6 +89,7 @@ else()
 		${SFML_GRAPHICS}
 		${SFML_AUDIO}
 		${SFML_WINDOW}
+		${SFML_NETWORK}
 	)
 endif()
 
