@@ -16,8 +16,19 @@ Game::Game()
 	m_guiText.setFont(Resources::getResources().font);
 }
 
+static void updateCursorIcon()
+{
+	sf::Cursor cursor;
+	sf::Image image;
+	image.loadFromFile(Resources::getResourcePath("assets/main_character_right.png"));
+	cursor.loadFromPixels(image.getPixelsPtr(), image.getSize(), sf::Vector2u(0, 0));
+	g_window->setMouseCursor(cursor);
+}
+
 void Game::update(sf::Time elapsedTime)
 {
+	updateCursorIcon();
+
 	int xInput = 0;
 	int yInput = 0;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -70,6 +81,8 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::draw(sf::RenderWindow& window)
 {
+	GuiRendering::image(&Resources::getResources().tileTextures[0], getMousePos().x, getMousePos().y, 0.1f, 0.1f);
+
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		slidingTiles.start(sf::Vector2i(1u, 1u), tileSize.x);

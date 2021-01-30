@@ -5,11 +5,14 @@
 #include <iostream>
 #include "workingdir.h"
 
+sf::RenderWindow *g_window = nullptr;
+
 int main()
 {
 	std::cout << "Working directory: " << getWorkingDir() << std::endl;
 
 	sf::RenderWindow window{ sf::VideoMode(int(Game::getResolution().x), int(Game::getResolution().y)), Game::getName() };
+	g_window = &window;
 	window.setKeyRepeatEnabled(false);
 	window.setFramerateLimit(60);
 

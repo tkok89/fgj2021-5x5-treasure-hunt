@@ -4,13 +4,15 @@
 #include <assert.h>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 enum { GridSize = 5 };
 
 const sf::Vector2f tileSize = sf::Vector2f(1, 1) / float(GridSize + 2);
 const sf::Vector2f gridPos = sf::Vector2f(-0.5f, -0.5f) + tileSize;
 const sf::Vector2f gridSize = tileSize * float(GridSize);
-extern sf::Vector2f getMousePos();
+sf::Vector2f getMousePos();
+extern sf::RenderWindow *g_window;
 
 struct Tile
 {

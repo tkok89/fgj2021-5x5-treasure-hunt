@@ -38,6 +38,8 @@ struct Resources
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
 
+	static std::string getResourcePath(const char *assetPath);
+
 private:
 	Resources();
 };

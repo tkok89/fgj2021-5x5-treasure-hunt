@@ -11,6 +11,11 @@ std::string resourcePath(void){
 }
 #endif
 
+std::string Resources::getResourcePath(const char *assetPath)
+{
+    return resourcePath() + assetPath;
+}
+
 Resources::Resources()
 {
     bool success = false;
