@@ -15,13 +15,16 @@ struct GameNetState
 
 enum PacketType : sf::Uint8
 {
-	UpdateGameState,
-	UpdatePositionToHost,
+	PacketUpdateGameState,
+	PacketUpdatePositionToHost,
 };
 
 class GameClient
 {
 public:
+	void host();
+	void join();
+
 	void update();
 	void startAcceptingConnections(short port);
 	void stopAcceptingConnections();

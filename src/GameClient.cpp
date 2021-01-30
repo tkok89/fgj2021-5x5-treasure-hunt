@@ -25,6 +25,16 @@ void resetState()
 //	return packet << packetType;
 //}
 
+void GameClient::host()
+{
+	startAcceptingConnections(50000);
+}
+
+void GameClient::join()
+{
+	connectToHost(std::string("192.168.2.84"), 50000);
+}
+
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
 {
 	sf::Uint8 uint;
@@ -65,13 +75,13 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 	return packet;
 }
 
-// Host -> client
+// client received
 void GameClient::updateGameState(GameNetState packet)
 {
 
 }
 
-// Client -> host
+// host received 
 void GameClient::updatePlayerPosition(short playerNumber, sf::Vector2f playerPosition)
 {
 
@@ -84,6 +94,7 @@ void GameClient::sendPosition(sf::Vector2f position)
 		return;
 
 	sf::Packet positionPacket;
+	positionPacket << PacketUpdatePositionToHost;
 	positionPacket << position;
 	clientSocket.send(positionPacket);
 }
@@ -93,11 +104,13 @@ void GameClient::sendGameState(GameNetState state)
 {
 	if (!imHost)
 		return;
+	
+	sf::Packet sendPacket;
+	sendPacket << PacketUpdateGameState;
+	sendPacket << state;
 
 	for (sf::TcpSocket &socket : sockets)
 	{
-		sf::Packet sendPacket;
-		sendPacket << state;
 		socket.send(sendPacket);
 	}
 }
@@ -123,14 +136,14 @@ void GameClient::update()
 		receivedPacket >> packetType;
 		switch (packetType)
 		{
-		case UpdateGameState:
+		case PacketUpdateGameState:
 		{
 			GameNetState gameState;
 			receivedPacket >> gameState;
 			updateGameState(gameState);
 			break;
 		}
-		case UpdatePositionToHost:
+		case PacketUpdatePositionToHost:
 			sf::Vector2f position;
 			receivedPacket >> position;
 			updatePlayerPosition(playerNumber, position);

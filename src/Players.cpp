@@ -41,7 +41,6 @@ inline float clamp11(float x){
 }
 
 static Player players[4];
-
 }
 
 void initializePlayers () {
