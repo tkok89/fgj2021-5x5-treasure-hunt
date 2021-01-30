@@ -44,6 +44,6 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 	sf::Vector2f p = (pos + mapSize * 0.5f);
 	p.x = floorf(p.x / image.getSize().x);
 	p.y = floorf(p.y / image.getSize().y);
-	image.get
+	return p; // WIP
 }
 
