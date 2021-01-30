@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
+
 class Game
 {
 public:
@@ -32,6 +33,5 @@ public:
 	}
 
 private:
-
 	sf::Text m_guiText;
 };
