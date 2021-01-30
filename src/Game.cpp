@@ -5,7 +5,6 @@
 #include "SfmlGuiRendering.h"
 #include "GuiRenderInfo.h"
 #include "GridViz.h"
-#include "Mankka.h"
 #include "Menu.h"
 #include "Resources.h"
 #include <algorithm>
@@ -170,13 +169,8 @@ void Game::SlidingTiles::updateSlide()
 
 void Game::SlidingTiles::start(sf::Vector2i moveThisRowToDirectionParam, float tileLengthParam)
 {
-	if (active)
-		return;
-
 	active = true;
 	tileClock.restart();
 	moveThisRowToDirection = moveThisRowToDirectionParam;
 	tileLength = tileLengthParam;
-
-	Mankka::getMankka().play(SoundPresetName::movetiles);
 }

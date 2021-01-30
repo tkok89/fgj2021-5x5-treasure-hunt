@@ -41,7 +41,7 @@ private:
 		float currentPos = 0.0f;
 		sf::Vector2i moveThisRowToDirection;
 		sf::Clock tileClock;
-		sf::Time duration = sf::seconds(2u);
+		sf::Time duration = sf::seconds(1u);
 		bool active = false;
 	};
 	sf::Text m_guiText;
