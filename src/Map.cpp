@@ -101,8 +101,13 @@ void Map::draw()
 	drawColor(getMousePos(), Map::getColor(worldMouse));
 	sf::Vector2f collision = Map::nearestCollision(worldMouse);
 	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
-	if (collision.x < 10000  && collision.y < 10000)
+	if (collision.x < 10000 && collision.y < 10000)
+	{
 		drawColor(collisionOnScreen, sf::Color::Red);
+		GuiRendering::line(getMousePos().x, getMousePos().y, collisionOnScreen.x, collisionOnScreen.y);
+	}
+
+
 }
 
 sf::Vector2f Map::nearestCollision(sf::Vector2f pos)

@@ -128,6 +128,18 @@ void GuiRendering::image(const void *imagePtr, sf::Vector2f position, float w, f
     image(imagePtr, position.x, position.y, w, h);
 }
 
+void GuiRendering::line(float x0, float y0, float x1, float y1)
+{
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Line;
+	guiRenderInfo.x = x0;
+	guiRenderInfo.y = y0;
+	guiRenderInfo.w = x1;
+	guiRenderInfo.h = y1;
+	guiRenderInfo.color = { 1,1,1,1 };
+	render(guiRenderInfo);
+}
+
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();

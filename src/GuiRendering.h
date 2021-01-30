@@ -16,6 +16,7 @@ struct GuiRendering
     static void text(const std::string text, float fontHeight, float x, float y);
     static void text(const char *text, float fontHeight, sf::Vector2f position);
     static void image(const void *image, sf::Vector2f position, float w, float h);
+	static void line(float x0, float y0, float x1, float y1);
 
 	static void pushClipRect(float x, float y, float w, float h);
 	static void pushAntiClipRect();

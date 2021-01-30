@@ -111,5 +111,33 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 			text->setOutlineColor(sfColor(i.outlineColor));
 			renderTarget.draw(*text);
 		}
+		else if (i.type == GuiRenderInfoType::Line)
+		{
+			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
+			const sf::Texture *texture = static_cast<const sf::Texture *>(i.image);
+			assert(texture);
+
+			sf::RenderStates states = sf::RenderStates::Default;
+			//states.texture = texture;
+
+			sf::Vertex vertices[2] = {};
+			{
+				vertices[0].position = pos;
+				vertices[1].position = pos2;
+			}
+
+			{
+				sf::Color color = sfColor(i.color);
+				vertices[0].color = color;
+				vertices[1].color = color;
+			}
+
+			{
+				vertices[0].texCoords = sf::Vector2f(0,0);
+				vertices[1].texCoords = sf::Vector2f(1,1);
+			}
+
+			renderTarget.draw(vertices, 2, sf::Lines, states);
+		}
 	}
 }
