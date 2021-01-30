@@ -130,7 +130,8 @@ void Player::drawPlayer(bool debug){
     }
     latestDirection = direction;
     
-    GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX, posY), 0.1f, 0.1f);
+    float playerSize  = Camera::worldToScreenSize(sf::Vector2f(0.1f,0.1f)).x;
+    GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX, posY), playerSize, playerSize);
     if(debug) GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
     
     sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));

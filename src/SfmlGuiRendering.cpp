@@ -114,8 +114,6 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Line)
 		{
 			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
-			const sf::Texture *texture = static_cast<const sf::Texture *>(i.image);
-			assert(texture);
 
 			sf::RenderStates states = sf::RenderStates::Default;
 			//states.texture = texture;
