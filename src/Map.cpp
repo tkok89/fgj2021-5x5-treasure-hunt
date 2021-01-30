@@ -13,7 +13,9 @@ Map::Map()
 {
 	image.loadFromFile(Resources::getResources().mapName);
 	texture.loadFromImage(image);
+
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
+
 	g_map = this;
 }
 
@@ -72,7 +74,7 @@ void Map::draw()
 
 	float r = g_resolution.x / g_resolution.y;
 	GuiRendering::pushClipRect(-0.5f * r, -0.5f, r, 1.0f);
-	
+
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 	

@@ -1,12 +1,6 @@
 #version 120
 
 uniform sampler2D mapTex;
-//uniform vec2 playerPos;
-
-// in vec4 gl_FragCoord;
-// in bool gl_FrontFacing;
-// in vec2 gl_PointCoord;
-
 
 void main()
 {
