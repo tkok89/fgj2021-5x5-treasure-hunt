@@ -1,0 +1,11 @@
+itemien rendaus
+itemien kantaminen
+kaupan rendaus
+itemin poiminta
+itemin "myyminen"
+dynamiitin heitto
+dynamiitin heiton nettisynkka
+dynamiitin räjähdys
+dynamiittiin kuolema
+kuoleman synkkaus
+uudelleen syntymän synkkaus
