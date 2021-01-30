@@ -161,12 +161,21 @@ void Mankka::play(MusicEnvName envName)
 		return;
 
 	state->musicState.env = envName;
-	state->musicState.resourceName = state->musicEnvs[envName];
 
-	state->musicState.playingMusic =
-		Resources::getResources().getMusic(state->musicState.resourceName);
-	state->musicState.playingMusic->setLoop(true);
-	state->musicState.playingMusic->play();
+	if (state->musicState.env == MusicEnvName::silence)
+	{
+		state->musicState.playingMusic.reset();
+	}
+	else
+	{
+		state->musicState.resourceName = state->musicEnvs[envName];
+
+		state->musicState.playingMusic =
+			Resources::getResources().getMusic(state->musicState.resourceName);
+
+		state->musicState.playingMusic->setLoop(true);
+		state->musicState.playingMusic->play();
+	}
 }
 
 void Mankka::test()
