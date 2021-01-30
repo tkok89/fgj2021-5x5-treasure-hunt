@@ -33,22 +33,5 @@ public:
 
 private:
 
-	struct SlidingTiles
-	{
-		void start(sf::Vector2i moveThisRowToDirection, float tileLength);
-		void updateSlide();
-		sf::Vector2i getMoveRow()
-		{
-			return moveThisRowToDirection.x < 0.0f || moveThisRowToDirection.y < 0.0f 
-				? sf::Vector2i(moveThisRowToDirection.x * -1, moveThisRowToDirection.y * -1) : moveThisRowToDirection;
-		}
-		float tileLength = 0.0f;
-		float currentPos = 0.0f;
-		sf::Vector2i moveThisRowToDirection;
-		sf::Clock tileClock;
-		sf::Time duration = sf::seconds(1u);
-		bool active = false;
-	};
 	sf::Text m_guiText;
-	SlidingTiles slidingTiles;
 };
