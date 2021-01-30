@@ -84,7 +84,7 @@ void Map::draw()
 	const sf::Vector2f mousePos = getMousePos();
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
 	drawColor(mousePos, Map::getColor(worldMouse));
-	sf::Vector2f collision = Map::nearestCollision(worldMouse);
+	sf::Vector2f collision = Map::nearestCollectible(worldMouse);
 	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
 	if (collision.x > -200 && collision.y > -200)
 	{
@@ -147,6 +147,12 @@ sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
 {
 	sf::Color collectible{ 0xed, 0x1c, 0x24, 0xFF };
 	return nearestColorImpl(pos, collectible, image, false);
+}
+
+sf::Vector2f Map::nearestShop(sf::Vector2f pos)
+{
+	sf::Color shop{ 0x00, 0xFF, 0x00, 0xFF };
+	return nearestColorImpl(pos, shop, image, false);
 }
 
 sf::Color Map::getColor(sf::Vector2f pos)
