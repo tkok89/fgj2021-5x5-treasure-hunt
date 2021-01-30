@@ -12,6 +12,7 @@
 #include "Players.hpp"
 #include "Camera.h"
 #include "GameClient.h"
+#include "Map.h"
 
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
@@ -19,7 +20,7 @@ sf::Time syncCycle = sf::seconds(0.1f);
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
-    initializePlayers(10,10);
+    initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
 }
 
 void Game::update(sf::Time elapsedTime)
