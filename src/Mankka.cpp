@@ -135,8 +135,6 @@ void Mankka::play(SoundPresetName presetId)
 	std::uniform_int_distribution<size_t> distribution(0, pool.size() - 1);
 	size_t pickIndex = distribution(state->rng);
 
-	std::cout << pickIndex << std::endl;
-
 	SoundResourceName effectName = pool[pickIndex];
 
 	pbs.sounds[effectName].play();
