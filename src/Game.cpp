@@ -15,7 +15,7 @@
 
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
-sf::Time syncCycle = sf::seconds(0.05f);
+sf::Time syncCycle = sf::seconds(0.2f);
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
@@ -45,9 +45,12 @@ void Game::update(sf::Time elapsedTime)
 	if (syncClock.getElapsedTime() > syncCycle)
 	{
 		syncClock.restart();
+		GameClient::getClient().update();
 		if (GameClient::connectedToHost)
-			GameClient::getClient().sendPosition(getMousePos() + sf::Vector2f(0.05f, 0.05f));
-
+			GameClient::getClient().sendPosition(getMousePos());
+		else if(GameClient::imHost)
+			GameClient::gameNetState.players[0].position = getMousePos();
+		
 		if (GameClient::connectedClientAmount != 0u)
 		{
 			GameClient::getClient().sendGameState(GameClient::gameNetState);
@@ -69,7 +72,7 @@ void Game::draw(sf::RenderWindow& window)
     if(showDebugText)
         GuiRendering::text(debugText, 0.02f, -0.5, -0.5);
 
-	if (GameClient::connectedClientAmount != 0)
+	if (GameClient::connectedClientAmount != 0 || GameClient::connectedToHost)
 	{
 		GameNetState netState = GameClient::gameNetState;
 		for (NetPlayer playah : netState.players)

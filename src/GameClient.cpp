@@ -105,6 +105,13 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 void GameClient::updateGameState(GameNetState state)
 {
 	gameNetState = state;
+
+	unsigned short numberOfPlayer = 0u;
+
+	for (NetPlayer& player : state.players)
+	{
+		printf("\t#%hu id: %hu x: %f, y: %f\n", numberOfPlayer++, player.id, player.position.x, player.position.y);
+	}
 }
 
 // host received 
@@ -112,8 +119,13 @@ void GameClient::updatePlayerPosition(short socketIndex, sf::Vector2f playerPosi
 {
 	for (NetPlayer &playah : gameNetState.players)
 	{
-		if(playah.socketIndex == socketIndex)
+		if (playah.socketIndex == socketIndex)
+		{
 			playah.position = playerPosition;
+
+			printf("\tsocket: %hu, id: %hu x: %f, y: %f\n", playah.socketIndex, playah.id, playah.position.x, playah.position.y);
+
+		}
 	}
 }
 
@@ -148,36 +160,48 @@ void GameClient::sendGameState(GameNetState state)
 void GameClient::update()
 {
 	// Stop accepting connections
-	if (acceptConnectionsThread->joinable() && !acceptingConnections)
+	if (imHost && !acceptingConnections && acceptConnectionsThread->joinable())
 	{
 		acceptConnectionsThread->join();
 		delete acceptConnectionsThread;
 		acceptConnectionsThread = nullptr;
 	}
 
-	short i = 0;
-	for (sf::TcpSocket& socket : sockets)
+
+	if (imHost)
 	{
-		const short socketIndex = i++;
-		sf::Packet receivedPacket;
-		socket.receive(receivedPacket);
-		PacketType packetType;
-		receivedPacket >> packetType;
-		switch (packetType)
+		short socketIndex = 0;
+		for (sf::TcpSocket& socket : sockets)
 		{
-		case PacketUpdateGameState:
-		{
-			GameNetState gameState;
-			receivedPacket >> gameState;
-			updateGameState(gameState);
-			break;
+			receivePacket(socket, socketIndex++);
 		}
-		case PacketUpdatePositionToHost:
-			sf::Vector2f position;
-			receivedPacket >> position;
-			updatePlayerPosition(socketIndex, position);
-			break;
-		}
+	}
+	else if(connectedToHost)
+	{
+		receivePacket(clientSocket, 77);
+	}
+}
+
+void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
+{
+	sf::Packet receivedPacket;
+	socket.receive(receivedPacket);
+	PacketType packetType;
+	receivedPacket >> packetType;
+	switch (packetType)
+	{
+	case PacketUpdateGameState:
+	{
+		GameNetState gameState;
+		receivedPacket >> gameState;
+		updateGameState(gameState);
+		break;
+	}
+	case PacketUpdatePositionToHost:
+		sf::Vector2f position;
+		receivedPacket >> position;
+		updatePlayerPosition(socketIndex, position);
+		break;
 	}
 }
 
@@ -202,6 +226,8 @@ void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 		else
 		{
 			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", sockets[clientAmount].getRemoteAddress().toString().c_str());
+			sockets[clientAmount].setBlocking(false);
+			GameClient::gameNetState.players.push_back(NetPlayer(clientAmount));
 			clientAmount++;
 		}
 	}
@@ -217,7 +243,9 @@ void GameClient::startAcceptingConnections(unsigned short port)
 
 	resetState();
 
+	imHost = true;
 	acceptingConnections = true;
+	gameNetState.players.push_back(NetPlayer(99));
 	acceptConnectionsThread = new std::thread(listenerThread, port, std::ref(acceptingConnections), std::ref(connectedClientAmount));
 }
 
@@ -247,6 +275,7 @@ void GameClient::connectToHost(std::string ip, unsigned short port)
 	else
 	{
 		printf("success!\n");
+		clientSocket.setBlocking(false);
 		connectedToHost = true;
 	}
 }

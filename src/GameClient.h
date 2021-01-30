@@ -2,11 +2,15 @@
 #include "SFML/Network.hpp"
 #include <thread>
 
+
+static short idCounter = 0u;
 struct NetPlayer
 {
 	short socketIndex = ~0u;
 	short id = 0;
-	sf::Vector2f position;
+	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
+	NetPlayer::NetPlayer() {};
+	NetPlayer::NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
 };
 
 // The most current server state.
@@ -41,6 +45,7 @@ public:
 	static short connectedClientAmount;
 	static GameNetState gameNetState;
 private:
+	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
 	void updateGameState(GameNetState packet);
 	void updatePlayerPosition(short playerNumber, sf::Vector2f playerPosition);
