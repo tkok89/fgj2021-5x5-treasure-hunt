@@ -17,6 +17,7 @@ bool GameClient::connectedToHost = false;
 bool GameClient::acceptingConnections = false;
 bool GameClient::gameOn = false;
 short GameClient::connectedClientAmount = 0u;
+sf::Uint8 GameClient::myPlayerId = 111u;
 GameNetState GameClient::gameNetState;
 
 GameClient& GameClient::getClient()
@@ -203,10 +204,17 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 		break;
 	}
 	case PacketUpdatePositionToHost:
+	{
 		sf::Vector2f position;
 		receivedPacket >> position;
 		updatePlayerPosition(socketIndex, position);
 		break;
+	}
+	case PacketKnowYourself:
+	{
+		receivedPacket >> myPlayerId;
+		break;
+	}
 	}
 }
 
@@ -224,15 +232,20 @@ void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 	}
 	while (accept)
 	{
-		if (listener.accept(sockets[clientAmount]) != sf::Socket::Done)
+		sf::TcpSocket& socket = sockets[clientAmount];
+		if (listener.accept(socket) != sf::Socket::Done)
 		{
 			printf("but I failed to listen my friends :(\n");
 		}
 		else
 		{
-			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", sockets[clientAmount].getRemoteAddress().toString().c_str());
-			sockets[clientAmount].setBlocking(false);
+			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket.getRemoteAddress().toString().c_str());
+			socket.setBlocking(false);
 			GameClient::gameNetState.players.push_back(NetPlayer(clientAmount));
+			sf::Packet positionPacket;
+			positionPacket << PacketKnowYourself;
+			positionPacket << GameClient::gameNetState.players.back().id;
+			socket.send(positionPacket);
 			clientAmount++;
 		}
 	}
@@ -251,6 +264,7 @@ void GameClient::startAcceptingConnections(unsigned short port)
 	imHost = true;
 	acceptingConnections = true;
 	gameNetState.players.push_back(NetPlayer(99));
+	myPlayerId = 0u;
 	acceptConnectionsThread = new std::thread(listenerThread, port, std::ref(acceptingConnections), std::ref(connectedClientAmount));
 }
 

@@ -3,11 +3,11 @@
 #include <thread>
 
 
-static short idCounter = 0u;
+static sf::Uint8 idCounter = 0u;
 struct NetPlayer
 {
 	short socketIndex = 88u;
-	short id = 0;
+	sf::Uint8 id = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
 	NetPlayer() {};
     NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
@@ -23,6 +23,7 @@ enum PacketType : sf::Uint8
 {
 	PacketUpdateGameState,
 	PacketUpdatePositionToHost,
+	PacketKnowYourself
 };
 
 class GameClient
@@ -44,6 +45,7 @@ public:
 	static bool gameOn;
 	static short connectedClientAmount;
 	static GameNetState gameNetState;
+	static sf::Uint8 myPlayerId;
 private:
 	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
