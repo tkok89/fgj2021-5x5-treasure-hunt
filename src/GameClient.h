@@ -6,7 +6,7 @@
 static short idCounter = 0u;
 struct NetPlayer
 {
-	short socketIndex = ~0u;
+	short socketIndex = 88u;
 	short id = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
 	NetPlayer() {};
