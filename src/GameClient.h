@@ -9,8 +9,8 @@ struct NetPlayer
 	short socketIndex = ~0u;
 	short id = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
-	NetPlayer::NetPlayer() {};
-	NetPlayer::NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
+	NetPlayer() {};
+    NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
 };
 
 // The most current server state.
