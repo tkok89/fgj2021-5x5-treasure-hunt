@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <assert.h>
-#include "Grid.h"
+#include "Global.h"
 
 #ifdef TARGET_OS_MAC
 #include "ResourcePath.hpp"
@@ -25,15 +25,6 @@ Resources::Resources()
     success = placeholder.loadFromFile(resourcePath() + "assets/pawn.png");
     g_placeholder = &placeholder;
     assert(success);
-
-    for (int i = 0; i < (int)TileType::COUNT; ++i)
-    {
-        TileType tile = TileType(i);
-        std::string name = "assets/tiles/" + getTileName(tile) + ".png";
-        success = tileTextures[tile].loadFromFile(resourcePath() + name);
-        if (!success)
-            std::cerr << "Not found: " << name;
-    }
 
     if (!font.loadFromFile(resourcePath() + "assets/Vera.ttf"))
     {

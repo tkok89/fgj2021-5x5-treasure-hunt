@@ -4,7 +4,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
-#include "Grid.h"
+#include "Global.h"
 
 enum class SoundResourceName : uint32_t
 {
@@ -37,7 +37,6 @@ struct Resources
 	}
 
 	sf::Texture placeholder;
-	std::unordered_map<TileType, sf::Texture> tileTextures;
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;

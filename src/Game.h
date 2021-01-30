@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Grid.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 class Game
@@ -33,10 +32,6 @@ public:
 	}
 
 private:
-
-	Grid grid;
-	IncomingTiles incomingTiles;
-	Score score;
 
 	struct SlidingTiles
 	{

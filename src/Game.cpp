@@ -3,53 +3,27 @@
 #include "GuiRendering.h"
 #include "GuiRenderingState.h"
 #include "SfmlGuiRendering.h"
-#include "Input.h"
 #include "GuiRenderInfo.h"
-#include "GridViz.h"
-#include "Menu.h"
 #include "Resources.h"
 #include <algorithm>
 #include <cmath>
 #include <SFML/Window/Mouse.hpp>
-
-Grid *g_grid = nullptr;
-IncomingTiles *g_incomingTiles = nullptr;
-Score *g_score = nullptr;
 
 sf::Vector2f Game::resolution{ 1280,720 };
 
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
-	g_grid = &grid;
-	g_incomingTiles = &incomingTiles;
-	g_score = &score;
 }
 
 void Game::update(sf::Time elapsedTime)
 {
-	Input::update();
-
 	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		slidingTiles.start(sf::Vector2i(1u, 42u), tileSize.x);
-	}
-	if (slidingTiles.active)
-		slidingTiles.updateSlide();
-
-	GridViz::render(grid, gridPos, gridSize, slidingTiles.getMoveRow(), slidingTiles.currentPos);
-
-	Input::drawIncomingTileHover();
-
-	void *menuStatePtr;
-	Menu::render(menuStatePtr);
 
 	SfmlGuiRendering::flush(window);
 
