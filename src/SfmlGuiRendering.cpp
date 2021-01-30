@@ -137,5 +137,29 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 
 			renderTarget.draw(vertices, 2, sf::Lines, states);
 		}
+		else if (i.type == GuiRenderInfoType::Line)
+		{
+			float r = i.w * g_resolution.y;
+			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
+			sf::RenderStates states = sf::RenderStates::Default;
+
+			const int polyCount = 33;
+			sf::Vertex vertices[polyCount] = {};
+			const sf::Color color = sfColor(i.color);
+			vertices[0].position = pos;
+			vertices[0].color = sf::Color::Red;
+			vertices[0].color = sf::Color::Red;
+			vertices[0].texCoords = sf::Vector2f(0, 0);
+			for (int i = 1; i < polyCount; ++i)
+			{
+				const float pi = 3.14f;
+				vertices[i].position.x = sinf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
+				vertices[i].position.y = cosf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
+				vertices[i].color = color;
+				vertices[i].texCoords = sf::Vector2f(1, 1);
+			}
+
+			renderTarget.draw(vertices, polyCount, sf::TriangleFan, states);
+		}
 	}
 }

@@ -7,6 +7,7 @@ enum class GuiRenderInfoType
 	Image,
 	Text,
 	Line,
+	Circle,
 };
 
 struct GuiRenderInfo
