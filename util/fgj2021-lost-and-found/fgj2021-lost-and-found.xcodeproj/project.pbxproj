@@ -13,6 +13,8 @@
 		B1B8AE9525C5A4D400B4CBA8 /* Mankka.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9125C5A4D400B4CBA8 /* Mankka.cpp */; };
 		B1B8AE9625C5A4D400B4CBA8 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9325C5A4D400B4CBA8 /* Global.cpp */; };
 		B1B8AE9C25C5C05300B4CBA8 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */; };
+		B1B8AEA325C5E0F400B4CBA8 /* GameClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE9F25C5E0F400B4CBA8 /* GameClient.cpp */; };
+		B1B8AEA425C5E0F400B4CBA8 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AEA025C5E0F400B4CBA8 /* Camera.cpp */; };
 		B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */; };
 		B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */; };
 		B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8725C49A090071EC58 /* SfmlGuiRendering.cpp */; };
@@ -34,6 +36,10 @@
 		B1B8AE9425C5A4D400B4CBA8 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 		B1B8AE9A25C5C05300B4CBA8 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
+		B1B8AE9F25C5E0F400B4CBA8 /* GameClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameClient.cpp; sourceTree = "<group>"; };
+		B1B8AEA025C5E0F400B4CBA8 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		B1B8AEA125C5E0F400B4CBA8 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		B1B8AEA225C5E0F400B4CBA8 /* GameClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameClient.h; sourceTree = "<group>"; };
 		B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fgj2021-lost-and-found.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1E67D6E25C499FA0071EC58 /* fgj2021-lost-and-found-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fgj2021-lost-and-found-Info.plist"; path = "../fgj2021-lost-and-found-Info.plist"; sourceTree = "<group>"; };
 		B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
@@ -104,6 +110,10 @@
 		B1E67D8325C49A090071EC58 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B1B8AEA025C5E0F400B4CBA8 /* Camera.cpp */,
+				B1B8AEA125C5E0F400B4CBA8 /* Camera.h */,
+				B1B8AE9F25C5E0F400B4CBA8 /* GameClient.cpp */,
+				B1B8AEA225C5E0F400B4CBA8 /* GameClient.h */,
 				B1B8AE9B25C5C05300B4CBA8 /* Map.cpp */,
 				B1B8AE9A25C5C05300B4CBA8 /* Map.h */,
 				B1B8AE9325C5A4D400B4CBA8 /* Global.cpp */,
@@ -222,6 +232,8 @@
 			files = (
 				B1E67D9825C49A090071EC58 /* Game.cpp in Sources */,
 				B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */,
+				B1B8AEA425C5E0F400B4CBA8 /* Camera.cpp in Sources */,
+				B1B8AEA325C5E0F400B4CBA8 /* GameClient.cpp in Sources */,
 				B1E67D9425C49A090071EC58 /* SfmlGuiRendering.cpp in Sources */,
 				B1B8AE9625C5A4D400B4CBA8 /* Global.cpp in Sources */,
 				B1B8AE7725C49BDE00B4CBA8 /* Resources.cpp in Sources */,

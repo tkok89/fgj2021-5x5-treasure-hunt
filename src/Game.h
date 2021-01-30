@@ -39,4 +39,7 @@ private:
 
 	sf::Text m_guiText;
 	Map map;
+    int activePlayerIndex;
+    float cameraLerpPerSecond = 5;
+    std::string debugText;
 };

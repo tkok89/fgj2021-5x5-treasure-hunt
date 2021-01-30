@@ -8,8 +8,19 @@
 
 #pragma once
 
-#include <stdio.h>
+#include "Resources.h"
+struct Player {
+    int index;
+    bool activePlayer = false;
+    float posX, posY;
+    float velocityX, velocityY;
+    float inputVelocityX, inputVelocityY;
+    OrthogonalDirection latestDirection = OrthogonalDirection::Down;
+    void updatePlayer(float deltaTime);
+    void drawPlayer(bool debug);
+};
 
 void initializePlayers ();
 void updatePlayers(float deltaTime);
 void drawPlayers(bool showDebugText);
+Player& getPlayer(int index);

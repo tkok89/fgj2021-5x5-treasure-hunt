@@ -10,6 +10,7 @@
 #include <cmath>
 #include <SFML/Window/Mouse.hpp>
 #include "Players.hpp"
+#include "Camera.h"
 
 sf::Vector2f g_resolution{ 1280,720 };
 
@@ -26,13 +27,16 @@ void Game::update(sf::Time elapsedTime)
 	
 	Mankka::getMankka().play(MusicEnvName::ingame);
     updatePlayers(elapsedTime.asSeconds());
+    
+    // Update camera
+    Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getPlayer(0).posX, getPlayer(0).posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
+    debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::startThread();
 	//GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
-	GuiRendering::text("lol", 0.02f, 0, 0);
 
 	map.draw();
 
@@ -40,8 +44,9 @@ void Game::draw(sf::RenderWindow& window)
 
 	GuiRendering::endThread();
 
-  drawPlayers(showDebugText);
-
+    drawPlayers(showDebugText);
+    if(showDebugText)
+        GuiRendering::text(debugText, 0.02f, -0.5, -0.5);
 	SfmlGuiRendering::flush(window);
 }
 

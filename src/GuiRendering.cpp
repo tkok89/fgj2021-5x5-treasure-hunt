@@ -63,35 +63,45 @@ void GuiRendering::text(void *font, const char *text, float fontHeight, float x,
 
 void GuiRendering::text(const char *text, float fontHeight, float x, float y)
 {
-	assert(text);
-	GuiRenderInfo guiRenderInfo;
-	guiRenderInfo.type = GuiRenderInfoType::Text;
-	guiRenderInfo.font = nullptr;
-	guiRenderInfo.fontHeight = fontHeight;
-	guiRenderInfo.strPtr = text;
-	guiRenderInfo.strLen = ~0U;
-	guiRenderInfo.x = x;
-	guiRenderInfo.y = y;
-	guiRenderInfo.color = { 1,1,1,1 };
-	render(guiRenderInfo);
+    assert(text);
+    GuiRenderInfo guiRenderInfo;
+    guiRenderInfo.type = GuiRenderInfoType::Text;
+    guiRenderInfo.font = nullptr;
+    guiRenderInfo.fontHeight = fontHeight;
+    guiRenderInfo.strPtr = text;
+    guiRenderInfo.strLen = ~0U;
+    guiRenderInfo.x = x;
+    guiRenderInfo.y = y;
+    guiRenderInfo.color = { 1,1,1,1 };
+    render(guiRenderInfo);
+}
+
+void GuiRendering::text(const std::string textString, float fontHeight, float x, float y)
+{
+    text(textString.c_str(), fontHeight, x,y);
+}
+
+void GuiRendering::text(const char *textString, float fontHeight, sf::Vector2f position)
+{
+    text(textString, fontHeight, position.x, position.y);
 }
 
 void GuiRendering::image(const void *image, float x, float y, float w, float h)
 {
-	assert(image);
-	GuiRenderInfo guiRenderInfo;
-	guiRenderInfo.type = GuiRenderInfoType::Image;
-	guiRenderInfo.image = image;
-	guiRenderInfo.x = x;
-	guiRenderInfo.y = y;
-	guiRenderInfo.w = w;
-	guiRenderInfo.h = h;
-	guiRenderInfo.uvX = 0;
-	guiRenderInfo.uvY = 0;
-	guiRenderInfo.uvW = 1;
-	guiRenderInfo.uvH = 1;
-	guiRenderInfo.color = { 1,1,1,1 };
-	render(guiRenderInfo);
+    assert(image);
+    GuiRenderInfo guiRenderInfo;
+    guiRenderInfo.type = GuiRenderInfoType::Image;
+    guiRenderInfo.image = image;
+    guiRenderInfo.x = x;
+    guiRenderInfo.y = y;
+    guiRenderInfo.w = w;
+    guiRenderInfo.h = h;
+    guiRenderInfo.uvX = 0;
+    guiRenderInfo.uvY = 0;
+    guiRenderInfo.uvW = 1;
+    guiRenderInfo.uvH = 1;
+    guiRenderInfo.color = { 1,1,1,1 };
+    render(guiRenderInfo);
 }
 
 void GuiRendering::imageShaded(const void *image, float x, float y, float w, float h, const void *shader)
@@ -111,6 +121,11 @@ void GuiRendering::imageShaded(const void *image, float x, float y, float w, flo
 	guiRenderInfo.uvH = 1;
 	guiRenderInfo.color = { 1,1,1,1 };
 	render(guiRenderInfo);
+}
+
+void GuiRendering::image(const void *imagePtr, sf::Vector2f position, float w, float h)
+{
+    image(imagePtr, position.x, position.y, w, h);
 }
 
 static bool isActiveThread()
