@@ -7,6 +7,7 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/System/String.hpp>
+#include <SFML/Graphics/Shader.hpp>
 
 #include "Global.h"
 
@@ -38,6 +39,11 @@ enum OrthogonalDirection: uint32_t
     Down = 3
 };
 
+enum class ShaderResourceName
+{
+	mapVis
+};
+
 extern sf::Texture *g_placeholder;
 
 enum class MusicResourceName : uint32_t
@@ -62,7 +68,8 @@ struct Resources
 	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
-    sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+  sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+	std::unique_ptr<sf::Shader> getShader(ShaderResourceName name) const;
 
 	static std::string getResourcePath(const char *assetPath);
 

@@ -92,13 +92,13 @@ struct Player {
         if(!activePlayer) return;
         // what direction
         OrthogonalDirection direction = latestDirection;
-        if(abs( velocityX) > abs(velocityY)) {
-            if(abs(velocityX) > idleSpeed) {
+        if(fabs( velocityX) > fabs(velocityY)) {
+            if(fabs(velocityX) > idleSpeed) {
                 direction = velocityX > 0 ? OrthogonalDirection::Right : OrthogonalDirection::Left;
             }
         }
         else{
-            if(abs(velocityY) > idleSpeed) {
+            if(fabs(velocityY) > idleSpeed) {
                 direction = velocityY > 0 ? OrthogonalDirection::Down : OrthogonalDirection::Up;
             }
         }

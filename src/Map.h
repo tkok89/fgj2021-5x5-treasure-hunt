@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <memory>
 
 const sf::Vector2f mapSize(100, 100);
 
@@ -13,5 +15,6 @@ struct Map
 
 	sf::Image image;
 	sf::Texture texture;
+	std::unique_ptr<sf::Shader> mapVisShader;
 };
 

@@ -9,6 +9,7 @@ struct GuiRendering
 	static void text(void *font, const char *text, float fontHeight, float x, float y);
 	static void text(const char *text, float fontHeight, float x, float y);
 	static void image(const void *image, float x, float y, float w, float h);
+	static void imageShaded(const void *image, float x, float y, float w, float h, const void *shader);
 
 	static void pushClipRect(float x, float y, float w, float h);
 	static void pushAntiClipRect();

@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Shader.hpp>
 
 #include <assert.h>
 
@@ -58,6 +59,9 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 
 			sf::RenderStates states = sf::RenderStates::Default;
 			states.texture = texture;
+			
+			if (i.shader)
+				states.shader = static_cast<const sf::Shader *>(i.shader);
 
 			sf::Vertex vertices[4] = {};
 			{

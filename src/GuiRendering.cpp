@@ -94,6 +94,25 @@ void GuiRendering::image(const void *image, float x, float y, float w, float h)
 	render(guiRenderInfo);
 }
 
+void GuiRendering::imageShaded(const void *image, float x, float y, float w, float h, const void *shader)
+{
+	assert(image);
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Image;
+	guiRenderInfo.shader = shader;
+	guiRenderInfo.image = image;
+	guiRenderInfo.x = x;
+	guiRenderInfo.y = y;
+	guiRenderInfo.w = w;
+	guiRenderInfo.h = h;
+	guiRenderInfo.uvX = 0;
+	guiRenderInfo.uvY = 0;
+	guiRenderInfo.uvW = 1;
+	guiRenderInfo.uvH = 1;
+	guiRenderInfo.color = { 1,1,1,1 };
+	render(guiRenderInfo);
+}
+
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();

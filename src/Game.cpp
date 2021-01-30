@@ -40,7 +40,8 @@ void Game::draw(sf::RenderWindow& window)
 
 	GuiRendering::endThread();
 
-    drawPlayers(showDebugText);
+  drawPlayers(showDebugText);
+
 	SfmlGuiRendering::flush(window);
 }
 

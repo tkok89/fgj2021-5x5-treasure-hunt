@@ -12,6 +12,7 @@ Map *g_map = nullptr;
 Map::Map()
 {
 	image.loadFromFile(Resources::getResources().mapName);
+	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 	g_map = this;
 }
 
@@ -75,7 +76,10 @@ void Map::draw()
 	texture.loadFromImage(image);
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
-	GuiRendering::image(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y);
+	
+	//mapVisShader->setUniform("");
+	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
+	
 	GuiRendering::popClipRect();
 
 	sf::Vector2f zero;

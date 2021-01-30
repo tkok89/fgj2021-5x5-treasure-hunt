@@ -28,6 +28,7 @@ struct GuiRenderInfo
 		struct
 		{
 			const void *image;
+			const void *shader;
 			float uvX, uvY, uvW, uvH;
 		};
 		struct

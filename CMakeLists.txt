@@ -85,6 +85,7 @@ else()
 		freetype
 		ogg
 		openal
+		pthread
 		${SFML_SYSTEM}
 		${SFML_GRAPHICS}
 		${SFML_AUDIO}

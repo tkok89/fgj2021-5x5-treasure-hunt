@@ -135,3 +135,22 @@ std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const
 
     return music;
 }
+
+std::unique_ptr<sf::Shader> Resources::getShader(ShaderResourceName name) const
+{
+    std::unique_ptr<sf::Shader> shader(new sf::Shader());
+    
+    bool success = false;
+    switch (name)
+    {
+    case ShaderResourceName::mapVis:
+        success = shader->loadFromFile(
+            getResourcePath("assets/shader/mapvis.frag.glsl"),
+            sf::Shader::Type::Fragment
+        );
+        assert(success);
+        break;
+    }
+
+    return shader;
+}
