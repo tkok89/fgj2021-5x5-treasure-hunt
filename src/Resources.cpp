@@ -3,6 +3,7 @@
 #include <iostream>
 #include <assert.h>
 #include "Global.h"
+#include <random>
 
 #ifdef TARGET_OS_MAC
 #include "ResourcePath.hpp"
@@ -27,14 +28,31 @@ Resources::Resources()
     assert(success);
     
     // Player textures
-    success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/main_character_left.png"));
-    assert(success);
-    success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/main_character_back.png"));
-    assert(success);
-    success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/main_character_right.png"));
-    assert(success);
-    success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/main_character_front.png"));
-    assert(success);
+    std::random_device rd;
+    std::default_random_engine rng(rd());
+    std::uniform_int_distribution<size_t> distribution(0, 100);
+    bool useCat = distribution(rng) > 50;
+    
+    if(useCat){
+        success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/cat_left.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/cat_back.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/cat_right.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/cat_front.png"));
+        assert(success);
+    }
+    else{
+        success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/main_character_left.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/main_character_back.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/main_character_right.png"));
+        assert(success);
+        success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/main_character_front.png"));
+        assert(success);
+    }
 
     mapName = getResourcePath("assets/map.png");
 

@@ -27,7 +27,6 @@ void Game::update(sf::Time elapsedTime)
 	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
 	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
 	
-	Mankka::getMankka().play(MusicEnvName::ingame);
     updatePlayers(elapsedTime.asSeconds());
 
     // Update camera
@@ -40,6 +39,9 @@ void Game::update(sf::Time elapsedTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 		GameClient::getClient().join();
 
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        Mankka::getMankka().play(MusicEnvName::ingame);
+    
 	if (syncClock.getElapsedTime() > syncCycle)
 	{
 		syncClock.restart();
