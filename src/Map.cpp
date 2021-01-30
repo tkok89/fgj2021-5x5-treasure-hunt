@@ -93,10 +93,14 @@ void Map::draw()
 	drawColor(getMousePos(), Map::getColor(worldMouse));
 	sf::Vector2f collision = Map::nearestCollision(worldMouse);
 	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
-	if (collision.x < 10000 && collision.y < 10000)
+	if (collision.x > -200 && collision.y > -200)
 	{
 		drawColor(collisionOnScreen, sf::Color::Red);
 		GuiRendering::line(getMousePos().x, getMousePos().y, collisionOnScreen.x, collisionOnScreen.y);
+
+		sf::Vector2f d = collisionOnScreen - mouse;
+		float r = sqrtf(d.x * d.x + d.y * d.y);
+		GuiRendering::circle(getMousePos().x, getMousePos().y, r);
 	}
 
 

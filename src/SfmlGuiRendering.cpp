@@ -114,9 +114,7 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 		else if (i.type == GuiRenderInfoType::Line)
 		{
 			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
-
 			sf::RenderStates states = sf::RenderStates::Default;
-			//states.texture = texture;
 
 			sf::Vertex vertices[2] = {};
 			{
@@ -137,7 +135,7 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 
 			renderTarget.draw(vertices, 2, sf::Lines, states);
 		}
-		else if (i.type == GuiRenderInfoType::Line)
+		else if (i.type == GuiRenderInfoType::Circle)
 		{
 			float r = i.w * g_resolution.y;
 			sf::Vector2f pos2(i.w * g_resolution.y + g_resolution.x * 0.5f, i.h * g_resolution.y + 0.5f * g_resolution.y);
@@ -152,9 +150,9 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 			vertices[0].texCoords = sf::Vector2f(0, 0);
 			for (int i = 1; i < polyCount; ++i)
 			{
-				const float pi = 3.14f;
-				vertices[i].position.x = sinf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
-				vertices[i].position.y = cosf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
+				const float pi = 3.14159f;
+				vertices[i].position.x = pos.x + r * sinf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
+				vertices[i].position.y = pos.y + r * cosf((i - 1.0f) / float(polyCount - 2.0f) * pi * 2.0f);
 				vertices[i].color = color;
 				vertices[i].texCoords = sf::Vector2f(1, 1);
 			}
