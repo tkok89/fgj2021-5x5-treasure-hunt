@@ -15,7 +15,7 @@
 
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
-sf::Time syncCycle = sf::seconds(0.2f);
+sf::Time syncCycle = sf::seconds(0.1f);
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
@@ -28,6 +28,7 @@ void Game::update(sf::Time elapsedTime)
 	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
 	
     updatePlayers(elapsedTime.asSeconds());
+	GameClient::getClient().update();
 
     // Update camera
     Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getPlayer(0).posX, getPlayer(0).posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
@@ -45,7 +46,6 @@ void Game::update(sf::Time elapsedTime)
 	if (syncClock.getElapsedTime() > syncCycle)
 	{
 		syncClock.restart();
-		GameClient::getClient().update();
 		if (GameClient::connectedToHost)
 			GameClient::getClient().sendPosition(getMousePos());
 		else if(GameClient::imHost)
