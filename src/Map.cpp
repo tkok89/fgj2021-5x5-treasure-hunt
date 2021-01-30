@@ -6,6 +6,8 @@
 #include "GuiRendering.h"
 #include "GuiRenderInfo.h"
 #include <SFML/Window/Keyboard.hpp>
+#include <random>
+#include <assert.h>
 
 Map *g_map = nullptr;
 
@@ -17,6 +19,76 @@ Map::Map()
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 
 	g_map = this;
+
+	randomize();
+}
+
+void Map::randomize()
+{
+	const sf::Vector2f topLeft = mapSize / -2.0f;
+	const sf::Vector2f tileSize = mapSize / 5.0f;
+	static std::default_random_engine rng;
+
+	treasures.clear();
+
+	for (int i = 0; i < 25; ++i)
+	{
+		std::uniform_int_distribution<int> itemDistribution((int)Item::JewelS, (int)Item::Dynamite);
+		std::uniform_real_distribution<float> distribution(0.05f, 0.95f);
+		int x = i % 5;
+		int y = i / 5;
+		Item item = Item(itemDistribution(rng));
+
+		sf::Vector2f p;
+		p.x = topLeft.x + tileSize.x * (x + distribution(rng));
+		p.y = topLeft.y + tileSize.y * (y + distribution(rng));
+		bool ok = false;
+		for (int retry = 0; retry < 100; ++retry)
+		{
+			sf::Vector2f dist = nearestCollision(p) - p;
+			if (dist.x * dist.x + dist.y * dist.y > 0.5f)
+			{
+				ok = true;
+				break;
+			}
+
+			p.x = topLeft.x + tileSize.x * (x + distribution(rng));
+			p.y = topLeft.y + tileSize.y * (y + distribution(rng));
+		}
+
+		if (ok)
+			treasures.push_back({ item, p });
+	}
+
+	std::uniform_int_distribution<int> itemDistribution(0, treasures.size() - 1);
+	int afrikanTahdenPaikka = itemDistribution(rng);
+	treasures[afrikanTahdenPaikka].item = Item::AfrikanTahti;
+
+	shops.clear();
+
+	{
+		std::uniform_real_distribution<float> distribution(0.4f, 0.6f);
+
+		sf::Vector2f p;
+		p.x = topLeft.x + tileSize.x * distribution(rng);
+		p.y = topLeft.y + tileSize.y * distribution(rng);
+		bool ok = false;
+		for (int retry = 0; retry < 200; ++retry)
+		{
+			sf::Vector2f dist = nearestCollision(p) - p;
+			if (dist.x * dist.x + dist.y * dist.y > 1.0f)
+			{
+				ok = true;
+				break;
+			}
+
+			p.x = topLeft.x + tileSize.x * distribution(rng);
+			p.y = topLeft.y + tileSize.y * distribution(rng);
+		}
+
+		assert(ok);
+		shops.push_back({ topLeft.x + mapSize.x * distribution(rng), topLeft.y + mapSize.y * distribution(rng)});
+	}
 }
 
 sf::Vector2i worldToMapPos(sf::Vector2f worldPos)
@@ -86,16 +158,33 @@ void Map::draw()
 	const sf::Vector2f mousePos = getMousePos();
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
 	drawColor(mousePos, Map::getColor(worldMouse));
-	sf::Vector2f collision = Map::nearestCollectible(worldMouse);
-	sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
-	if (collision.x > -200 && collision.y > -200)
-	{
-		drawColor(collisionOnScreen, sf::Color::Red);
-		GuiRendering::line(mousePos.x, mousePos.y, collisionOnScreen.x, collisionOnScreen.y);
 
-		sf::Vector2f d = collisionOnScreen - mousePos;
-		float r = sqrtf(d.x * d.x + d.y * d.y);
-		GuiRendering::circle(mousePos.x, mousePos.y, r);
+	{
+		sf::Vector2f collision = Map::nearestCollectible(worldMouse);
+		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
+		if (collision.x > -200 && collision.y > -200)
+		{
+			drawColor(collisionOnScreen, sf::Color::Red);
+			GuiRendering::line(mousePos.x, mousePos.y, collisionOnScreen.x, collisionOnScreen.y);
+
+			sf::Vector2f d = collisionOnScreen - mousePos;
+			float r = sqrtf(d.x * d.x + d.y * d.y);
+			GuiRendering::circle(mousePos.x, mousePos.y, r);
+		}
+	}
+
+	{
+		sf::Vector2f collision = Map::nearestShop(worldMouse);
+		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
+		if (collision.x > -200 && collision.y > -200)
+		{
+			drawColor(collisionOnScreen, sf::Color::Red);
+			GuiRendering::line(mousePos.x, mousePos.y, collisionOnScreen.x, collisionOnScreen.y);
+
+			sf::Vector2f d = collisionOnScreen - mousePos;
+			float r = sqrtf(d.x * d.x + d.y * d.y);
+			GuiRendering::circle(mousePos.x, mousePos.y, r);
+		}
 	}
 }
 
@@ -147,14 +236,61 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 
 sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
 {
-	sf::Color collectible{ 0xFF, 0x00, 0x00, 0xFF };
-	return nearestColorImpl(pos, collectible, image, false);
+	float nearestDist = 10000000000.0f;
+	sf::Vector2f nearest(-1000, -1000);
+	for (Treasure treasure : treasures)
+	{
+		sf::Vector2f diff = treasure.pos - pos;
+		float dist = diff.x * diff.x + diff.y * diff.y;
+		if (dist >= nearestDist)
+			continue;
+
+		nearestDist = dist;
+		nearest = treasure.pos;
+	}
+
+	return nearest;
 }
 
 sf::Vector2f Map::nearestShop(sf::Vector2f pos)
 {
-	sf::Color shop{ 0x00, 0xFF, 0x00, 0xFF };
-	return nearestColorImpl(pos, shop, image, false);
+	float nearestDist = 10000000000.0f;
+	sf::Vector2f nearest(-1000, -1000);
+	for (sf::Vector2f shop : shops)
+	{
+		sf::Vector2f diff = shop - pos;
+		float dist = diff.x * diff.x + diff.y * diff.y;
+		if (dist >= nearestDist)
+			continue;
+
+		nearestDist = dist;
+		nearest = shop;
+	}
+
+	return nearest;
+}
+
+Item Map::pickupNearestCollectible(sf::Vector2f pos)
+{
+	if (treasures.empty())
+		return Item::JewelS;
+
+	float nearestDist = 10000000000.0f;
+	int nearest = 0;
+	for (int i = 0; i < treasures.size(); ++i)
+	{
+		sf::Vector2f diff = treasures[i].pos - pos;
+		float dist = diff.x * diff.x + diff.y * diff.y;
+		if (dist >= nearestDist)
+			continue;
+
+		nearestDist = dist;
+		nearest = i;
+	}
+
+	Item result = treasures[nearest].item;
+	treasures.erase(treasures.begin() + nearest);
+	return result;
 }
 
 sf::Color Map::getColor(sf::Vector2f pos)
