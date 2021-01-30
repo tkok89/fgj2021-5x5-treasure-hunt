@@ -44,7 +44,6 @@ static int getActiveThreadNumber()
 
 void GuiRendering::render(const GuiRenderInfo &guiRenderInfo)
 {
-	assert(guiRenderInfo.image || guiRenderInfo.font);
 	getState().state.pushGuiRenderInfo(guiRenderInfo);
 }
 
@@ -56,6 +55,21 @@ void GuiRendering::text(void *font, const char *text, float fontHeight, float x,
 	guiRenderInfo.type = GuiRenderInfoType::Text;
 	guiRenderInfo.font = font;
 	guiRenderInfo.fontHeight = fontHeight;
+	guiRenderInfo.x = x;
+	guiRenderInfo.y = y;
+	guiRenderInfo.color = { 1,1,1,1 };
+	render(guiRenderInfo);
+}
+
+void GuiRendering::text(const char *text, float fontHeight, float x, float y)
+{
+	assert(text);
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Text;
+	guiRenderInfo.font = nullptr;
+	guiRenderInfo.fontHeight = fontHeight;
+	guiRenderInfo.strPtr = text;
+	guiRenderInfo.strLen = ~0U;
 	guiRenderInfo.x = x;
 	guiRenderInfo.y = y;
 	guiRenderInfo.color = { 1,1,1,1 };

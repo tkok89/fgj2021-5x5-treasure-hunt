@@ -19,11 +19,13 @@ Game::Game()
 void Game::update(sf::Time elapsedTime)
 {
 	SfmlGuiRendering::setResolution(getResolution().x, getResolution().y);
+	SfmlGuiRendering::setDefaultFont(Resources::getResources().font);
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::image(g_placeholder, getMousePos().x, getMousePos().y, 0.1f, 0.1f);
+	GuiRendering::text("lol", 0.02f, 0, 0);
 
 	SfmlGuiRendering::flush(window);
 
