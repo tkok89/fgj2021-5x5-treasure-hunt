@@ -140,19 +140,6 @@ void GuiRendering::line(float x0, float y0, float x1, float y1)
 	render(guiRenderInfo);
 }
 
-void GuiRendering::line(float x0, float y0, float x1, float y1)
-{
-	assert(image);
-	GuiRenderInfo guiRenderInfo;
-	guiRenderInfo.type = GuiRenderInfoType::Line;
-	guiRenderInfo.x = x0;
-	guiRenderInfo.y = y0;
-	guiRenderInfo.w = x1;
-	guiRenderInfo.h = y1;
-	guiRenderInfo.color = { 1,1,1,1 };
-	render(guiRenderInfo);
-}
-
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();
