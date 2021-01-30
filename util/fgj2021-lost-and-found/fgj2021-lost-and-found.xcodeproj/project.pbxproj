@@ -1,4 +1,4 @@
-// !$*UTF8*$!
+    // !$*UTF8*$!
 {
 	archiveVersion = 1;
 	classes = {
@@ -12,6 +12,7 @@
 		B1B8AE8025C49D3D00B4CBA8 /* GridViz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7B25C49D3D00B4CBA8 /* GridViz.cpp */; };
 		B1B8AE8125C49D3D00B4CBA8 /* DragAndDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE7C25C49D3D00B4CBA8 /* DragAndDrop.cpp */; };
 		B1B8AE8625C49FE800B4CBA8 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B1B8AE8525C49FE800B4CBA8 /* assets */; };
+		B1B8AE8C25C5A40100B4CBA8 /* Players.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */; };
 		B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */; };
 		B1E67D9225C49A090071EC58 /* GuIRenderingState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8425C49A090071EC58 /* GuIRenderingState.cpp */; };
 		B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1E67D8525C49A090071EC58 /* Menu.cpp */; };
@@ -32,6 +33,8 @@
 		B1B8AE7D25C49D3D00B4CBA8 /* GridViz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViz.h; sourceTree = "<group>"; };
 		B1B8AE7E25C49D3D00B4CBA8 /* DragAndDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragAndDrop.h; sourceTree = "<group>"; };
 		B1B8AE8525C49FE800B4CBA8 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
+		B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Players.cpp; sourceTree = "<group>"; };
+		B1B8AE8B25C5A40100B4CBA8 /* Players.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Players.hpp; sourceTree = "<group>"; };
 		B1E67D6A25C499FA0071EC58 /* fgj2021-lost-and-found.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fgj2021-lost-and-found.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1E67D6E25C499FA0071EC58 /* fgj2021-lost-and-found-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fgj2021-lost-and-found-Info.plist"; path = "../fgj2021-lost-and-found-Info.plist"; sourceTree = "<group>"; };
 		B1E67D6F25C499FA0071EC58 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				B1E67D8925C49A090071EC58 /* SfmlGuiRendering.h */,
 				B1E67D8A25C49A090071EC58 /* workingdir.cpp */,
 				B1E67D8E25C49A090071EC58 /* workingdir.h */,
+				B1B8AE8A25C5A40100B4CBA8 /* Players.cpp */,
+				B1B8AE8B25C5A40100B4CBA8 /* Players.hpp */,
 			);
 			name = src;
 			path = ../../src;
@@ -230,6 +235,7 @@
 				B1E67D9625C49A090071EC58 /* workingdir.cpp in Sources */,
 				B1E67D9325C49A090071EC58 /* Menu.cpp in Sources */,
 				B1E67D9725C49A090071EC58 /* main.cpp in Sources */,
+				B1B8AE8C25C5A40100B4CBA8 /* Players.cpp in Sources */,
 				B1E67D7025C499FA0071EC58 /* ResourcePath.mm in Sources */,
 				B1B8AE7F25C49D3D00B4CBA8 /* Grid.cpp in Sources */,
 			);
