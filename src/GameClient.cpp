@@ -155,7 +155,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 		
 		sf::Uint8 treasureAmount;
 		packet >> treasureAmount;
-		for (sf::Uint8 treasureNumbah = 0; treasureNumbah < playerAmount; treasureNumbah++)
+		for (sf::Uint8 treasureNumbah = 0; treasureNumbah < treasureAmount; treasureNumbah++)
 		{
 			sf::Uint8 treasureId;
 			packet >> treasureId;
