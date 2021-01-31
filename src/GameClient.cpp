@@ -118,13 +118,13 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 }
 
 // client received
-void GameClient::updateGameState(GameNetState state)
+void GameClient::updateGameState(const GameNetState &state)
 {
 	gameNetState = state;
 	gameNetState.unread = true;
 	unsigned short numberOfPlayer = 0u;
 
-	for (NetPlayer& player : state.players)
+	for (const NetPlayer& player : state.players)
 	{
 		// printf("\t#%hu id: %hu x: %f, y: %f\n", numberOfPlayer++, player.id, player.position.x, player.position.y);
 	}

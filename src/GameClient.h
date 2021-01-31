@@ -52,7 +52,7 @@ public:
 private:
 	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
-	void updateGameState(GameNetState packet);
+	void updateGameState(const GameNetState &packet);
 	void updatePlayerPositionAndVelocity(short playerNumber, sf::Vector2f position, sf::Vector2f velocity);
 	std::thread *acceptConnectionsThread;
 	sf::TcpSocket clientSocket;
