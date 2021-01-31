@@ -35,6 +35,12 @@ void Game::update(sf::Time elapsedTime)
     Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getPlayer(0).posX, getPlayer(0).posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
     debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
 
+    // Network
+    NetPlayer* activePlayer = GameClient::getClient().getMyPlayer();
+    if(activePlayer != nullptr){
+        Player p = setActivePlayerIndex(activePlayer->id);
+        activePlayer->position = sf::Vector2f(p.posX, p.posX);
+    }
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		GameClient::getClient().host();
 	

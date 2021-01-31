@@ -29,4 +29,5 @@ private:
 void initializePlayers (float startX, float startY);
 void updatePlayers(float deltaTime);
 void drawPlayers(bool showDebugText);
+Player& setActivePlayerIndex(int newActivePlayerId);
 Player& getPlayer(int index);

@@ -69,6 +69,12 @@ void updatePlayers(float deltaTime){
     }
 }
 
+Player& setActivePlayerIndex(int newOwnPlayerId){
+    players[newOwnPlayerId].activePlayer = true;
+    ownPlayerId = newOwnPlayerId;
+    return players[newOwnPlayerId];
+}
+
 Player& getPlayer(int index){
     return players[index];
 }
