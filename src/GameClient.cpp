@@ -72,7 +72,7 @@ void GameClient::join()
 		return;
 	}
 	// tomi
-	//connectToHost(std::string("192.168.2.26"), 50000);
+	connectToHost(std::string("192.168.2.26"), 50000);
 	// rike
 	//connectToHost(std::string("192.168.2.43"), 50000);
     //janne
@@ -254,10 +254,9 @@ void GameClient::update()
 
 	if (imHost)
 	{
-		short socketIndex = 0;
-		for (sf::TcpSocket& socket : sockets)
+		for (unsigned i = 0; i < connectedClientAmount; i++)
 		{
-			receivePacket(socket, socketIndex++);
+			receivePacket(sockets[i], i);
 		}
 	}
 	else if(connectedToHost)
