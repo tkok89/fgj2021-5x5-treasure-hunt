@@ -78,7 +78,8 @@ sf::Image generateSDF(sf::Image image)
 
 	for (uint32_t y = 0; y < image.getSize().y; ++y)
 	{
-		std::cout << "row: " << y << std::endl;
+		std::cout << "Map SDF generation progress: " << y << "/" << image.getSize().y
+			<< " (" << ((float)y/(float)image.getSize().y) * 100.f << " %)" << std::endl;
 
 		for (uint32_t x = 0; x < image.getSize().x; ++x)
 		{
@@ -132,13 +133,13 @@ Map::Map()
 	bool success = image.loadFromFile(Resources::getResources().mapName);
 	assert(success);
 
-	//mapSDFImage = generateSDF(image);
+	mapSDFImage = generateSDF(image);
 
-	//success = texture.loadFromImage(mapSDFImage);
-	success = texture.loadFromImage(image);
+	success = mapSDFTexture.loadFromImage(mapSDFImage);
 	assert(success);
 
-
+	success = texture.loadFromImage(image);
+	assert(success);
 
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 
@@ -276,6 +277,7 @@ void Map::draw()
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 	
 	mapVisShader->setUniform("mapTex", texture);
+	mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
 	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
 	
 	GuiRendering::popClipRect();

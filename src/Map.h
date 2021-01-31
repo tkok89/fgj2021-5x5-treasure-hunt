@@ -41,6 +41,7 @@ struct Map
 	sf::Image image;
 	sf::Texture texture;
 	sf::Image mapSDFImage;
+	sf::Texture mapSDFTexture;
 	std::unique_ptr<sf::Shader> mapVisShader;
 	std::vector<Treasure> treasures;
 	std::vector<sf::Vector2f> shops;
