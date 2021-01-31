@@ -263,12 +263,13 @@ static void renderItems()
 	for (const Treasure &treasure : g_map->treasures)
 	{
         
+        float t = treasure.health / maxHealth;
         auto pos = treasure.pos - itemSize * 0.5f;
 		sf::Vector2f p = Camera::worldToScreenPos(pos);
-		GuiRendering::image(&Resources::getItemTexture(treasure.item), p, s.x, s.y);
+        auto img = t < 0.1f ? &Resources::getItemTexture(treasure.item) : &Resources::getResources().rock;
+		GuiRendering::image(img, p, s.x, s.y);
         
         // Health
-        float t = treasure.health / maxHealth;
         
         if(t > 0.99f) continue;
         float h = 0.23f;
@@ -300,6 +301,7 @@ void Map::draw()
 	//if (Game::showDebugText)
 	//	drawColor(mousePos, Map::getColor(worldMouse));
 
+#ifdef DEBUG_COLLISIONS
 	if (Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestCollision(worldMouse);
@@ -314,7 +316,7 @@ void Map::draw()
 			GuiRendering::circle(mousePos.x, mousePos.y, r);
 		}
 	}
-
+#endif
     if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestCollectible(worldMouse).pos;
@@ -329,7 +331,7 @@ void Map::draw()
 			GuiRendering::circle(mousePos.x, mousePos.y, r);
 		}
 	}
-
+#ifdef DEBUG_SHOP_POSITION
     if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestShop(worldMouse);
@@ -344,6 +346,7 @@ void Map::draw()
 			GuiRendering::circle(mousePos.x, mousePos.y, r);
 		}
 	}
+#endif
 }
 
 static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image &image, bool acceptBorders)

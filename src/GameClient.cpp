@@ -71,15 +71,16 @@ void GameClient::join()
 		printf("cannot join while hosting\n");
 		return;
 	}
-    // riku "192.168.2.43"), janne .59
 	// tomi
 	//connectToHost(std::string("192.168.2.26"), 50000);
 	// rike
-	//connectToHost(std::string("192.168.2.43"), 50000));
-	//janne
-	//connectToHost(std::string("192.168.2.59"), 50000));
+	//connectToHost(std::string("192.168.2.43"), 50000);
+    //janne
+    //connectToHost(std::string("192.168.2.59"), 50000);
+    //vesa
+    connectToHost(std::string("192.168.2.84"), 50000);
 	// koti
-	connectToHost(std::string("localhost"), 50000);
+	//connectToHost(std::string("localhost"), 50000);
     
 }
 
