@@ -59,6 +59,8 @@ Resources::Resources()
     assert(success);
     success = healthFront.loadFromFile(getResourcePath("assets/health.png"));
     assert(success);
+    success = rock.loadFromFile(getResourcePath("assets/rock.png"));
+    assert(success);
 
 
     mapName = getResourcePath("assets/map.png");

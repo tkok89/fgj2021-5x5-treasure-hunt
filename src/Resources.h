@@ -65,6 +65,7 @@ struct Resources
     sf::Texture placeholder;
     sf::Texture healthFront;
     sf::Texture healthBack;
+    sf::Texture rock;
     sf::Texture playerTextures[4];
     sf::Texture friendTextures[4];
 	sf::Font font;
