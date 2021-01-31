@@ -389,7 +389,7 @@ Treasure& Map::nearestCollectible(sf::Vector2f pos)
 {
 	float nearestDist = 10000000000.0f;
     Treasure* nearest;
-	for (Treasure treasure : treasures)
+	for (Treasure& treasure : treasures)
 	{
 		sf::Vector2f diff = treasure.pos - pos;
 		float dist = diff.x * diff.x + diff.y * diff.y;
