@@ -36,11 +36,28 @@ void Game::update(sf::Time elapsedTime)
     debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
 
     // Network
+    // own player
     NetPlayer* activePlayer = GameClient::getClient().getMyPlayer();
     if(activePlayer != nullptr){
         Player p = setActivePlayerIndex(activePlayer->id);
         activePlayer->position = sf::Vector2f(p.posX, p.posX);
+    
+        
+        GameNetState state = GameClient::gameNetState;
+        // update
+        for (NetPlayer& player : state.players)
+        {
+            if(player.id != activePlayer->id){
+                Player otherP = getPlayer(player.id);
+                otherP.posX = player.position.x;
+                otherP.posY = player.position.y;
+            }
+        }
+        
     }
+    
+    // remove sate
+    
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		GameClient::getClient().host();
 	
