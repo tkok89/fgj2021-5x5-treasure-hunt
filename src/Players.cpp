@@ -250,14 +250,14 @@ void Player::drawPlayer(bool debug, bool own){
             GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
             GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
         }
-    }
     
     
-    if(debug){
-        GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
-        sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
-        collisionPosition.x += getRandomNormal01();
-        GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
-        GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
+        if(debug){
+            GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
+            sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+            collisionPosition.x += getRandomNormal01();
+            GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
+            GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
+        }
     }
 }
