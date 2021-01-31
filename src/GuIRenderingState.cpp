@@ -72,4 +72,9 @@ void GuiRenderingState::pushGuiRenderInfo(GuiRenderInfo i)
 	{
 		renderInfos.push_back(i);
 	}
+	else if (i.type == GuiRenderInfoType::Rect)
+	{
+		// TODO: Clip
+		renderInfos.push_back(i);
+	}
 }

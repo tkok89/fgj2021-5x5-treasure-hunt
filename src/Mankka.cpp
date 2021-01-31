@@ -169,7 +169,7 @@ void Mankka::play(SoundPresetName presetId)
 	sound.play();
 }
 
-void Mankka::play(MusicEnvName envName)
+void Mankka::playMusic(MusicEnvName envName)
 {
 	if (state->musicState.env == envName)
 		return;
@@ -190,6 +190,12 @@ void Mankka::play(MusicEnvName envName)
 		state->musicState.playingMusic->setLoop(true);
 		state->musicState.playingMusic->play();
 	}
+}
+
+void Mankka::stopMusic()
+{
+	if (state && state->musicState.playingMusic)
+		state->musicState.playingMusic->stop();
 }
 
 void Mankka::test()

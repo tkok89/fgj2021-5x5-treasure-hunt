@@ -59,7 +59,7 @@ void GameClient::host()
 	startAcceptingConnections(50000);
 }
 
-void GameClient::join()
+void GameClient::joinDefault()
 {
 	if (connectedToHost)
 	{
@@ -81,7 +81,30 @@ void GameClient::join()
    // connectToHost(std::string("192.168.2.84"), 50000);
 	// koti
 	//connectToHost(std::string("localhost"), 50000);
-    
+}
+
+void GameClient::join(std::string ip)
+{
+	if (ip.empty())
+	{
+		joinDefault();
+		return;
+	}
+
+	if (connectedToHost)
+	{
+		printf("cannot join, already connected!\n");
+		return;
+	}
+	if (imHost)
+	{
+		printf("cannot join while hosting\n");
+		return;
+	}
+
+	connectToHost(ip, 50000);
+
+>>>>>>> ec93eb0... gui
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)

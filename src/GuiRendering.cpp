@@ -6,6 +6,9 @@
 #include <mutex>
 #include <atomic>
 
+#include "Global.h"
+#include <SFML/Window/Mouse.hpp>
+
 struct State
 {
 	State()
@@ -173,6 +176,41 @@ void GuiRendering::triangle(sf::Vector2f pos0, sf::Vector2f pos1, sf::Vector2f p
 	guiRenderInfo.y2 = pos2.y;
 	guiRenderInfo.color = { c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, c.a / 255.0f };
 	render(guiRenderInfo);
+}
+
+void GuiRendering::rect(sf::Vector2f pos, sf::Vector2f size, sf::Color c, bool filled)
+{
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Rect;
+	guiRenderInfo.x = pos.x;
+	guiRenderInfo.y = pos.y;
+	guiRenderInfo.w = size.x;
+	guiRenderInfo.h = size.y;
+	guiRenderInfo.filled = filled;
+	guiRenderInfo.color = { c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, c.a / 255.0f };
+	render(guiRenderInfo);
+}
+
+bool GuiRendering::button(const char *text, sf::Vector2f topLeft, sf::Vector2f size)
+{
+	sf::Vector2f diff = getMousePos() - topLeft;
+	bool hovered = diff.x >= 0 && diff.y >= 0 && diff.x < size.x && diff.y < size.y;
+	if (!hovered)
+	{
+		GuiRendering::rect(topLeft, size, sf::Color::Black, true);
+		GuiRendering::text(text, size.y * 0.8f, topLeft + sf::Vector2f(0.009f, -0.001f));
+		return false;
+	}
+
+	GuiRendering::rect(topLeft, size, sf::Color::Black, false);
+	GuiRendering::text(text, size.y * 0.8f, topLeft + sf::Vector2f(0.009f, -0.001f));
+
+	static bool wasPressed = false;
+	bool pressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	bool becamePressed = !wasPressed && pressed;
+	wasPressed = pressed;
+
+	return becamePressed;
 }
 
 static bool isActiveThread()

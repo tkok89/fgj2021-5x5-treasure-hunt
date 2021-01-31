@@ -32,7 +32,8 @@ public:
 	static Mankka &getMankka();
 
 	void play(SoundPresetName presetId);
-	void play(MusicEnvName musicEnv);
+	void playMusic(MusicEnvName musicEnv);
+	void stopMusic();
 
 	void test();
 

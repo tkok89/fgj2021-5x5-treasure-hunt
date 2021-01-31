@@ -21,8 +21,11 @@ struct GuiRendering
     static void line(float x0, float y0, float x1, float y1);
     static void line(sf::Vector2f pos0, sf::Vector2f pos1);
 	static void circle(float x, float y, float r, bool filled = false);
-	static void triangle(sf::Vector2f pos0, sf::Vector2f pos1, sf::Vector2f pos2);
 	static void triangle(sf::Vector2f pos0, sf::Vector2f pos1, sf::Vector2f pos2, sf::Color c);
+	static void rect(sf::Vector2f pos, sf::Vector2f size, sf::Color c, bool filled);
+
+	static bool button(const char *text, sf::Vector2f topLeft, sf::Vector2f size);
+
 
 	static void pushClipRect(float x, float y, float w, float h);
 	static void pushAntiClipRect();

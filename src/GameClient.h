@@ -43,7 +43,8 @@ class GameClient
 {
 public:
 	void host();
-	void join();
+	void joinDefault();
+	void join(std::string ip);
 
 	void update();
 	void startAcceptingConnections(unsigned short port);

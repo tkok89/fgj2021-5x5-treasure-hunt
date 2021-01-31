@@ -68,17 +68,6 @@ void Game::update(sf::Time elapsedTime)
         
     }
     
-    // remove sate
-    
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		GameClient::getClient().host();
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
-		GameClient::getClient().join();
-
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        Mankka::getMankka().play(MusicEnvName::ingame);
-    
 	if (syncClock.getElapsedTime() > syncCycle)
 	{
 		syncClock.restart();
@@ -98,11 +87,11 @@ void Game::textInput(sf::Uint32 unicode)
     {
         while (g_currentTextInput.length() > 0 && (g_currentTextInput.back() & 0b11000000) == 0b10000000)
         {
-            g_currentTextInput.resize(g_currentTextInput.length() - 1u, ' ');
+            g_currentTextInput.resize(g_currentTextInput.length() - 1u);
         }
 
         if (g_currentTextInput.length() > 0)
-            g_currentTextInput.resize(g_currentTextInput.length() - 1u, ' ');
+            g_currentTextInput.resize(g_currentTextInput.length() - 1u);
 
         return;
     }
@@ -184,5 +173,55 @@ void Game::draw(sf::RenderWindow& window)
 
 void Game::gui(sf::RenderWindow& window)
 {
+    const float x = -0.5f * g_resolution.x / g_resolution.y + 0.01f;
+    const float y = -0.5f + 0.01f;
+    const float h = 0.04f;
+    const float h2 = 0.035f;
 
+    if (GuiRendering::button("Music", sf::Vector2f(x, y + h * 0), sf::Vector2f(0.1f, h2)))
+    {
+        static bool musicToggled = false;
+        musicToggled = !musicToggled;
+        if (musicToggled)
+            Mankka::getMankka().playMusic(MusicEnvName::ingame);
+        else
+            Mankka::getMankka().playMusic(MusicEnvName::silence);
+    }
+
+    static bool joining = false;
+    if (!GameClient::imHost && !GameClient::connectedToHost && !joining)
+    {
+        if (GuiRendering::button("Host", sf::Vector2f(x, y + h * 2), sf::Vector2f(0.1f, h2)))
+            GameClient::getClient().host();
+    }
+
+    if (joining)
+    {
+        GuiRendering::text("Connecting...", 0.028f, sf::Vector2f(x, y + h * 1));
+    }
+    else if (!GameClient::imHost && !GameClient::connectedToHost)
+    {
+        static bool joinToggled = false;
+        if (GuiRendering::button("Join", sf::Vector2f(x, y + h * 1), sf::Vector2f(0.1f, h2)))
+        {
+            joinToggled = !joinToggled;
+            g_currentTextInput.clear();
+        }
+
+        if (joinToggled)
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+            {
+                joining = true;
+                while (!g_currentTextInput.empty() && ((g_currentTextInput.back() - '0') > 9 || (g_currentTextInput.back() - '0') < 0))
+                    g_currentTextInput.resize(g_currentTextInput.length() - 1u);
+
+                GameClient::getClient().join(g_currentTextInput);
+            }
+
+            static std::string joinText;
+            joinText = "Type host IP: " + g_currentTextInput + "|";
+            GuiRendering::text(joinText.c_str(), 0.028f, sf::Vector2f(x + 0.1f, y + h * 1));
+        }
+    }
 }

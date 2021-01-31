@@ -195,5 +195,40 @@ void SfmlGuiRendering::draw(sf::RenderTarget &renderTarget, const GuiRenderingSt
 
 			renderTarget.draw(vertices, 3, sf::Triangles, states);
 		}
+		else if (i.type == GuiRenderInfoType::Rect)
+		{
+			float r = i.w * g_resolution.y;
+			bool filled = i.filled;
+			sf::Vector2f size(i.w * g_resolution.y, i.h * g_resolution.y);
+			sf::RenderStates states = sf::RenderStates::Default;
+
+			const int polyCount = 5;
+			sf::Vertex vertices[polyCount] = {};
+			{
+				float left = pos.x;
+				float right = pos.x + size.x;
+				float top = pos.y;
+				float bottom = pos.y + size.y;
+				vertices[0].position = sf::Vector2f(left, top);
+				vertices[1].position = sf::Vector2f(right, top);
+				vertices[2].position = sf::Vector2f(right, bottom);
+				vertices[3].position = sf::Vector2f(left, bottom);
+				vertices[4].position = sf::Vector2f(left, top);
+			}
+
+			{
+				sf::Color color = sfColor(i.color);
+				vertices[0].color = color;
+				vertices[1].color = color;
+				vertices[2].color = color;
+				vertices[3].color = color;
+				vertices[4].color = color;
+			}
+
+			if (filled)
+				renderTarget.draw(vertices, polyCount, sf::TriangleFan, states);
+			else
+				renderTarget.draw(vertices, polyCount, sf::LineStrip, states);
+		}
 	}
 }

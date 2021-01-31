@@ -9,6 +9,7 @@ enum class GuiRenderInfoType
 	Line,
 	Circle,
 	Triangle,
+	Rect,
 };
 
 struct GuiRenderInfo
@@ -51,6 +52,10 @@ struct GuiRenderInfo
 		struct // Triangle
 		{
 			float x2, y2;
+		};
+		struct // Rect & circl
+		{
+			bool filled;
 		};
 	};
 };
