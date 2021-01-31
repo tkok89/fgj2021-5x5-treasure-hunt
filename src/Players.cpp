@@ -165,8 +165,16 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         nearestTreasure.health -= power;
         if(nearestTreasure.health < 0){
             Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
+            myTreasures[treasureCount].item = item;
+            myTreasures[treasureCount].pos = nearestTreasure.pos;
+            treasureCount++;
             score++;
         }
+    }
+    // update treasure trail
+    sf::Vector2f previous(posX, posY);
+    for(int i =  0; i < treasureCount; ++i){
+        //float distanceToPlayer = magnitudeVector2(<#sf::Vector2f vec#>)
     }
 }
 
