@@ -2,7 +2,7 @@
 A game about friendship and other treasures. You are trying to find the greatest treasure in the world. Connect with your friend and start the Hunt!
 
 # Controls
-Play with Arraw keys. Use mouse to use buttons at top left corner to host, join or single play.
+Move your character with Arrow keys. Use mouse to start game with buttons at the top left corner (host or join multiplayer or play single player game).
 
 
 # Building on Linux
@@ -31,3 +31,5 @@ codesign -s <identity> <code-path>
 
 
 - You might be able to build without xcode, but I don't know how :)
+
+tominDayroll325
