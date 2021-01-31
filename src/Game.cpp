@@ -259,7 +259,11 @@ void Game::gui(sf::RenderWindow& window)
     {
         if (GuiRendering::button("Host", sf::Vector2f(x, y + h * 2), sf::Vector2f(0.1f, h2)))
             GameClient::getClient().host();
+        if (GuiRendering::button("Single Player", sf::Vector2f(x, y + h * 4), sf::Vector2f(0.2f, h2)))
+            GameClient::getClient().host();
     }
+    if (GuiRendering::button("Lights", sf::Vector2f(x, y + h * 6), sf::Vector2f(0.2f, h2)))
+        g_map->lightsOn = !g_map->lightsOn;
 
     if (joining)
     {

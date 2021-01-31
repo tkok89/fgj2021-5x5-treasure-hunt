@@ -265,7 +265,7 @@ static void drawColor(sf::Vector2f p, sf::Color c)
 
 static void renderItems()
 {
-    // Draw map
+    // Draw shop
 	{
 		sf::Vector2f s = Camera::worldToScreenSize(itemSize) * 4.0f;
 		sf::Vector2f p = Camera::worldToScreenPos(Map::getShopPos()) - s * 0.5f;
@@ -311,14 +311,21 @@ void Map::draw()
 
 	//std::cout << playerPosInMapNorm.x << ", " << playerPosInMapNorm.y << std::endl;
 	
-	mapVisShader->setUniform("mapTex", texture);
-	mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
-	mapVisShader->setUniform("playerPos", playerPosInMapNorm);
-	mapVisShader->setUniform("maxStepLength", maxStepLength);
+    if(lightsOn)
+	{
+        mapVisShader->setUniform("mapTex", texture);
+        mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
+        mapVisShader->setUniform("playerPos", playerPosInMapNorm);
+        mapVisShader->setUniform("maxStepLength", maxStepLength);
 
-	//std::cout << "max step length " << maxStepLength << std::endl;
+        //std::cout << "max step length " << maxStepLength << std::endl;
 
-	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
+        GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
+        
+    }
+    else{
+        GuiRendering::image(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y);
+    }
 	
 	renderItems();
 
