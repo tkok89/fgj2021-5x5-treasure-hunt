@@ -128,8 +128,12 @@ sf::Packet& operator <<(sf::Packet& packet, const GameNetState& state)
 {
 	packet << sf::Uint8(state.players.size());
 	for (NetPlayer player : state.players)
+	{
 		packet << player.position << player.velocity << player.id << player.score;
-
+		packet << sf::Uint8(player.colledtedTreasures.size());
+		for (sf::Uint8 treasureId : player.colledtedTreasures)
+			packet << treasureId;
+	}
 	packet << sf::Uint8(state.treasures.size());
 	for (NetTreasure treasure : state.treasures)
 		packet << treasure.position << sf::Uint8(treasure.itemType) << sf::Uint8(treasure.itemState) << treasure.id;
@@ -148,6 +152,15 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 	{
 		NetPlayer player;
 		packet >> player.position >> player.velocity >> player.id >> player.score;
+		
+		sf::Uint8 treasureAmount;
+		packet >> treasureAmount;
+		for (sf::Uint8 treasureNumbah = 0; treasureNumbah < playerAmount; treasureNumbah++)
+		{
+			sf::Uint8 treasureId;
+			packet >> treasureId;
+			player.colledtedTreasures.push_back(treasureId);
+		}
 		state.players.push_back(player);
 	}
 	

@@ -11,6 +11,7 @@ struct NetPlayer
     sf::Uint16 score = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
 	sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f);
+	std::vector<sf::Uint8> colledtedTreasures;
 	NetPlayer() {};
     NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
 };
