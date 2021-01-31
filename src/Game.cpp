@@ -44,7 +44,7 @@ void Game::update(sf::Time elapsedTime)
         debugText += " Has active " + std::to_string(activePlayer->id);
         Player p = setActivePlayerIndex(activePlayer->id);
         activePlayer->position = sf::Vector2f(p.posX, p.posY);
-        activePlayer->velocity = sf::Vector2f(p.inputVelocityX, p.inputVelocityY);
+        activePlayer->velocity = p.realInputVelocity;
         activePlayer->score = p.score;
     
         GameNetState state = GameClient::gameNetState;

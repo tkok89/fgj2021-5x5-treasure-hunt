@@ -17,6 +17,7 @@ struct Player {
     bool activePlayer = false;
     float posX, posY;
     float velocityX, velocityY;
+    sf::Vector2f realInputVelocity;
     float inputVelocityX, inputVelocityY;
     std::string debugstring;
     OrthogonalDirection latestDirection = OrthogonalDirection::Down;
@@ -45,6 +46,8 @@ private:
     int treasureCount = 0;
     PlayerTreasure myTreasures[26];
     float treasureMaxDistance = 1;
+    const float sellingDistance = 5.0f;
+    const float soldDistance = 0.01f;
 };
 
 void initializePlayers (float startX, float startY);

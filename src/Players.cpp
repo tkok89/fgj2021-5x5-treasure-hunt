@@ -116,8 +116,9 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
             verticalMove /= magnitude;
         }
         // lerp input
-        inputVelocityX = clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
-        inputVelocityY = clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
+        inputVelocityX = clamp11(lerp(inputVelocityX, horizontalMove, inputLerp));
+        inputVelocityY = clamp11(lerp(inputVelocityY, verticalMove, inputLerp));
+        realInputVelocity = sf::Vector2f(horizontalMove, verticalMove);
     }
     // accelerate
     velocityX = lerp(inputVelocityX * maxSpeed, velocityX, accelerationLerp);
@@ -150,10 +151,12 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     posX = newPosX;
     posY = newPosY;
     
-    debugstring = "x " + std::to_string(posX) +
-    " y " + std::to_string(posY) +
-    " name " + std::to_string(index) +
-    " distance " + std::to_string(distance);
+    debugstring = "x " + std::to_string((int)posX) +
+    " y " + std::to_string((int)posY) +
+    " iVX " + std::to_string(inputVelocityX) +
+    " iVY " + std::to_string(inputVelocityY) +
+    // " name " + std::to_string(index) +
+    " score " + std::to_string(score);
     //new position ready, check if any world object is nearby
     Treasure* nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
     if (!nearestTreasurePtr)
@@ -178,8 +181,13 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         }
     }
     // update treasure trail
+    bool inSellingDistances = false;
+    auto shopPos = Map::getShopPos();
+    if(magnitudeVector2(shopPos-sf::Vector2f(newPosX, newPosY)) < sellingDistance){
+        inSellingDistances = treasureCount > 0;
+    }
     sf::Vector2f previous(posX, posY);
-    for(int i =  0; i < treasureCount; ++i){
+    for(int i =  0; i < treasureCount - inSellingDistances ? 1 : 0; ++i){
         float distanceToPrevious = magnitudeVector2(myTreasures[i].pos - previous);
         if(distanceToPrevious > treasureMaxDistance){
             sf::Vector2f direction = previous - myTreasures[i].pos; // from treasure to "previous" in line
@@ -187,6 +195,27 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
             myTreasures[i].pos = lerpVector2f(myTreasures[i].pos, target, 0.15f );
         }
         previous = myTreasures[i].pos;
+    }
+    if(inSellingDistances){
+        //move closer to shop
+        float distanceToShop = magnitudeVector2(myTreasures[treasureCount-1].pos - shopPos);
+        debugstring += " d2Shop " + std::to_string(distanceToShop);
+        if(distanceToShop < soldDistance){
+            //sold
+            score += 100;
+            treasureCount--;
+        }
+        else{
+            if(distanceToShop > 1){
+                sf::Vector2f direction = shopPos - myTreasures[treasureCount - 1].pos; // from treasure to "previous" in line
+                sf::Vector2f target = myTreasures[treasureCount - 1].pos + (direction / distanceToShop) * 14.0f * deltaTime;
+                myTreasures[treasureCount - 1].pos = lerpVector2f(myTreasures[treasureCount-1].pos, target, 0.5f );
+            }
+            else{
+                myTreasures[treasureCount-1].pos = lerpVector2f(myTreasures[treasureCount-1].pos, shopPos, 0.15f );
+            }
+            debugstring += " selling";
+        }
     }
 }
 
