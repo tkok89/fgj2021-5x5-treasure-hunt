@@ -42,18 +42,24 @@ void Game::update(sf::Time elapsedTime)
     if(activePlayer != nullptr){
         Player p = setActivePlayerIndex(activePlayer->id);
         activePlayer->position = sf::Vector2f(p.posX, p.posX);
+        activePlayer->velocity = sf::Vector2f(p.velocityX, p.velocityY);§
     
-        
         GameNetState state = GameClient::gameNetState;
-        // update
-        for (NetPlayer& player : state.players)
-        {
-            if(player.id != activePlayer->id){
-                Player otherP = getPlayer(player.id);
-                otherP.posX = player.position.x;
-                otherP.posY = player.position.y;
+        if(state.unread){
+            // update
+            for (NetPlayer& player : state.players)
+            {
+                if(player.id != activePlayer->id){
+                    Player otherP = getPlayer(player.id);
+                    otherP.posX = player.position.x;
+                    otherP.posY = player.position.y;
+                    otherP.velocityX = player.velocity.x;
+                    otherP.velocityY = player.velocity.y;
+                }
             }
+            state.unread = false;
         }
+        
         
     }
     
