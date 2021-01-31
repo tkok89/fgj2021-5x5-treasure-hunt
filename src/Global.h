@@ -24,3 +24,7 @@ inline float clamp01(float a){
 }
 
 float getRandomNormal01();
+
+inline float magnitudeVector2(sf::Vector2f vec){
+    return sqrt(vec.x * vec.x + vec.y * vec.y);
+}

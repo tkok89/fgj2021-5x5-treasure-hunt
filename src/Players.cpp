@@ -32,10 +32,6 @@ inline float distanceXY(float x0, float y0, float x1, float y1){
     return sqrt((x0-x1)*(x0-x1) + (y0-y1)*(y0-y1));
 }
 
-inline float magnitudeVector2(sf::Vector2f vec){
-    return sqrt(vec.x * vec.x + vec.y * vec.y);
-}
-
 inline float clamp11(float x){
     if(x > 1){
         return 1;

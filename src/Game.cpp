@@ -16,6 +16,7 @@
 
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
+sf::Clock timeFromStart;
 sf::Time syncCycle = sf::seconds(0.1f);
 std::string g_currentTextInput;
 bool Game::showDebugText = false;
@@ -23,6 +24,7 @@ Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
     initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
+    timeFromStart.restart();
 }
 
 void Game::update(sf::Time elapsedTime)
@@ -36,6 +38,20 @@ void Game::update(sf::Time elapsedTime)
     // Update camera
     Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
     debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
+    // when moved
+    if( magnitudeVector2( getOwnPlayer().realInputVelocity) > 0.3f){
+        lastMove = timeFromStart.getElapsedTime().asSeconds();
+    }
+    if( timeFromStart.getElapsedTime().asSeconds() - lastMove > 1.5f){
+        float t = timeFromStart.getElapsedTime().asSeconds() - lastMove - 1.5f;
+        t /= zoomDuration;
+        t = clamp01(t);
+        g_screenHeightInWorldCoordinates = cameraMinSize + t  * (maxSize - cameraMinSize);
+        debugText += " zoom " + std::to_string(g_screenHeightInWorldCoordinates);
+    }
+    else{
+        g_screenHeightInWorldCoordinates = 0.95f * g_screenHeightInWorldCoordinates + 0.05f *  cameraMinSize;
+    }
 
     // Network
     // own player

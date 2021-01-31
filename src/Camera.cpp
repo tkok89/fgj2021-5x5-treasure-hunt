@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+float g_screenHeightInWorldCoordinates = 10;
 sf::Vector2f g_cameraPos;
 void Camera::setCameraPos(sf::Vector2f p)
 {

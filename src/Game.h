@@ -45,5 +45,8 @@ private:
 	Map map;
     float cameraLerpPerSecond = 5;
     std::string debugText;
-    float cameraSize;
+    float cameraMinSize = 10;
+    float lastMove = 0;
+    float maxSize = 40;
+    float zoomDuration = 30;
 };

@@ -3,7 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include "Map.h"
 
-const float g_screenHeightInWorldCoordinates = 10;
+extern float g_screenHeightInWorldCoordinates;
 extern sf::Vector2f g_cameraPos;
 
 struct Camera
