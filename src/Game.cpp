@@ -244,7 +244,7 @@ void Game::gui(sf::RenderWindow& window)
     const float h = 0.04f;
     const float h2 = 0.035f;
 
-    if (GuiRendering::button("Music", sf::Vector2f(x, y + h * 0), sf::Vector2f(0.1f, h2)))
+    if (GuiRendering::button("Music", sf::Vector2f(x, y + h * 0), sf::Vector2f(0.2f, h2)))
     {
         static bool musicToggled = false;
         musicToggled = !musicToggled;
@@ -257,7 +257,7 @@ void Game::gui(sf::RenderWindow& window)
     static bool joining = false;
     if (!GameClient::imHost && !GameClient::connectedToHost && !joining)
     {
-        if (GuiRendering::button("Host", sf::Vector2f(x, y + h * 2), sf::Vector2f(0.1f, h2)))
+        if (GuiRendering::button("Host", sf::Vector2f(x, y + h * 2), sf::Vector2f(0.2f, h2)))
             GameClient::getClient().host();
         if (GuiRendering::button("Single Player", sf::Vector2f(x, y + h * 4), sf::Vector2f(0.2f, h2)))
             GameClient::getClient().host();
@@ -272,7 +272,7 @@ void Game::gui(sf::RenderWindow& window)
     else if (!GameClient::imHost && !GameClient::connectedToHost)
     {
         static bool joinToggled = false;
-        if (GuiRendering::button("Join", sf::Vector2f(x, y + h * 1), sf::Vector2f(0.1f, h2)))
+        if (GuiRendering::button("Join", sf::Vector2f(x, y + h * 1), sf::Vector2f(0.2f, h2)))
         {
             joinToggled = !joinToggled;
             g_currentTextInput.clear();
