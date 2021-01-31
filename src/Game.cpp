@@ -119,17 +119,15 @@ void printfHorrorString()
   stateString.append(std::string("playerAmount: "));
   stateString.append(std::to_string(netState.players.size()));
 
-  stateString.append(std::string("\nim host: "));
-  stateString.append(std::to_string(GameClient::imHost));
   if (GameClient::imHost)
   {
-      stateString.append(std::string("& client amount: "));
+      stateString.append(std::string("\nim host, my client amount: "));
       stateString.append(std::to_string(GameClient::connectedClientAmount));
   }
 
   //  stateString.append(std::to_string());
-   stateString.append(std::string("\nim client: "));
-   stateString.append(std::to_string(GameClient::connectedToHost));
+  if(GameClient::connectedToHost)
+   stateString.append(std::string("\nim client."));
 
    for (const NetPlayer& playah : netState.players)
    {

@@ -72,7 +72,14 @@ void GameClient::join()
 		return;
 	}
     // riku "192.168.2.43"), janne .59
-    connectToHost(std::string("localhost"), 50000);
+	// tomi
+	//connectToHost(std::string("192.168.2.26"), 50000);
+	// rike
+	//connectToHost(std::string("192.168.2.43"), 50000));
+	//janne
+	//connectToHost(std::string("192.168.2.59"), 50000));
+	// koti
+	connectToHost(std::string("localhost"), 50000);
     
 }
 
@@ -318,12 +325,11 @@ void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 	while (accept)
 	{
 		sf::TcpSocket& socket = sockets[clientAmount];
-		if (listener.accept(socket) != sf::Socket::Done)
+		sf::Socket::Status status = listener.accept(socket);
+	
+		if(status == sf::Socket::Done)
 		{
-			printf("but I failed to listen my friends :(\n");
-		}
-		else
-		{
+			sockets[clientAmount].setBlocking(false);
 			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket.getRemoteAddress().toString().c_str());
 			GameClient::gameNetState.players.push_back(NetPlayer(clientAmount));
 			sf::Packet positionPacket;
@@ -348,10 +354,6 @@ void GameClient::startAcceptingConnections(unsigned short port)
 	imHost = true;
 	acceptingConnections = true;
 	gameNetState.players.push_back(NetPlayer(99));
-	for (unsigned i = 0; i < 8; i++)
-	{
-		sockets[i].setBlocking(false);
-	}
 	myPlayerId = 0u;
 	acceptConnectionsThread = new std::thread(listenerThread, port, std::ref(acceptingConnections), std::ref(connectedClientAmount));
 }
