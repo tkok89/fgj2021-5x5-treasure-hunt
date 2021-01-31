@@ -42,7 +42,7 @@ void Game::update(sf::Time elapsedTime)
     if(activePlayer != nullptr){
         Player p = setActivePlayerIndex(activePlayer->id);
         activePlayer->position = sf::Vector2f(p.posX, p.posX);
-        activePlayer->velocity = sf::Vector2f(p.velocityX, p.velocityY);§
+        activePlayer->velocity = sf::Vector2f(p.velocityX, p.velocityY);
     
         GameNetState state = GameClient::gameNetState;
         if(state.unread){
