@@ -8,7 +8,7 @@ uniform float maxStepLength;
 
 bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos)
 {
-	const float epsilon = 0.0001;
+	const float epsilon = 0.00001;
 
 	float minStep = 3;
 	curPos = fromPos;
@@ -21,7 +21,6 @@ bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos)
 
 		if (length(toPos - curPos) < epsilon || dot(normalize(toPos - curPos), rayDir) < 0)
 		{
-			// Reached target
 			return true;
 		}
 
@@ -44,15 +43,15 @@ void main()
 	vec4 mapPx = texture2D(mapTex, uv);
 
 	vec2 hitPos;
-	bool hit = raymarch(playerPos, uv, hitPos);
+	bool reached = raymarch(playerPos, uv, hitPos);
 
-	float light = 1;
-	if (hit)
+	float light = 0;
+	if (reached)
 	{
-		light = 0;
+		light = 1;
 	}
 
-	vec4 colorOut = vec4(light, texture2D(mapSDFTex, playerPos).x, mapPx.r, 1);
+	vec4 colorOut = mapPx * vec4(vec3(light), 1); //vec4(light, texture2D(mapSDFTex, playerPos).x, mapPx.r, 1);
 
 	gl_FragColor =  colorOut;
 }
