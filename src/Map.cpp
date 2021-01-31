@@ -308,6 +308,21 @@ void Map::draw()
 	if (Game::showDebugText)
 		drawColor(mousePos, Map::getColor(worldMouse));
 
+	if (Game::showDebugText)
+	{
+		sf::Vector2f collision = Map::nearestCollision(worldMouse);
+		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
+		if (collision.x > -200 && collision.y > -200)
+		{
+			drawColor(collisionOnScreen, sf::Color::Red);
+			GuiRendering::line(mousePos.x, mousePos.y, collisionOnScreen.x, collisionOnScreen.y);
+
+			sf::Vector2f d = collisionOnScreen - mousePos;
+			float r = sqrtf(d.x * d.x + d.y * d.y);
+			GuiRendering::circle(mousePos.x, mousePos.y, r);
+		}
+	}
+
     if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestCollectible(worldMouse).pos;
@@ -323,7 +338,6 @@ void Map::draw()
 		}
 	}
 
-    
     if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestShop(worldMouse);
@@ -345,11 +359,11 @@ static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image
 	sf::Vector2i center = worldToMapPos(pos);
 	int nearestDist = 1000000;
 	sf::Vector2i nearest(-10000, -10000);
-	int size = 101;
-	for (int i = 0; i < size * size; ++i)
+	int kernelSize = 25;
+	for (int i = 0; i < kernelSize * kernelSize; ++i)
 	{
-		int ix = (i % size) - size / 2;
-		int iy = (i / size) - size / 2;
+		int ix = (i % kernelSize) - kernelSize / 2;
+		int iy = (i / kernelSize) - kernelSize / 2;
 		int dist = ix * ix + iy * iy;
 		if (dist >= nearestDist)
 			continue;
