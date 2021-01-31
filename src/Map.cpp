@@ -31,10 +31,9 @@ static int min(int a, int b)
 	return a < b ? a : b;
 }
 
-static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image)
+static float findDistanceToEdge(sf::Vector2i pos, sf::Image &image)
 {
-	if (image.getPixel(pos.x, pos.y) == wallColor)
-		return sf::Vector2i(int(pos.x), int(pos.y));
+	const bool findWalls = image.getPixel(pos.x, pos.y) != wallColor;
 
 	int nearestDist = 1000000;
 	sf::Vector2i nearest(-1, -1);
@@ -53,7 +52,8 @@ static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image)
 			continue;
 
 		sf::Color c = image.getPixel(x, y);
-		if (c != wallColor)
+		bool isWall = (c == wallColor);
+		if (isWall != findWalls)
 			continue;
 
 		nearestDist = dist;
@@ -62,7 +62,11 @@ static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image)
 		continue;
 	}
 
-	return nearest;
+	if (nearest.x == -1)
+		return findWalls ? 1000.0f : -1000.0f;
+
+	const float result = sqrtf(nearestDist);
+	return findWalls ? result : -result;
 }
 
 sf::Image generateSDF(sf::Image image)
@@ -77,7 +81,7 @@ sf::Image generateSDF(sf::Image image)
 	std::cout << "Generating sdf." << std::endl;
 	sdf = image;
 
-	float maxLength = ((kernelSize + 3) / 2) * sqrtf(2.f);
+	const float maxLength = float(kernelSize) / 2.0f;
 
 	for (uint32_t y = 0; y < image.getSize().y; ++y)
 	{
@@ -87,36 +91,17 @@ sf::Image generateSDF(sf::Image image)
 		for (uint32_t x = 0; x < image.getSize().x; ++x)
 		{
 			sf::Vector2i pos((int)x, (int)y);
-			sf::Vector2i nearest = nearestEdgePoint(pos, image);
-			float lengthNorm = 1.0f;
-			if (nearest.x == pos.x && nearest.y == pos.y)
-			{
-				lengthNorm = 0;
-			}
-			else if (nearest.x == -1)
-			{
-				lengthNorm = 1;
-			}
-			else
-			{
-				sf::Vector2i diff;
-				diff.x = int(nearest.x) - int(pos.x);
-				diff.y = int(nearest.y) - int(pos.y);
-				float length = sqrtf(float(diff.x * diff.x + diff.y * diff.y));
-				lengthNorm = length / maxLength;
-				assert(lengthNorm > 0 && lengthNorm <= 1.0f);
-			}
+			const float length = findDistanceToEdge(pos, image);
+			const bool negative = length < 0;
+			const float absLength = negative ? -length : length;
+			const float absLengthNorm = (absLength < maxLength) ? absLength / maxLength : 1.0f;
+			const float lengthNorm = negative ? -absLengthNorm : absLengthNorm;
 
-			sdf.setPixel(
-				x,
-				y,
-				sf::Color(
-					(uint8_t)(lengthNorm * 255),
-					(uint8_t)(lengthNorm * 255),
-					(uint8_t)(lengthNorm * 255),
-					255
-				)
-			);
+			const float value = 127 + lengthNorm * 127;
+			const uint8_t valueU8 = uint8_t(value);
+			assert(127 + lengthNorm * 127 >= 0 && 127 + lengthNorm * 127 < 255);
+
+			sdf.setPixel(x, y, sf::Color(valueU8, valueU8, valueU8, 255));
 		}
 	}
 
