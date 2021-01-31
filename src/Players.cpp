@@ -166,7 +166,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
 
     float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
     float debugH = 0;
-    if(distanceToNearestTreasure < laser.range){
+    if(distanceToNearestTreasure < laser.range && ownPlayer){
         // start the drill
         float t = 1 - distanceToNearestTreasure / laser.range;
         float power = lerp(laser.startPower, laser.maxPower, t) * deltaTime;
@@ -248,7 +248,7 @@ void Player::drawPlayer(bool debug, bool own){
     
     float playerSizeOnScreen  = Camera::worldToScreenSize(sf::Vector2f(size,size)).x;
     GuiRendering::image(own ? &Resources::getResources().getPlayerTexture(index, direction)
-                        : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
+                        : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX - 0.5f * size, posY - 0.5f * size), playerSizeOnScreen, playerSizeOnScreen);
     
     //check if any world object is nearby
     Treasure *nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(posX, posY));
