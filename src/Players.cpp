@@ -170,6 +170,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         if(nearestTreasure.health < 0){
             myTreasures[treasureCount].item = nearestTreasure.item;
             myTreasures[treasureCount].pos = nearestTreasure.pos;
+            myTreasures[treasureCount].id = nearestTreasure.id;
             treasureCount++;
             treasureMaxDistance = 1 - 0.5f * (treasureCount/25);
             score++;

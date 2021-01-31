@@ -220,6 +220,15 @@ void GameClient::updateTreasure(sf::Uint8 treasureId, ItemState state, sf::Vecto
 		{
 			netTreasure.position = position;
 			netTreasure.itemState = state;
+
+			if (state == ItemState::Carried)
+			{
+				NetPlayer* playah = getMyPlayer();
+				if (playah)
+				{
+					playah->colledtedTreasures.push_back(netTreasure.id);
+				}
+			}
 			return;
 		}
 	}

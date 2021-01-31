@@ -41,6 +41,7 @@ private:
     struct PlayerTreasure{
         Item item;
         sf::Vector2f pos;
+        sf::Uint8 id;
     };
     // my treasures
     int treasureCount = 0;
