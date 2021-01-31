@@ -16,7 +16,7 @@ int main()
     std::cout << "Using OpenGL " << g_window->getSettings().majorVersion << "." << g_window->getSettings().minorVersion << std::endl;
     
     
-	window.setKeyRepeatEnabled(false);
+	window.setKeyRepeatEnabled(true);
 	window.setFramerateLimit(60);
 
 	Game game;
@@ -34,6 +34,9 @@ int main()
                 window.close();
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
                  Game::showDebugText = !Game::showDebugText;
+
+			if (event.type == sf::Event::TextEntered)
+				Game::textInput(event.text.unicode);
 
 			if (event.type == sf::Event::EventType::Resized)
 			{

@@ -17,6 +17,7 @@
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
 sf::Time syncCycle = sf::seconds(0.1f);
+std::string g_currentTextInput;
 bool Game::showDebugText = false;
 Game::Game()
 {
@@ -91,6 +92,25 @@ void Game::update(sf::Time elapsedTime)
 	}
 }
 
+void Game::textInput(sf::Uint32 unicode)
+{
+    if (unicode == 8) // backspace
+    {
+        while (g_currentTextInput.length() > 0 && (g_currentTextInput.back() & 0b11000000) == 0b10000000)
+        {
+            g_currentTextInput.resize(g_currentTextInput.length() - 1u, ' ');
+        }
+
+        if (g_currentTextInput.length() > 0)
+            g_currentTextInput.resize(g_currentTextInput.length() - 1u, ' ');
+
+        return;
+    }
+
+    sf::String string(unicode);
+    g_currentTextInput += string;
+}
+
 static  std::string stateString;
 void printfHorrorString()
 {
@@ -157,6 +177,9 @@ void Game::draw(sf::RenderWindow& window)
 			GuiRendering::text("_o_", 0.02f, playah.position.x, playah.position.y);
 		}
 	}
+
+    if (showDebugText)
+        GuiRendering::text(g_currentTextInput.c_str(), 0.02f, 0, 0);
 
 	SfmlGuiRendering::flush(window);
 }

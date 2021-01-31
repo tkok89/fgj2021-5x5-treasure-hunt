@@ -2,9 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
+#include <string>
 #include "Map.h"
 
 extern sf::Vector2f g_resolution;
+extern std::string g_currentTextInput;
 
 class Game
 {
@@ -16,7 +18,9 @@ public:
 	void draw(sf::RenderWindow& window);
 	void gui(sf::RenderWindow& window);
 
-	void setMovement(sf::Vector2i direction);
+	static void textInput(sf::Uint32 unicode);
+	
+
 
 	static sf::String getName()
 	{
