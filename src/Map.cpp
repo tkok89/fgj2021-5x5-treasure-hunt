@@ -63,7 +63,15 @@ static sf::Vector2i nearestEdgePoint(sf::Vector2u pos, sf::Image &image, size_t 
 
 sf::Image generateSDF(sf::Image image)
 {
-	sf::Image sdf(image);
+	sf::Image sdf;
+	if (sdf.loadFromFile(Resources::getResourcePath("assets/sdf.png")))
+	{
+		std::cout << "Sdf loaded from cache." << std::endl;
+		return sdf;
+	}
+
+	std::cout << "Generating sdf." << std::endl;
+	sdf = image;
 
 	uint32_t kernelSize = 21;
 	float maxLength = ((kernelSize + 3) / 2) * sqrtf(2.f);
@@ -108,7 +116,12 @@ sf::Image generateSDF(sf::Image image)
 		}
 	}
 
-	std::cout << "generate SDF done" << std::endl;
+	bool success = sdf.saveToFile(Resources::getResourcePath("assets/sdf.png"));
+	if (!success)
+		std::cerr << "generate SDF done. Failed to save. :(" << std::endl;
+	else
+		std::cout << "generate SDF done. Cached." << std::endl;
+
 	return sdf;
 }
 
