@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <iostream>
 #include "Game.h"
+#include "Players.hpp"
 
 
 Map *g_map = nullptr;
@@ -18,6 +19,7 @@ namespace
 {
 
 static const sf::Color wallColor { 0xb9, 0x7a, 0x57, 0xFF };
+static const int kernelSize = 128;
 
 static int max(int a, int b)
 {
@@ -29,7 +31,7 @@ static int min(int a, int b)
 	return a < b ? a : b;
 }
 
-static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image, int kernelSize = 101)
+static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image)
 {
 	if (image.getPixel(pos.x, pos.y) == wallColor)
 		return sf::Vector2i(int(pos.x), int(pos.y));
@@ -75,7 +77,6 @@ sf::Image generateSDF(sf::Image image)
 	std::cout << "Generating sdf." << std::endl;
 	sdf = image;
 
-	uint32_t kernelSize = 128;
 	float maxLength = ((kernelSize + 3) / 2) * sqrtf(2.f);
 
 	for (uint32_t y = 0; y < image.getSize().y; ++y)
@@ -86,7 +87,7 @@ sf::Image generateSDF(sf::Image image)
 		for (uint32_t x = 0; x < image.getSize().x; ++x)
 		{
 			sf::Vector2i pos((int)x, (int)y);
-			sf::Vector2i nearest = nearestEdgePoint(pos, image, kernelSize);
+			sf::Vector2i nearest = nearestEdgePoint(pos, image);
 			float lengthNorm = 1.0f;
 			if (nearest.x == pos.x && nearest.y == pos.y)
 			{
@@ -287,9 +288,24 @@ void Map::draw()
 
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
+
+	sf::Vector2i playerPosInMapI = worldToMapPos(sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY));
+	sf::Vector2f playerPosInMapNorm(
+		float(playerPosInMapI.x) / float(image.getSize().x),
+		float(playerPosInMapI.y) / float(image.getSize().y)
+	);
+
+	float maxStepLength = (float)kernelSize / (float)mapSDFTexture.getSize().x;
+
+	//std::cout << playerPosInMapNorm.x << ", " << playerPosInMapNorm.y << std::endl;
 	
 	mapVisShader->setUniform("mapTex", texture);
 	mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
+	mapVisShader->setUniform("playerPos", playerPosInMapNorm);
+	mapVisShader->setUniform("maxStepLength", maxStepLength);
+
+	//std::cout << "max step length " << maxStepLength << std::endl;
+
 	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
 	
 	renderItems();
