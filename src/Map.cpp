@@ -252,43 +252,35 @@ static void drawColor(sf::Vector2f p, sf::Color c)
 
 static void renderItems()
 {
+    // Draw map
 	{
 		sf::Vector2f s = Camera::worldToScreenSize(itemSize) * 4.0f;
 		sf::Vector2f p = Camera::worldToScreenPos(Map::getShopPos()) - s * 0.5f;
 		GuiRendering::image(&Resources::getShopTexture(), p - sf::Vector2f(0, s.y * 0.33f), s.x, s.y);
 	}
 
-
 	sf::Vector2f s = Camera::worldToScreenSize(itemSize);
 	for (const Treasure &treasure : g_map->treasures)
 	{
-		sf::Vector2f p = Camera::worldToScreenPos(treasure.pos - itemSize * 0.5f);
+        
+        auto pos = treasure.pos - itemSize * 0.5f;
+		sf::Vector2f p = Camera::worldToScreenPos(pos);
 		GuiRendering::image(&Resources::getItemTexture(treasure.item), p, s.x, s.y);
+        
+        // Health
+        float t = treasure.health / maxHealth;
+        
+        if(t > 0.99f) continue;
+        float h = 0.2   3f;
+        pos.y -= itemSize.y * 0.6f - h;
+        sf::Vector2f hPos = Camera::worldToScreenPos(pos);
+        GuiRendering::image(&Resources::getResources().healthBack, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x, h)));
+        GuiRendering::image(&Resources::getResources().healthFront, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x*t, h)));
 	}
 }
 
 void Map::draw()
 {
-	sf::Vector2f cameraPos = Camera::getCameraPos();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-	{
-		sf::Vector2f hackOffset(0, 0);
-
-		sf::Time elapsedTime = sf::seconds(1.0f / 60.0f);
-		float cameraSpeed = 10.0f;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			hackOffset.x -= elapsedTime.asSeconds() * cameraSpeed;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			hackOffset.x += elapsedTime.asSeconds() * cameraSpeed;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			hackOffset.y -= elapsedTime.asSeconds() * cameraSpeed;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			hackOffset.y += elapsedTime.asSeconds() * cameraSpeed;
-
-		Camera::setCameraPos(cameraPos + hackOffset);
-	}
-
 	float r = g_resolution.x / g_resolution.y;
 	GuiRendering::pushClipRect(-0.5f * r, -0.5f, r, 1.0f);
 

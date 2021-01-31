@@ -7,6 +7,7 @@
 
 const sf::Vector2f mapSize(100, 100);
 const sf::Vector2f topLeft = mapSize * -0.5f;
+const float maxHealth = 1024;
 
 enum class Item : sf::Uint8
 {
@@ -32,7 +33,7 @@ struct Treasure
 {
 	Item item;
 	sf::Vector2f pos;
-    float health = 1024;
+    float health = maxHealth;
 };
 
 struct Map

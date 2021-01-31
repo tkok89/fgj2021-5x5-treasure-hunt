@@ -62,7 +62,9 @@ struct Resources
 		return resources;
 	}
 
-	sf::Texture placeholder;
+    sf::Texture placeholder;
+    sf::Texture healthFront;
+    sf::Texture healthBack;
     sf::Texture playerTextures[4];
     sf::Texture friendTextures[4];
 	sf::Font font;

@@ -128,6 +128,11 @@ void GuiRendering::image(const void *imagePtr, sf::Vector2f position, float w, f
     image(imagePtr, position.x, position.y, w, h);
 }
 
+void GuiRendering::image(const void *imagePtr, sf::Vector2f position, sf::Vector2f size)
+{
+    image(imagePtr, position.x, position.y, size.x, size.y);
+}
+
 void GuiRendering::line(float x0, float y0, float x1, float y1)
 {
 	GuiRenderInfo guiRenderInfo;

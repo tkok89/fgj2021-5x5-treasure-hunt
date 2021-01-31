@@ -53,6 +53,12 @@ Resources::Resources()
     assert(success);
     success = friendTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath(("assets/" + friendName + "_front.png").c_str()));
     assert(success);
+    
+    // Health
+    success = healthBack.loadFromFile(getResourcePath("assets/health_back.png"));
+    assert(success);
+    success = healthFront.loadFromFile(getResourcePath("assets/health.png"));
+    assert(success);
 
 
     mapName = getResourcePath("assets/map.png");
