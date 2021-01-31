@@ -76,7 +76,7 @@ void GuiRendering::text(const char *text, float fontHeight, float x, float y)
     render(guiRenderInfo);
 }
 
-void GuiRendering::text(const std::string textString, float fontHeight, float x, float y)
+void GuiRendering::text(const std::string &textString, float fontHeight, float x, float y)
 {
     text(textString.c_str(), fontHeight, x,y);
 }

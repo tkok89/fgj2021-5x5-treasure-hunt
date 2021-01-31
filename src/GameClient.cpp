@@ -72,7 +72,7 @@ void GameClient::join()
 		return;
 	}
 
-	connectToHost(std::string("192.168.2.26"), 50000);
+	connectToHost(std::string("localhost"), 50000);
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
@@ -301,7 +301,6 @@ void GameClient::connectToHost(std::string ip, unsigned short port)
 	if (status != sf::Socket::Done)
 	{
 		printf("failed, error code %u :(\n", status);
-
 		/* 
 		Done,         ///< The socket has sent / received the data
         NotReady,     ///< The socket is not ready to send / receive data yet

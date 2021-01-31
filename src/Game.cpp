@@ -88,6 +88,45 @@ void Game::update(sf::Time elapsedTime)
 	}
 }
 
+static  std::string stateString;
+void printfHorrorString()
+{
+  GameNetState& netState = GameClient::getClient().gameNetState;
+  stateString.clear();
+  stateString.append(std::string("playerAmount: "));
+  stateString.append(std::to_string(netState.players.size()));
+
+  stateString.append(std::string("\nim host: "));
+  stateString.append(std::to_string(GameClient::imHost));
+  if (GameClient::imHost)
+  {
+      stateString.append(std::string("muh clients: "));
+      stateString.append(std::to_string(GameClient::connectedClientAmount));
+  }
+
+  //  stateString.append(std::to_string());
+   stateString.append(std::string("\nim client: "));
+   stateString.append(std::to_string(GameClient::connectedToHost));
+
+   for (const NetPlayer& playah : netState.players)
+   {
+       stateString.append(std::string("\n id #"));
+       stateString.append(std::to_string(playah.id));
+       if (playah.id == GameClient::myPlayerId)
+           stateString.append(std::string(" (me!)"));
+       stateString.append(std::string("\n\tpos: \t("));
+       stateString.append(std::to_string(playah.position.x));
+       stateString.append(std::string(", "));
+       stateString.append(std::to_string(playah.position.y));
+       stateString.append(std::string("\n\tvel: \t("));
+       stateString.append(std::to_string(playah.velocity.x));
+       stateString.append(std::string(", "));
+       stateString.append(std::to_string(playah.velocity.y));
+       stateString.append(std::string(")\n "));
+   }
+   GuiRendering::text(stateString, 0.02f, 0.4, -0.3);
+}
+
 void Game::draw(sf::RenderWindow& window)
 {
 	GuiRendering::startThread();
@@ -101,6 +140,11 @@ void Game::draw(sf::RenderWindow& window)
     drawPlayers(showDebugText);
     if(showDebugText)
         GuiRendering::text(debugText, 0.02f, -0.5, -0.5);
+
+    if (showDebugText)
+    {
+        printfHorrorString();
+    }
 
 	if (GameClient::connectedClientAmount != 0 || GameClient::connectedToHost)
 	{
