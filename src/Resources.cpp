@@ -59,7 +59,7 @@ Resources::Resources()
     assert(success);
     success = healthFront.loadFromFile(getResourcePath("assets/health.png"));
     assert(success);
-    success = rock.loadFromFile(getResourcePath("assets/rock.png"));
+    success = rock.loadFromFile(getResourcePath("assets/rocks.png"));
     assert(success);
 
 
