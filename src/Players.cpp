@@ -126,11 +126,11 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         newPosX = Map::getShopPos().x;
         newPosY = Map::getShopPos().y;
     }
-    else if(distance < 0.5f * size){
+    else if(distance < 0.5f * colliderSizeMultiplier * size){
         // Collision omg
         velocityX = 0;
         velocityY = 0;
-        sf::Vector2f newGoodPosition = sf::Vector2f(newPosX, newPosY) - (size * 0.5f - distance) * (direction / distance);
+        sf::Vector2f newGoodPosition = sf::Vector2f(newPosX, newPosY) - (colliderSizeMultiplier * size * 0.5f - distance) * (direction / distance);
         newPosY = newGoodPosition.y;
         newPosX = newGoodPosition.x;
     }

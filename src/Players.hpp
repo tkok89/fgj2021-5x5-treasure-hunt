@@ -22,7 +22,8 @@ struct Player {
     void updatePlayer(float deltaTime, bool ownPlayer);
     void drawPlayer(bool debug, bool own);
 private:
-    float size = 0.9151287f;
+    float size = 1.0001f;
+    float colliderSizeMultiplier = 0.8151287f;
     float closestEver = 100.001f;
 };
 
