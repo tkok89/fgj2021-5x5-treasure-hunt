@@ -99,6 +99,11 @@ sf::Packet& operator <<(sf::Packet& packet, const GameNetState& state)
 	packet << sf::Uint8(state.players.size());
 	for (NetPlayer player : state.players)
 		packet << player.position << player.velocity << player.id << player.score;
+
+	packet << sf::Uint8(state.treasures.size());
+	for (NetTreasure treasure : state.treasures)
+		packet << treasure.position << sf::Uint8(treasure.itemType) << sf::Uint8(treasure.itemState) << treasure.id;
+
 	return packet;
 }
 
@@ -115,6 +120,22 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 		packet >> player.position >> player.velocity >> player.id >> player.score;
 		state.players.push_back(player);
 	}
+	
+	sf::Uint8 treasureAmount;
+	packet >> treasureAmount;
+
+	for (sf::Uint8 number = 0; number < treasureAmount; number++)
+	{
+		NetTreasure treasure;
+		sf::Uint8 type;
+		sf::Uint8 itemState;
+		packet >> treasure.position >> type >> itemState >> treasure.id;
+		treasure.itemState = ItemState(itemState);
+		treasure.itemType = Item(type);
+		state.treasures.push_back(treasure);
+	}
+
+
 	return packet;
 }
 
@@ -146,6 +167,35 @@ void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f
 
 		}
 	}
+}
+
+void GameClient::updateTreasure(sf::Uint8 treasureId, ItemState state, sf::Vector2f position)
+{
+	for (NetTreasure& netTreasure : gameNetState.treasures)
+	{
+		if (treasureId == netTreasure.id)
+		{
+			netTreasure.position = position;
+			netTreasure.itemState = state;
+			return;
+		}
+	}
+}
+
+void GameClient::heyIChangedTreasure(sf::Uint8 treasureId, sf::Vector2f position, ItemState state)
+{
+	if (imHost)
+	{
+		updateTreasure(treasureId, state, position);
+		return;
+	}
+	sf::Packet treasurePacket;
+	treasurePacket << PacketUpdateTreasure;
+	treasurePacket << treasureId;
+	treasurePacket << sf::Uint8(state);
+	treasurePacket << position;
+
+	clientSocket.send(treasurePacket);
 }
 
 // Client -> host
@@ -232,6 +282,17 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
         receivedPacket >> score;
 		updatePlayerPositionAndVelocity(socketIndex, position, velocity, score);
 		break;
+	}
+	case PacketUpdateTreasure:
+	{
+		sf::Uint8 treasureId;
+		sf::Uint8 treasureState;
+		sf::Vector2f treasurePosition;
+		
+		receivedPacket >> treasureId;
+		receivedPacket >> treasureState;
+		receivedPacket >> treasurePosition;
+		updateTreasure(treasureId, ItemState(treasureState), treasurePosition);
 	}
 	case PacketKnowYourself:
 	{

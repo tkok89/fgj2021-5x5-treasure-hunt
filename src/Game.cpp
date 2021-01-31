@@ -123,7 +123,7 @@ void printfHorrorString()
   stateString.append(std::to_string(GameClient::imHost));
   if (GameClient::imHost)
   {
-      stateString.append(std::string("muh clients: "));
+      stateString.append(std::string("& client amount: "));
       stateString.append(std::to_string(GameClient::connectedClientAmount));
   }
 
@@ -137,11 +137,11 @@ void printfHorrorString()
        stateString.append(std::to_string(playah.id));
        if (playah.id == GameClient::myPlayerId)
            stateString.append(std::string(" (me!)"));
-       stateString.append(std::string("\n\tpos: \t("));
+       stateString.append(std::string("\n\tpos:\t("));
        stateString.append(std::to_string(playah.position.x));
        stateString.append(std::string(", "));
        stateString.append(std::to_string(playah.position.y));
-       stateString.append(std::string("\n\tvel: \t("));
+       stateString.append(std::string(")\n\tvel: \t("));
        stateString.append(std::to_string(playah.velocity.x));
        stateString.append(std::string(", "));
        stateString.append(std::to_string(playah.velocity.y));

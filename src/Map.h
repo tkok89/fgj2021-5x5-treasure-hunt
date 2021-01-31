@@ -8,7 +8,7 @@
 const sf::Vector2f mapSize(100, 100);
 const sf::Vector2f topLeft = mapSize * -0.5f;
 
-enum class Item
+enum class Item : sf::Uint8
 {
 	JewelS,
 	JewelM,
@@ -16,6 +16,16 @@ enum class Item
 	Dynamite,
 	AfrikanTahti,
 };
+
+enum class ItemState : sf::Uint8
+{
+	// muokatkaa/tehk‰‰ jotai n‰il lol, synkkaan n‰‰ t vesa
+	OnWorld,
+	Carried,
+	Usable
+};
+
+
 
 struct Treasure
 {
