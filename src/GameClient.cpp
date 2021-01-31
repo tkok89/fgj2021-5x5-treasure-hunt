@@ -121,7 +121,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 void GameClient::updateGameState(GameNetState state)
 {
 	gameNetState = state;
-
+	gameNetState.unread = true;
 	unsigned short numberOfPlayer = 0u;
 
 	for (NetPlayer& player : state.players)
@@ -133,6 +133,7 @@ void GameClient::updateGameState(GameNetState state)
 // host received 
 void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity)
 {
+	gameNetState.unread = true;
 	for (NetPlayer &playah : gameNetState.players)
 	{
 		if (playah.socketIndex == socketIndex)

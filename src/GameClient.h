@@ -17,6 +17,7 @@ struct NetPlayer
 // The most current server state.
 struct GameNetState
 {
+	bool unread = false;
 	std::vector<NetPlayer> players;
 };
 
