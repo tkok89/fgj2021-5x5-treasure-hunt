@@ -160,11 +160,17 @@ std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const
     auto getPath = [](MusicResourceName name) {
         switch (name)
         {
-        case MusicResourceName::thebiisi:
+            case MusicResourceName::thebiisi:
             return getResourcePath("assets/music/thebiisi.ogg");
 
-        case MusicResourceName::pimpom:
+            case MusicResourceName::pimpom:
             return getResourcePath("assets/music/PIMPOM.ogg");
+
+            case MusicResourceName::syntti:
+            return getResourcePath("assets/music/syntti.ogg");
+
+            case MusicResourceName::syntti130:
+            return getResourcePath("assets/music/syntti130bpm.ogg");
         }
     };
 

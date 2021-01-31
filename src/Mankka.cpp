@@ -136,7 +136,7 @@ Mankka::Mankka()
 	// Music envs
 
 	state->musicEnvs = {
-		{ MusicEnvName::ingame, MusicResourceName::pimpom },
+		{ MusicEnvName::ingame, MusicResourceName::syntti130 },
 		{ MusicEnvName::kidutuskammio, MusicResourceName::thebiisi }
 	};
 }
