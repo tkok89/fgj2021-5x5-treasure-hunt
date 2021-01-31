@@ -19,6 +19,7 @@ sf::Clock syncClock;
 sf::Time syncCycle = sf::seconds(0.1f);
 Game::Game()
 {
+    showDebugText = false;
 	m_guiText.setFont(Resources::getResources().font);
     initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
 }

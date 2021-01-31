@@ -8,6 +8,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <random>
 #include <assert.h>
+#include "Game.h"
 
 Map *g_map = nullptr;
 
@@ -69,6 +70,7 @@ void Map::randomize()
 
 	shops.clear();
 
+    if(Game::showDebugText);
 	{
 		std::uniform_real_distribution<float> distribution(0.4f, 0.6f);
 
@@ -162,6 +164,7 @@ void Map::draw()
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
 	drawColor(mousePos, Map::getColor(worldMouse));
 
+    if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestCollectible(worldMouse);
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
@@ -176,6 +179,8 @@ void Map::draw()
 		}
 	}
 
+    
+    if(Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestShop(worldMouse);
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);

@@ -34,7 +34,7 @@ public:
 		g_resolution.y = y;
 	}
     
-    bool showDebugText = false;
+    static bool showDebugText;
 private:
 
 	sf::Text m_guiText;
