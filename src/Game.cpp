@@ -51,6 +51,7 @@ void Game::update(sf::Time elapsedTime)
             {
                 if(player.id != activePlayer->id){
                     Player otherP = getPlayer(player.id);
+                    otherP.activePlayer = true;
                     otherP.posX = player.position.x;
                     otherP.posY = player.position.y;
                     otherP.velocityX = player.velocity.x;

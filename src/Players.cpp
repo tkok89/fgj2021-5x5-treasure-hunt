@@ -59,7 +59,7 @@ void initializePlayers (float startX, float startY) {
 
 void drawPlayers(bool showDebugText){
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
-        players[i].drawPlayer(showDebugText);
+        players[i].drawPlayer(showDebugText, i == ownPlayerId);
     }
 }
 
@@ -142,7 +142,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     " distance " + std::to_string(distance);
 }
 
-void Player::drawPlayer(bool debug){
+void Player::drawPlayer(bool debug, bool own){
     if(!activePlayer) return;
     // what direction
     OrthogonalDirection direction = latestDirection;
@@ -159,7 +159,8 @@ void Player::drawPlayer(bool debug){
     latestDirection = direction;
     
     float playerSizeOnScreen  = Camera::worldToScreenSize(sf::Vector2f(size,size)).x;
-    GuiRendering::image(&Resources::getResources().getPlayerTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
+    GuiRendering::image(own ? &Resources::getResources().getPlayerTexture(index, direction)
+                        : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
     if(debug){
         GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
         sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));

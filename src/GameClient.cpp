@@ -30,7 +30,7 @@ NetPlayer *GameClient::getMyPlayer()
 {
 	for (NetPlayer& playah : GameClient::gameNetState.players)
 	{
-		if (playah.id = myPlayerId)
+		if (playah.id == myPlayerId)
 			return &playah;
 	}
 	return nullptr;

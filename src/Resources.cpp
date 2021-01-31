@@ -33,26 +33,27 @@ Resources::Resources()
     std::uniform_int_distribution<size_t> distribution(0, 100);
     bool useCat = distribution(rng) > 50;
     
-    if(useCat){
-        success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/cat_left.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/cat_back.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/cat_right.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/cat_front.png"));
-        assert(success);
-    }
-    else{
-        success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath("assets/main_character_left.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath("assets/main_character_back.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath("assets/main_character_right.png"));
-        assert(success);
-        success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath("assets/main_character_front.png"));
-        assert(success);
-    }
+    std::string ownName = useCat ?  "cat" : "main_character";
+    std::string friendName = !useCat ?  "cat" : "main_character";
+    
+    success = playerTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath(("assets/" + ownName + "_left.png").c_str()));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath(("assets/" + ownName + "_back.png").c_str()));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath(("assets/" + ownName + "_right.png").c_str()));
+    assert(success);
+    success = playerTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath(("assets/" + ownName + "_front.png").c_str()));
+    assert(success);
+    
+    success = friendTextures[OrthogonalDirection::Left].loadFromFile(getResourcePath(("assets/" + friendName + "_left.png").c_str()));
+    assert(success);
+    success = friendTextures[OrthogonalDirection::Up].loadFromFile(getResourcePath(("assets/" + friendName + "_back.png").c_str()));
+    assert(success);
+    success = friendTextures[OrthogonalDirection::Right].loadFromFile(getResourcePath(("assets/" + friendName + "_right.png").c_str()));
+    assert(success);
+    success = friendTextures[OrthogonalDirection::Down].loadFromFile(getResourcePath(("assets/" + friendName + "_front.png").c_str()));
+    assert(success);
+
 
     mapName = getResourcePath("assets/map.png");
 
@@ -130,6 +131,10 @@ Resources::Resources()
 
 sf::Texture& Resources::getPlayerTexture(int pIndex, OrthogonalDirection direction){ // 0 left, 1 up, 2 right, 3 down
     return playerTextures[direction];
+}
+
+sf::Texture& Resources::getFriendTexture(int pIndex, OrthogonalDirection direction){ // 0 left, 1 up, 2 right, 3 down
+    return friendTextures[direction];
 }
 
 std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const

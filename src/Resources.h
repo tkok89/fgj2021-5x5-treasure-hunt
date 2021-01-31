@@ -62,13 +62,15 @@ struct Resources
 
 	sf::Texture placeholder;
     sf::Texture playerTextures[4];
+    sf::Texture friendTextures[4];
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
 	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
-  sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+    sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+    sf::Texture& getFriendTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
 	std::unique_ptr<sf::Shader> getShader(ShaderResourceName name) const;
 
 	static std::string getResourcePath(const char *assetPath);

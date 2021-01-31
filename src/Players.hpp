@@ -20,7 +20,7 @@ struct Player {
     std::string debugstring;
     OrthogonalDirection latestDirection = OrthogonalDirection::Down;
     void updatePlayer(float deltaTime, bool ownPlayer);
-    void drawPlayer(bool debug);
+    void drawPlayer(bool debug, bool own);
 private:
     float size = 0.9151287f;
     float closestEver = 100.001f;
