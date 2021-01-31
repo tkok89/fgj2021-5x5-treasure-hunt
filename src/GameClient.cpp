@@ -103,8 +103,6 @@ void GameClient::join(std::string ip)
 	}
 
 	connectToHost(ip, 50000);
-
->>>>>>> ec93eb0... gui
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
