@@ -127,6 +127,24 @@ Resources::Resources()
     success = soundEffects[SoundResourceName::togglebutton_2]
         .loadFromFile(getResourcePath("assets/sounds/togglebutton_2.ogg"));
     assert(success);
+
+    success = itemTextures[Item::JewelS].loadFromFile(getResourcePath("assets/jewel_s.png"));
+    assert(success);
+
+    success = itemTextures[Item::JewelM].loadFromFile(getResourcePath("assets/jewel_m.png"));
+    assert(success);
+
+    success = itemTextures[Item::JewelL].loadFromFile(getResourcePath("assets/jewel_l.png"));
+    assert(success);
+
+    success = itemTextures[Item::Dynamite].loadFromFile(getResourcePath("assets/dynamite.png"));
+    assert(success);
+
+    success = itemTextures[Item::AfrikanTahti].loadFromFile(getResourcePath("assets/afrikantahti.png"));
+    assert(success);
+
+    success = shopTexture.loadFromFile(getResourcePath("assets/shop.png"));
+    assert(success);
 }
 
 sf::Texture& Resources::getPlayerTexture(int pIndex, OrthogonalDirection direction){ // 0 left, 1 up, 2 right, 3 down
@@ -177,3 +195,9 @@ std::unique_ptr<sf::Shader> Resources::getShader(ShaderResourceName name) const
 
     return shader;
 }
+
+sf::Texture &Resources::getItemTexture(Item item)
+{
+    return getResources().itemTextures[item];
+}
+

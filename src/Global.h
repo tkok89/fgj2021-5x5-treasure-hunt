@@ -10,6 +10,8 @@ extern sf::Vector2f g_resolution;
 extern Map *g_map;
 sf::Vector2f getMousePos();
 
+const sf::Vector2f itemSize(1, 1);
+
 inline sf::Vector2f lerpVector2f(sf::Vector2f a, sf::Vector2f b, float t){
     assert(a == a);
     assert(b == b);

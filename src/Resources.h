@@ -8,7 +8,7 @@
 #include <SFML/Audio/Music.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/Graphics/Shader.hpp>
-
+#include "Map.h"
 #include "Global.h"
 
 enum class SoundResourceName : uint32_t
@@ -66,12 +66,17 @@ struct Resources
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;
+	std::unordered_map<Item, sf::Texture> itemTextures;
 	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
     sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
     sf::Texture& getFriendTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
 	std::unique_ptr<sf::Shader> getShader(ShaderResourceName name) const;
+	sf::Texture shopTexture;
+
+	static sf::Texture &getItemTexture(Item item);
+	static sf::Texture &getShopTexture() { return getResources().shopTexture; };
 
 	static std::string getResourcePath(const char *assetPath);
 

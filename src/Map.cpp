@@ -191,7 +191,6 @@ void Map::randomize()
 
 	shops.clear();
 
-    if(Game::showDebugText);
 	{
 		std::uniform_real_distribution<float> distribution(0.4f, 0.6f);
 
@@ -201,7 +200,8 @@ void Map::randomize()
 		bool ok = false;
 		for (int retry = 0; retry < 200; ++retry)
 		{
-			sf::Vector2f dist = nearestCollision(p) - p;
+			sf::Vector2f hit = nearestCollision(p);
+			sf::Vector2f dist = hit - p;
 			if (dist.x * dist.x + dist.y * dist.y > 1.0f)
 			{
 				ok = true;
@@ -213,7 +213,7 @@ void Map::randomize()
 		}
 
 		assert(ok);
-		shops.push_back({ topLeft.x + mapSize.x * distribution(rng), topLeft.y + mapSize.y * distribution(rng)});
+		shops.push_back(p);
 	}
 }
 
@@ -248,6 +248,23 @@ static void drawColor(sf::Vector2f p, sf::Color c)
 	GuiRendering::render(guiRenderInfo);
 }
 
+static void renderItems()
+{
+	{
+		sf::Vector2f s = Camera::worldToScreenSize(itemSize) * 4.0f;
+		sf::Vector2f p = Camera::worldToScreenPos(Map::getShopPos()) - s * 0.5f;
+		GuiRendering::image(&Resources::getShopTexture(), p - sf::Vector2f(0, s.y * 0.33f), s.x, s.y);
+	}
+
+
+	sf::Vector2f s = Camera::worldToScreenSize(itemSize);
+	for (const Treasure &treasure : g_map->treasures)
+	{
+		sf::Vector2f p = Camera::worldToScreenPos(treasure.pos - itemSize * 0.5f);
+		GuiRendering::image(&Resources::getItemTexture(treasure.item), p, s.x, s.y);
+	}
+}
+
 void Map::draw()
 {
 	sf::Vector2f cameraPos = Camera::getCameraPos();
@@ -280,11 +297,14 @@ void Map::draw()
 	mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
 	GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
 	
+	renderItems();
+
 	GuiRendering::popClipRect();
 
 	const sf::Vector2f mousePos = getMousePos();
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
-	drawColor(mousePos, Map::getColor(worldMouse));
+	if (Game::showDebugText)
+		drawColor(mousePos, Map::getColor(worldMouse));
 
     if(Game::showDebugText)
 	{
