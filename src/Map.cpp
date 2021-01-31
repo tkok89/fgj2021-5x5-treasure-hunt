@@ -216,8 +216,7 @@ void Map::randomize()
 		assert(ok);
 		shops.push_back(p);
 	}
-	std::vector<NetTreasure> netTreasures;
-
+	
 	sf::Uint8 treasureIdCounter = 0;
 	for (Treasure& treasure : treasures)
 	{
@@ -229,7 +228,7 @@ void Map::randomize()
 		netTreasure.position = treasure.pos;
 		netTreasure.itemType = treasure.item;
 		netTreasure.itemState = ItemState::OnWorld;
-		netTreasures.push_back(netTreasure);
+		GameClient::gameNetState.treasures.push_back(netTreasure);
 	}
 }
 
