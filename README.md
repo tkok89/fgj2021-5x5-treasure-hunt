@@ -5,6 +5,18 @@ A game about friendship and other treasures. You are trying to find the greatest
 Play with Arraw keys. Use mouse to use buttons at top left corner to host, join or single play.
 
 
+# Building on Linux
+Just works I guess
+
+# Building on Windows
+Open "local folder" like a root
+Should notice cmake automatically
+Select from solution Explorer "switch views" > cmake target
+Select ggj21 (executable) Add debug config and add  "currentDir": "${projectDir}" under "configuration" array
+Then select ggj21 (executable) > generate cache
+Then you can select ggj21.exe as a startup item and go on pressing Debug-buttons
+
+
 # Building on a Mac
 
 - You need to install SMFL as a framework as pointed in https://www.sfml-dev.org/tutorials/2.5/start-osx.php
