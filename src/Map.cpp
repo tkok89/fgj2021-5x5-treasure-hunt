@@ -432,8 +432,8 @@ Item Map::pickupNearestCollectible(sf::Vector2f pos)
 	if (treasures.empty())
 		return Item::JewelS;
 
-	float nearestDist = 10000000000.0f;
-	int nearest = 0;
+	float nearestDist = 4.0f;
+	int nearest = -1;
 	for (int i = 0; i < treasures.size(); ++i)
 	{
 		sf::Vector2f diff = treasures[i].pos - pos;
@@ -444,6 +444,9 @@ Item Map::pickupNearestCollectible(sf::Vector2f pos)
 		nearestDist = dist;
 		nearest = i;
 	}
+
+	if (nearest == -1)
+		return Item::JewelS;
 
 	Item result = treasures[nearest].item;
 	treasures.erase(treasures.begin() + nearest);
