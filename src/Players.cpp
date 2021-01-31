@@ -155,7 +155,12 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     " name " + std::to_string(index) +
     " distance " + std::to_string(distance);
     //new position ready, check if any world object is nearby
-    Treasure& nearestTreasure = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
+    Treasure* nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
+    if (!nearestTreasurePtr)
+        return;
+
+    Treasure& nearestTreasure = *nearestTreasurePtr;
+
     float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
     float debugH = 0;
     if(distanceToNearestTreasure < laser.range){
@@ -217,22 +222,33 @@ void Player::drawPlayer(bool debug, bool own){
                         : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
     
     //check if any world object is nearby
-    Treasure nearestTreasure = g_map->nearestCollectible(sf::Vector2f(posX, posY));
-    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(posX, posY) -  nearestTreasure.pos);
-    if(distanceToNearestTreasure < laser.range){
-        // start the drill
-        float t = 1 - distanceToNearestTreasure / laser.range;
-        float power = lerp(laser.startPower, laser.maxPower, t);
-        float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMax, t);
-        for(float f = 0; f < timesPerFrame; ++f ){
-            sf::Vector2f start(posX + (getRandomNormal01() * 2 - 1) * laser.startSize,
-                               posY + (getRandomNormal01() * 2 - 1) * laser.startSize);
-            sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() *2 - 1)*laser.endSize,
-                             nearestTreasure.pos.y + (getRandomNormal01() *2 - 1)*laser.endSize);
-            sf::Vector2f end2(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
-                nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
+    Treasure *nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(posX, posY));
+    if (nearestTreasurePtr)
+    {
+        Treasure& nearestTreasure = *nearestTreasurePtr;
+        float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(posX, posY) - nearestTreasure.pos);
+        if (distanceToNearestTreasure < laser.range) {
+            // start the drill
+            float t = 1 - distanceToNearestTreasure / laser.range;
+            float power = lerp(laser.startPower, laser.maxPower, t);
+            float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMax, t);
+            for (float f = 0; f < timesPerFrame; ++f) {
+                sf::Vector2f start(posX + (getRandomNormal01() * 2 - 1) * laser.startSize,
+                    posY + (getRandomNormal01() * 2 - 1) * laser.startSize);
+                sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
+                    nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
+                sf::Vector2f end2(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
+                    nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
 
-            GuiRendering::triangle(Camera::worldToScreenPos(start), Camera::worldToScreenPos(end), Camera::worldToScreenPos(end2), sf::Color::White);
+                GuiRendering::triangle(Camera::worldToScreenPos(start), Camera::worldToScreenPos(end), Camera::worldToScreenPos(end2), sf::Color::White);
+            }
+        }
+        if(debug){
+            GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
+            sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+            collisionPosition.x += getRandomNormal01();
+            GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
+            GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
         }
     }
     

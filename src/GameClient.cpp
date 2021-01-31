@@ -1,5 +1,5 @@
 #include "GameClient.h"
-
+#include "Global.h"
 sf::TcpSocket sockets[8]
 {
 	sf::TcpSocket(),
@@ -56,6 +56,7 @@ void GameClient::host()
 		printf("Cannot host, already connected to host!\n");
 		return;
 	}
+	
 	startAcceptingConnections(50000);
 }
 
@@ -72,7 +73,7 @@ void GameClient::joinDefault()
 		return;
 	}
 	// tomi
-	connectToHost(std::string("192.168.2.26"), 50000);
+	//connectToHost(std::string("192.168.2.26"), 50000);
 	// rike
 	//connectToHost(std::string("192.168.2.43"), 50000);
     //janne
@@ -80,7 +81,7 @@ void GameClient::joinDefault()
     //vesa
    // connectToHost(std::string("192.168.2.84"), 50000);
 	// koti
-	//connectToHost(std::string("localhost"), 50000);
+	connectToHost(std::string("localhost"), 50000);
 }
 
 void GameClient::join(std::string ip)
@@ -379,6 +380,7 @@ void GameClient::startAcceptingConnections(unsigned short port)
 		return;
 	}
 
+	g_map->randomize();
 	resetState();
 
 	imHost = true;

@@ -10,8 +10,8 @@
 #include <assert.h>
 #include <iostream>
 #include "Game.h"
+#include "GameClient.h"
 #include "Players.hpp"
-
 
 Map *g_map = nullptr;
 
@@ -147,8 +147,6 @@ Map::Map()
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 
 	g_map = this;
-
-	randomize();
 }
 
 void Map::randomize()
@@ -217,6 +215,21 @@ void Map::randomize()
 
 		assert(ok);
 		shops.push_back(p);
+	}
+	std::vector<NetTreasure> netTreasures;
+
+	sf::Uint8 treasureIdCounter = 0;
+	for (Treasure& treasure : treasures)
+	{
+		NetTreasure netTreasure;
+		treasure.id = treasureIdCounter;
+		netTreasure.id = treasureIdCounter;
+		treasureIdCounter++;
+		
+		netTreasure.position = treasure.pos;
+		netTreasure.itemType = treasure.item;
+		netTreasure.itemState = ItemState::OnWorld;
+		netTreasures.push_back(netTreasure);
 	}
 }
 
@@ -333,9 +346,10 @@ void Map::draw()
 		}
 	}
 #endif
-    if(Game::showDebugText)
+	Treasure* treasurePtr = Map::nearestCollectible(worldMouse);
+    if(Game::showDebugText && treasurePtr)
 	{
-		sf::Vector2f collision = Map::nearestCollectible(worldMouse).pos;
+		sf::Vector2f collision = treasurePtr->pos;
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
 		if (collision.x > -200 && collision.y > -200)
 		{
@@ -410,10 +424,10 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 	return nearestColorImpl(pos, wallColor, image, true);
 }
 
-Treasure& Map::nearestCollectible(sf::Vector2f pos)
+Treasure* Map::nearestCollectible(sf::Vector2f pos)
 {
 	float nearestDist = 10000000000.0f;
-    Treasure* nearest;
+    Treasure* nearest = nullptr;
 	for (Treasure& treasure : treasures)
 	{
 		sf::Vector2f diff = treasure.pos - pos;
@@ -425,7 +439,7 @@ Treasure& Map::nearestCollectible(sf::Vector2f pos)
 		nearest = &treasure;
 	}
 
-	return *nearest;
+	return nearest;
 }
 
 sf::Vector2f Map::nearestShop(sf::Vector2f pos)
@@ -467,9 +481,11 @@ Item Map::pickupNearestCollectible(sf::Vector2f pos)
 	if (nearest == -1)
 		return Item::JewelS;
 
-	Item result = treasures[nearest].item;
+	Treasure& treasure = treasures[nearest];
+	
+	GameClient::getClient().heyIChangedTreasure(treasure.id, treasure.pos, ItemState::Carried);
 	treasures.erase(treasures.begin() + nearest);
-	return result;
+	return treasure.item;
 }
 
 sf::Color Map::getColor(sf::Vector2f pos)

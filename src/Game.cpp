@@ -65,7 +65,41 @@ void Game::update(sf::Time elapsedTime)
             state.unread = false;
         }
         
-        
+        // update map
+        for (NetTreasure netTreasure : state.treasures)
+        {
+            if (netTreasure.itemState != ItemState::OnWorld)
+            {
+                for (unsigned i = 0; i < map.treasures.size(); i++)
+                {
+                    if (map.treasures[i].id == netTreasure.id)
+                    {
+                        map.treasures.erase(map.treasures.begin() + i);
+                        // gone, deleted, nada
+                        break;
+                    }
+                }
+                continue;
+            }
+
+            bool found = false;
+            for (Treasure& treasure : map.treasures)
+            {
+                if (treasure.id == netTreasure.id)
+                {
+                    found = true;
+                }
+            }
+
+            if (found == false)
+            {
+                Treasure newlySyncedTreasure;
+                newlySyncedTreasure.id = netTreasure.id;
+                newlySyncedTreasure.item = netTreasure.itemType;
+                newlySyncedTreasure.pos = netTreasure.position;
+                map.treasures.push_back(newlySyncedTreasure);
+            }
+        }
     }
     
 	if (syncClock.getElapsedTime() > syncCycle)
