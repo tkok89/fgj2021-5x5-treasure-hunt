@@ -36,6 +36,13 @@ private:
         const float timesPerFrameMin = 1;
         const float timesPerFrameMax = 10;
     } laser;
+    
+    struct PlayerTreasure{
+        Item item;
+        sf::Vector2f pos;
+    };
+    // my treasures
+    // std::vector<PlayerTreasure> myTreasures = 
 };
 
 void initializePlayers (float startX, float startY);
