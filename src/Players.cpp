@@ -164,22 +164,40 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         float power = lerp(laser.startPower, laser.maxPower, t) * deltaTime;
         nearestTreasure.health -= power;
         if(nearestTreasure.health < 0){
-            Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
-            myTreasures[treasureCount].item = item;
+            myTreasures[treasureCount].item = nearestTreasure.item;
             myTreasures[treasureCount].pos = nearestTreasure.pos;
             treasureCount++;
+            treasureMaxDistance = 1 - 0.5f * (treasureCount/25);
             score++;
+            Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
         }
     }
     // update treasure trail
     sf::Vector2f previous(posX, posY);
     for(int i =  0; i < treasureCount; ++i){
-        //float distanceToPlayer = magnitudeVector2(<#sf::Vector2f vec#>)
+        float distanceToPrevious = magnitudeVector2(myTreasures[i].pos - previous);
+        if(distanceToPrevious > treasureMaxDistance){
+            sf::Vector2f direction = previous - myTreasures[i].pos; // from treasure to "previous" in line
+            sf::Vector2f target = previous - (direction / distanceToPrevious) * treasureMaxDistance;
+            myTreasures[i].pos = lerpVector2f(myTreasures[i].pos, target, 0.15f );
+        }
+        previous = myTreasures[i].pos;
     }
 }
 
 void Player::drawPlayer(bool debug, bool own){
     if(!activePlayer) return;
+    
+    // Draw treasures
+    sf::Vector2f s = Camera::worldToScreenSize(itemSize);
+    for(int i = 0; i < treasureCount; ++i){
+        
+        auto pos = myTreasures[i].pos - itemSize * 0.5f;
+        sf::Vector2f p = Camera::worldToScreenPos(pos);
+        auto img = &Resources::getItemTexture(myTreasures[i].item);
+        GuiRendering::image(img, p, s.x, s.y);
+    }
+    
     // what direction
     OrthogonalDirection direction = latestDirection;
     if(fabs( velocityX) > fabs(velocityY)) {
@@ -217,6 +235,7 @@ void Player::drawPlayer(bool debug, bool own){
             GuiRendering::triangle(Camera::worldToScreenPos(start), Camera::worldToScreenPos(end), Camera::worldToScreenPos(end2), sf::Color::White);
         }
     }
+    
     
     if(debug){
         GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));

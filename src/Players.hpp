@@ -44,6 +44,7 @@ private:
     // my treasures
     int treasureCount = 0;
     PlayerTreasure myTreasures[26];
+    float treasureMaxDistance = 1;
 };
 
 void initializePlayers (float startX, float startY);
