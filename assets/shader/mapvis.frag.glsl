@@ -91,7 +91,7 @@ bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos, out float minStep)
 
 	for (int i = 0; i < 50; ++i)
 	{
-		float stepLength = min(texture2D(mapSDFTex, curPos).x * maxStepLength, maxStepLength);
+		float stepLength = min((texture2D(mapSDFTex, curPos).x - 0.45f) * maxStepLength, maxStepLength);
 		minStep = min(stepLength, minStep);
 
 		if (length(toPos - curPos) < epsilon || dot(normalize(toPos - curPos), rayDir) < 0)
