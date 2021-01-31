@@ -8,17 +8,95 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <random>
 #include <assert.h>
+#include <iostream>
 #include "Game.h"
 
+
 Map *g_map = nullptr;
+
+namespace
+{
+
+static const sf::Color wallColor { 0xb9, 0x7a, 0x57, 0xFF };
+
+static sf::Vector2u nearestEdgePoint(sf::Vector2u pos, sf::Image &image, size_t kernelSize = 101)
+{
+	int nearestDist = 1000000;
+	sf::Vector2u nearest(10000, 10000);
+	for (int i = 0; i < kernelSize * kernelSize; ++i)
+	{
+		int ix = (i % kernelSize) - kernelSize / 2;
+		int iy = (i / kernelSize) - kernelSize / 2;
+		int dist = ix * ix + iy * iy;
+		if (dist >= nearestDist)
+			continue;
+
+		int x = pos.x + ix;
+		int y = pos.y + iy;
+		if (x < 0 || x >= (int)image.getSize().x || y < 0 || y >= (int)image.getSize().y)
+			continue;
+
+		sf::Color c = image.getPixel(x, y);
+		if (c == wallColor)
+		{
+			nearestDist = dist;
+			nearest.x = x;
+			nearest.y = y;
+			continue;
+		}
+	}
+
+	return nearest;
+}
+
+sf::Image generateSDF(sf::Image image)
+{
+	sf::Image sdf(image);
+
+	size_t kernelSize = 101;
+	float maxLength = (kernelSize / 2) * sqrtf(2.f);
+
+	for (size_t y = 0; y < image.getSize().y; ++y)
+	{
+		std::cout << "row: " << y << std::endl;
+
+		for (size_t x = 0; x < image.getSize().x; ++x)
+		{
+			sf::Vector2u pos(x, y);
+			sf::Vector2u nearest = nearestEdgePoint(pos, image, kernelSize);
+
+			float length = sqrtf(nearest.x * nearest.x + nearest.y * nearest.y);
+			float lengthNorm = length / maxLength;
+
+			sdf.setPixel(
+				x,
+				y,
+				sf::Color(
+					(uint8_t)(lengthNorm * 255),
+					(uint8_t)(lengthNorm * 255),
+					(uint8_t)(lengthNorm * 255),
+					255
+				)
+			);
+		}
+	}
+
+	std::cout << "generate SDF done" << std::endl;
+}
+
+}
 
 Map::Map()
 {
 	bool success = image.loadFromFile(Resources::getResources().mapName);
 	assert(success);
 
+	//mapSDFImage = generateSDF(image);
+
 	success = texture.loadFromImage(image);
 	assert(success);
+
+
 
 	mapVisShader = Resources::getResources().getShader(ShaderResourceName::mapVis);
 
@@ -238,8 +316,7 @@ static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image
 
 sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 {
-	sf::Color wall{ 0xb9, 0x7a, 0x57, 0xFF };
-	return nearestColorImpl(pos, wall, image, true);
+	return nearestColorImpl(pos, wallColor, image, true);
 }
 
 sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
