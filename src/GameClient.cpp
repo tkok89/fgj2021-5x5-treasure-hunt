@@ -1,16 +1,7 @@
 #include "GameClient.h"
 #include "Global.h"
-sf::TcpSocket sockets[8]
-{
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket(),
-	sf::TcpSocket()
-};
+
+std::vector<sf::TcpSocket*> sockets;
 
 bool GameClient::imHost = false;
 bool GameClient::connectedToHost = false;
@@ -279,9 +270,9 @@ void GameClient::sendGameState(GameNetState state)
 	sendPacket << PacketUpdateGameState;
 	sendPacket << state;
 
-	for (sf::TcpSocket &socket : sockets)
+	for (sf::TcpSocket *socket : sockets)
 	{
-		socket.send(sendPacket);
+		socket->send(sendPacket);
 	}
 }
 
@@ -300,7 +291,7 @@ void GameClient::update()
 	{
 		for (unsigned i = 0; i < connectedClientAmount; i++)
 		{
-			receivePacket(sockets[i], i);
+			receivePacket(*sockets[i], i);
 		}
 	}
 	else if(connectedToHost)
@@ -377,19 +368,24 @@ void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 	}
 	while (accept)
 	{
-		sf::TcpSocket& socket = sockets[clientAmount];
-		sf::Socket::Status status = listener.accept(socket);
+		sf::TcpSocket *socket = new sf::TcpSocket();
+		sf::Socket::Status status = listener.accept(*socket);
 	
 		if(status == sf::Socket::Done)
 		{
-			sockets[clientAmount].setBlocking(false);
-			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket.getRemoteAddress().toString().c_str());
-			GameClient::gameNetState.players.push_back(NetPlayer(clientAmount));
+			socket->setBlocking(false);
+			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket->getRemoteAddress().toString().c_str());
+			GameClient::gameNetState.players.push_back(NetPlayer(sockets.size()));
 			sf::Packet positionPacket;
 			positionPacket << PacketKnowYourself;
 			positionPacket << GameClient::gameNetState.players.back().id;
-			socket.send(positionPacket);
-			clientAmount++;
+			socket->send(positionPacket);
+			sockets.push_back(socket);
+			clientAmount = sockets.size();
+		}
+		else
+		{
+			delete socket;
 		}
 	}
 }

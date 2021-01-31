@@ -25,6 +25,7 @@ Game::Game()
 	m_guiText.setFont(Resources::getResources().font);
     initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
     timeFromStart.restart();
+    Mankka::getMankka().playMusic(MusicEnvName::ingame);
 }
 
 void Game::update(sf::Time elapsedTime)
