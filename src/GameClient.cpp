@@ -78,7 +78,7 @@ void GameClient::join()
     //janne
     //connectToHost(std::string("192.168.2.59"), 50000);
     //vesa
-    connectToHost(std::string("192.168.2.84"), 50000);
+   // connectToHost(std::string("192.168.2.84"), 50000);
 	// koti
 	//connectToHost(std::string("localhost"), 50000);
     
@@ -268,13 +268,22 @@ void GameClient::update()
 void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 {
 	sf::Packet receivedPacket;
-	socket.receive(receivedPacket);
+	if (socket.receive(receivedPacket) != sf::Socket::Status::Done)
+		return;
+
+	if (receivedPacket.getDataSize() == 0u)
+		return;
+
 	PacketType packetType;
 	receivedPacket >> packetType;
 	switch (packetType)
 	{
 	case PacketUpdateGameState:
 	{
+		if (imHost)
+		{
+			printf("Host updated game state???? socket #%hu send packet, ignoring!\n Packet size %hu", socketIndex, receivedPacket.getDataSize());
+		}
 		GameNetState gameState;
 		receivedPacket >> gameState;
 		updateGameState(gameState);
