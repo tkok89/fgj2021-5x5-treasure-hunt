@@ -10,7 +10,7 @@ void main()
 	vec4 mapPx = texture2D(mapTex, uv);
 	vec4 sdfPx = texture2D(mapSDFTex, uv);
 
-	vec4 colorOut = mapPx * sdfPx;
+	vec4 colorOut = mapPx * vec4(sin(sdfPx.x * ), 0, 0, 0);
 
-	gl_FragColor =  colorOut;//vec4(mapPx.r, mapPx.g, mapPx.b, 1);
+	gl_FragColor =  colorOut;
 }

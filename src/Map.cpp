@@ -29,23 +29,25 @@ static int min(int a, int b)
 	return a < b ? a : b;
 }
 
-static sf::Vector2i nearestEdgePoint(sf::Vector2u pos, sf::Image &image, size_t kernelSize = 101)
+static sf::Vector2i nearestEdgePoint(sf::Vector2i pos, sf::Image &image, int kernelSize = 101)
 {
 	if (image.getPixel(pos.x, pos.y) == wallColor)
 		return sf::Vector2i(int(pos.x), int(pos.y));
 
 	int nearestDist = 1000000;
 	sf::Vector2i nearest(-1, -1);
+
 	int xStart = max(0, pos.x - kernelSize / 2);
 	int xEnd = min(image.getSize().x - 1, pos.x + kernelSize / 2);
 	int yStart = max(0, pos.y - kernelSize / 2);
 	int yEnd = min(image.getSize().y - 1, pos.y + kernelSize / 2);
+	
 	for (int y = yStart; y < yEnd; ++y)
-	for (int x = yEnd; x < xEnd; ++x)
+	for (int x = xStart; x < xEnd; ++x)
 	{
 		sf::Vector2i diff = sf::Vector2i(x - pos.x, y - pos.y);
 		int dist = diff.x * diff.x + diff.y * diff.y;
-		if (dist < nearestDist)
+		if (dist > nearestDist)
 			continue;
 
 		sf::Color c = image.getPixel(x, y);
@@ -73,7 +75,7 @@ sf::Image generateSDF(sf::Image image)
 	std::cout << "Generating sdf." << std::endl;
 	sdf = image;
 
-	uint32_t kernelSize = 21;
+	uint32_t kernelSize = 128;
 	float maxLength = ((kernelSize + 3) / 2) * sqrtf(2.f);
 
 	for (uint32_t y = 0; y < image.getSize().y; ++y)
@@ -83,7 +85,7 @@ sf::Image generateSDF(sf::Image image)
 
 		for (uint32_t x = 0; x < image.getSize().x; ++x)
 		{
-			sf::Vector2u pos(x, y);
+			sf::Vector2i pos((int)x, (int)y);
 			sf::Vector2i nearest = nearestEdgePoint(pos, image, kernelSize);
 			float lengthNorm = 1.0f;
 			if (nearest.x == pos.x && nearest.y == pos.y)
