@@ -66,7 +66,7 @@ int main()
 		const sf::Time elapsedTime = clock.restart();
 		game.update(elapsedTime);
 
-		const sf::Color backgroundColor{ 75, 88, 168 };
+		const sf::Color backgroundColor{ 0, 0, 0, 1 };
 		window.clear(backgroundColor);
 
 		game.draw(window);
