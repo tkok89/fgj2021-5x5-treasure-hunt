@@ -8,6 +8,7 @@ enum class GuiRenderInfoType
 	Text,
 	Line,
 	Circle,
+	Triangle,
 };
 
 struct GuiRenderInfo
@@ -46,6 +47,10 @@ struct GuiRenderInfo
 			{
 				float r, g, b, a;
 			} outlineColor;
+		};
+		struct // Triangle
+		{
+			float x2, y2;
 		};
 	};
 };

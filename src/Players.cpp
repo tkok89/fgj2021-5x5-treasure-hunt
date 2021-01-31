@@ -203,7 +203,10 @@ void Player::drawPlayer(bool debug, bool own){
                                posY + (getRandomNormal01() * 2 - 1) * laser.startSize);
             sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() *2 - 1)*laser.endSize,
                              nearestTreasure.pos.y + (getRandomNormal01() *2 - 1)*laser.endSize);
-            GuiRendering::line(Camera::worldToScreenPos(start),Camera::worldToScreenPos(end));
+            sf::Vector2f end2(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
+                nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
+
+            GuiRendering::triangle(Camera::worldToScreenPos(start), Camera::worldToScreenPos(end), Camera::worldToScreenPos(end2), sf::Color::White);
         }
     }
     

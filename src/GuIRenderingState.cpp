@@ -66,7 +66,10 @@ void GuiRenderingState::pushGuiRenderInfo(GuiRenderInfo i)
 	}
 	else if (i.type == GuiRenderInfoType::Circle)
 	{
-		// TODO: Clipping for lines
+		renderInfos.push_back(i);
+	}
+	else if (i.type == GuiRenderInfoType::Triangle)
+	{
 		renderInfos.push_back(i);
 	}
 }

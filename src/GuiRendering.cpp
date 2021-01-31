@@ -156,6 +156,20 @@ void GuiRendering::circle(float x, float y, float r, bool filled)
 	render(guiRenderInfo);
 }
 
+void GuiRendering::triangle(sf::Vector2f pos0, sf::Vector2f pos1, sf::Vector2f pos2, sf::Color c)
+{
+	GuiRenderInfo guiRenderInfo;
+	guiRenderInfo.type = GuiRenderInfoType::Triangle;
+	guiRenderInfo.x = pos0.x;
+	guiRenderInfo.y = pos0.y;
+	guiRenderInfo.w = pos1.x;
+	guiRenderInfo.h = pos1.y;
+	guiRenderInfo.x2 = pos2.x;
+	guiRenderInfo.y2 = pos2.y;
+	guiRenderInfo.color = { c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, c.a / 255.0f };
+	render(guiRenderInfo);
+}
+
 static bool isActiveThread()
 {
 	return getActiveThreadNumber() == getThreadNumber();
