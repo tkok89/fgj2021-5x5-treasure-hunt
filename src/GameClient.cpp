@@ -325,7 +325,6 @@ void listenerThread(unsigned short port, bool &accept, short &clientAmount)
 		else
 		{
 			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket.getRemoteAddress().toString().c_str());
-			socket.setBlocking(false);
 			GameClient::gameNetState.players.push_back(NetPlayer(clientAmount));
 			sf::Packet positionPacket;
 			positionPacket << PacketKnowYourself;
@@ -349,6 +348,10 @@ void GameClient::startAcceptingConnections(unsigned short port)
 	imHost = true;
 	acceptingConnections = true;
 	gameNetState.players.push_back(NetPlayer(99));
+	for (unsigned i = 0; i < 8; i++)
+	{
+		sockets[i].setBlocking(false);
+	}
 	myPlayerId = 0u;
 	acceptConnectionsThread = new std::thread(listenerThread, port, std::ref(acceptingConnections), std::ref(connectedClientAmount));
 }

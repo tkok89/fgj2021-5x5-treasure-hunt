@@ -297,8 +297,8 @@ void Map::draw()
 
 	const sf::Vector2f mousePos = getMousePos();
 	sf::Vector2f worldMouse = Camera::screenToWorldPos(mousePos);
-	if (Game::showDebugText)
-		drawColor(mousePos, Map::getColor(worldMouse));
+	//if (Game::showDebugText)
+	//	drawColor(mousePos, Map::getColor(worldMouse));
 
 	if (Game::showDebugText)
 	{
