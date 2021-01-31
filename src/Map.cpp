@@ -53,19 +53,19 @@ sf::Image generateSDF(sf::Image image)
 {
 	sf::Image sdf(image);
 
-	size_t kernelSize = 101;
+	uint32_t kernelSize = 101;
 	float maxLength = (kernelSize / 2) * sqrtf(2.f);
 
-	for (size_t y = 0; y < image.getSize().y; ++y)
+	for (uint32_t y = 0; y < image.getSize().y; ++y)
 	{
 		std::cout << "row: " << y << std::endl;
 
-		for (size_t x = 0; x < image.getSize().x; ++x)
+		for (uint32_t x = 0; x < image.getSize().x; ++x)
 		{
 			sf::Vector2u pos(x, y);
 			sf::Vector2u nearest = nearestEdgePoint(pos, image, kernelSize);
 
-			float length = sqrtf(nearest.x * nearest.x + nearest.y * nearest.y);
+			float length = sqrtf(float(nearest.x * nearest.x + nearest.y * nearest.y));
 			float lengthNorm = length / maxLength;
 
 			sdf.setPixel(
@@ -82,6 +82,7 @@ sf::Image generateSDF(sf::Image image)
 	}
 
 	std::cout << "generate SDF done" << std::endl;
+	return sdf;
 }
 
 }
