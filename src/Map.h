@@ -46,7 +46,7 @@ struct Map
 	sf::Vector2f nearestCollision(sf::Vector2f pos);
     Treasure* nearestCollectible(sf::Vector2f pos);
 	sf::Vector2f nearestShop(sf::Vector2f pos);
-	static sf::Vector2f getShopPos() { return g_map->shops.size() == 0 ? sf::Vector2f(0.0f,3.0f) : g_map->shops.front(); }
+	static sf::Vector2f getShopPos() { return g_map->shops.size() == 0 ? sf::Vector2f(-0.15f,7.83f) : g_map->shops.front(); }
     static bool isInMapArea(float x, float y) { return x> topLeft.x && y > topLeft.y && x < topLeft.x + mapSize.x  &&  y < topLeft.y + mapSize.y;}
 	sf::Color getColor(sf::Vector2f pos);
 
