@@ -81,11 +81,11 @@ float simplexNoise2(vec2 v)
   return 1.66666* 70.*dot(m*m, g);
 }
 
-bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos)
+bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos, out float minStep)
 {
 	const float epsilon = 0.00001;
 
-	float minStep = 3;
+	minStep = 3;
 	curPos = fromPos;
 	vec2 rayDir = normalize(toPos - fromPos);
 
@@ -118,13 +118,15 @@ void main()
 	vec4 mapPx = texture2D(mapTex, uv);
 
 	vec2 hitPos;
-	bool reached = raymarch(playerPos, uv, hitPos);
+	float minStep;
+	bool reached = raymarch(playerPos, uv, hitPos, minStep);
 
 	float light = 0;
 	if (reached)
 	{
 		float dist = length(uv - playerPos);
 		light = 1 - dist / 0.1;
+		//light *= min(1, minStep / 0.0001);
 	}
 	
 	float simplex = (simplexNoise2(uv * 512) + 1) / 2;
