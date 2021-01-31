@@ -97,7 +97,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             verticalMove += 1;
-        }
+        }   
         // lerp input
         inputVelocityX = clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
         inputVelocityY = clamp11( lerp(inputVelocityY, verticalMove, inputLerp));

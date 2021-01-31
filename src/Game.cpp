@@ -17,9 +17,9 @@
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
 sf::Time syncCycle = sf::seconds(0.1f);
+bool Game::showDebugText = false;
 Game::Game()
 {
-    showDebugText = false;
 	m_guiText.setFont(Resources::getResources().font);
     initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
 }

@@ -22,7 +22,7 @@ struct Player {
     void updatePlayer(float deltaTime, bool ownPlayer);
     void drawPlayer(bool debug);
 private:
-    float size = 0.951287f;
+    float size = 0.9151287f;
     float closestEver = 100.001f;
 };
 
