@@ -14,6 +14,7 @@
 #include <cmath>
 #include <string>
 #include "Global.h"
+#include <iostream>
 
 namespace
 {
@@ -24,7 +25,7 @@ static const float inputLerp = 0.5f;
 static const float accelerationLerp = 0.5f;
 
 inline float lerp(float a, float b, float t){
-    return a * t + (1 - t) * b;
+    return a * (1-t) + t * b;
 }
 
 inline float distanceXY(float x0, float y0, float x1, float y1){
@@ -149,23 +150,24 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     posX = newPosX;
     posY = newPosY;
     
-    //new position ready, check if any world object is nearby
-    Treasure nearestTreasure = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
-    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
-    if(distanceToNearestTreasure < laser.range){
-        // start the drill
-        float t = 1 - distanceToNearestTreasure / laser.range;
-        float power = lerp(laser.startPower, laser.maxPower, t);
-        nearestTreasure.health -= power;
-        if(nearestTreasure.health < 0){
-            Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
-            // do something
-        }
-    }
     debugstring = "x " + std::to_string(posX) +
     " y " + std::to_string(posY) +
     " name " + std::to_string(index) +
     " distance " + std::to_string(distance);
+    //new position ready, check if any world object is nearby
+    Treasure& nearestTreasure = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
+    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
+    float debugH = 0;
+    if(distanceToNearestTreasure < laser.range){
+        // start the drill
+        float t = 1 - distanceToNearestTreasure / laser.range;
+        float power = lerp(laser.startPower, laser.maxPower, t) * deltaTime;
+        nearestTreasure.health -= power;
+        if(nearestTreasure.health < 0){
+            Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
+            score++;
+        }
+    }
 }
 
 void Player::drawPlayer(bool debug, bool own){
@@ -195,13 +197,13 @@ void Player::drawPlayer(bool debug, bool own){
         // start the drill
         float t = 1 - distanceToNearestTreasure / laser.range;
         float power = lerp(laser.startPower, laser.maxPower, t);
-        float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMin, t);
+        float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMax, t);
         for(float f = 0; f < timesPerFrame; ++f ){
-            sf::Vector2f start(posX + (getRandomNormal01() *2 - 1)*laser.startSize,
-                               posY + (getRandomNormal01() *2 - 1)*laser.startSize);
+            sf::Vector2f start(posX + (getRandomNormal01() * 2 - 1) * laser.startSize,
+                               posY + (getRandomNormal01() * 2 - 1) * laser.startSize);
             sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() *2 - 1)*laser.endSize,
                              nearestTreasure.pos.y + (getRandomNormal01() *2 - 1)*laser.endSize);
-            GuiRendering::line(start,end);
+            GuiRendering::line(Camera::worldToScreenPos(start),Camera::worldToScreenPos(end));
         }
     }
     
@@ -210,5 +212,6 @@ void Player::drawPlayer(bool debug, bool own){
         sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
         collisionPosition.x += getRandomNormal01();
         GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
+        GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
     }
 }
