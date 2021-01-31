@@ -45,4 +45,5 @@ private:
 	Map map;
     float cameraLerpPerSecond = 5;
     std::string debugText;
+    float cameraSize;
 };
