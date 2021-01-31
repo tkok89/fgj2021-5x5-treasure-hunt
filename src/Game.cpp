@@ -63,10 +63,10 @@ void Game::update(sf::Time elapsedTime)
         activePlayer->velocity = p.realInputVelocity;
         activePlayer->score = p.score;
     
-        GameNetState state = GameClient::gameNetState;
-        if(state.unread){
-            // update
-            for (NetPlayer& player : state.players)
+        GameNetState* state = &GameClient::gameNetState;
+        if(state->unread){
+            // update   
+            for (NetPlayer& player : state->players)
             {
                 if(player.id != activePlayer->id){
                     Player &otherP = getPlayer(player.id);
@@ -78,11 +78,14 @@ void Game::update(sf::Time elapsedTime)
                     otherP.score = player.score;
                 }
             }
-            state.unread = false;
+            state->unread = false;
+        }
+        else{
+            debugText += " skip net ";
         }
         
         // update map
-        for (NetTreasure netTreasure : state.treasures)
+        for (NetTreasure netTreasure : state->treasures)
         {
             if (netTreasure.itemState != ItemState::OnWorld)
             {
