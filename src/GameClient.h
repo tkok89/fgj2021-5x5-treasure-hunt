@@ -9,6 +9,7 @@ struct NetPlayer
 	short socketIndex = 88u;
 	sf::Uint8 id = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
+	sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f);
 	NetPlayer() {};
     NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
 };
@@ -36,7 +37,7 @@ public:
 	void startAcceptingConnections(unsigned short port);
 	void stopAcceptingConnections();
 	void connectToHost(std::string ip, unsigned short port);
-	void sendPosition(sf::Vector2f position);
+	void sendFrequentDataToHost();
 	void sendGameState(GameNetState state);
 	NetPlayer *getMyPlayer();
 	static GameClient& getClient();
@@ -51,7 +52,7 @@ private:
 	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
 	void updateGameState(GameNetState packet);
-	void updatePlayerPosition(short playerNumber, sf::Vector2f playerPosition);
+	void updatePlayerPositionAndVelocity(short playerNumber, sf::Vector2f position, sf::Vector2f velocity);
 	std::thread *acceptConnectionsThread;
 	sf::TcpSocket clientSocket;
 };
