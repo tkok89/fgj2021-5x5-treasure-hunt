@@ -13,6 +13,7 @@
 #include "Map.h"
 #include <cmath>
 #include <string>
+#include "Global.h"
 
 namespace
 {
@@ -28,6 +29,10 @@ inline float lerp(float a, float b, float t){
 
 inline float distanceXY(float x0, float y0, float x1, float y1){
     return sqrt((x0-x1)*(x0-x1) + (y0-y1)*(y0-y1));
+}
+
+inline float magnitudeVector2(sf::Vector2f vec){
+    return sqrt(vec.x * vec.x + vec.y * vec.y);
 }
 
 inline float clamp11(float x){
@@ -47,6 +52,7 @@ static int ownPlayerId = 0;
 void initializePlayers (float startX, float startY) {
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
         players[i].index = i;
+        players[i].score = 0;
         players[i].posX = startX;
         players[i].posY = startY;
         players[i].velocityX = 0;
@@ -101,7 +107,13 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             verticalMove += 1;
-        }   
+        }
+        //  normalize input
+        float magnitude = distanceXY(horizontalMove, verticalMove, 0, 0);
+        if(magnitude > 1){
+            horizontalMove /= magnitude;
+            verticalMove /= magnitude;
+        }
         // lerp input
         inputVelocityX = clamp11( lerp(inputVelocityX, horizontalMove, inputLerp));
         inputVelocityY = clamp11( lerp(inputVelocityY, verticalMove, inputLerp));
@@ -134,12 +146,22 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         newPosY = newGoodPosition.y;
         newPosX = newGoodPosition.x;
     }
-    
-    // get back, if in wall
     posX = newPosX;
     posY = newPosY;
-    //new position ready, check if any world object is nearby
     
+    //new position ready, check if any world object is nearby
+    Treasure nearestTreasure = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
+    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
+    if(distanceToNearestTreasure < laser.range){
+        // start the drill
+        float t = 1 - distanceToNearestTreasure / laser.range;
+        float power = lerp(laser.startPower, laser.maxPower, t);
+        nearestTreasure.health -= power;
+        if(nearestTreasure.health < 0){
+            Item item = g_map->pickupNearestCollectible(nearestTreasure.pos);
+            // do something
+        }
+    }
     debugstring = "x " + std::to_string(posX) +
     " y " + std::to_string(posY) +
     " name " + std::to_string(index) +
@@ -165,9 +187,28 @@ void Player::drawPlayer(bool debug, bool own){
     float playerSizeOnScreen  = Camera::worldToScreenSize(sf::Vector2f(size,size)).x;
     GuiRendering::image(own ? &Resources::getResources().getPlayerTexture(index, direction)
                         : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX- 0.5f*size, posY-0.5f*size), playerSizeOnScreen, playerSizeOnScreen);
+    
+    //check if any world object is nearby
+    Treasure nearestTreasure = g_map->nearestCollectible(sf::Vector2f(posX, posY));
+    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(posX, posY) -  nearestTreasure.pos);
+    if(distanceToNearestTreasure < laser.range){
+        // start the drill
+        float t = 1 - distanceToNearestTreasure / laser.range;
+        float power = lerp(laser.startPower, laser.maxPower, t);
+        float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMin, t);
+        for(float f = 0; f < timesPerFrame; ++f ){
+            sf::Vector2f start(posX + (getRandomNormal01() *2 - 1)*laser.startSize,
+                               posY + (getRandomNormal01() *2 - 1)*laser.startSize);
+            sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() *2 - 1)*laser.endSize,
+                             nearestTreasure.pos.y + (getRandomNormal01() *2 - 1)*laser.endSize);
+            GuiRendering::line(start,end);
+        }
+    }
+    
     if(debug){
         GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
         sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+        collisionPosition.x += getRandomNormal01();
         GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
     }
 }

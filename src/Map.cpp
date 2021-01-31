@@ -310,7 +310,7 @@ void Map::draw()
 
     if(Game::showDebugText)
 	{
-		sf::Vector2f collision = Map::nearestCollectible(worldMouse);
+		sf::Vector2f collision = Map::nearestCollectible(worldMouse).pos;
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
 		if (collision.x > -200 && collision.y > -200)
 		{
@@ -385,10 +385,10 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 	return nearestColorImpl(pos, wallColor, image, true);
 }
 
-sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
+Treasure& Map::nearestCollectible(sf::Vector2f pos)
 {
 	float nearestDist = 10000000000.0f;
-	sf::Vector2f nearest(-1000, -1000);
+    Treasure* nearest;
 	for (Treasure treasure : treasures)
 	{
 		sf::Vector2f diff = treasure.pos - pos;
@@ -397,10 +397,10 @@ sf::Vector2f Map::nearestCollectible(sf::Vector2f pos)
 			continue;
 
 		nearestDist = dist;
-		nearest = treasure.pos;
+		nearest = &treasure;
 	}
 
-	return nearest;
+	return *nearest;
 }
 
 sf::Vector2f Map::nearestShop(sf::Vector2f pos)

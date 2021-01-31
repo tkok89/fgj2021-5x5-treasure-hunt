@@ -40,9 +40,11 @@ void Game::update(sf::Time elapsedTime)
     // own player
     NetPlayer* activePlayer = GameClient::getClient().getMyPlayer();
     if(activePlayer != nullptr){
+        debugText += " Has active " + std::to_string(activePlayer->id);
         Player p = setActivePlayerIndex(activePlayer->id);
-        activePlayer->position = sf::Vector2f(p.posX, p.posX);
+        activePlayer->position = sf::Vector2f(p.posX, p.posY);
         activePlayer->velocity = sf::Vector2f(p.velocityX, p.velocityY);
+        activePlayer->score = p.score;
     
         GameNetState state = GameClient::gameNetState;
         if(state.unread){
@@ -56,6 +58,7 @@ void Game::update(sf::Time elapsedTime)
                     otherP.posY = player.position.y;
                     otherP.velocityX = player.velocity.x;
                     otherP.velocityY = player.velocity.y;
+                    otherP.score = player.score;
                 }
             }
             state.unread = false;

@@ -13,6 +13,7 @@
 
 struct Player {
     int index;
+    sf::Uint16 score;
     bool activePlayer = false;
     float posX, posY;
     float velocityX, velocityY;
@@ -25,6 +26,16 @@ private:
     float size = 1.0001f;
     float colliderSizeMultiplier = 0.8151287f;
     float closestEver = 100.001f;
+    // mining
+    struct {
+        const float startSize = 0.1f;
+        const float endSize = 0.5;
+        const float range = 2;
+        const float startPower = 10; // per second
+        const float maxPower = 500; // per second
+        const float timesPerFrameMin = 1;
+        const float timesPerFrameMax = 10;
+    } laser;
 };
 
 void initializePlayers (float startX, float startY);

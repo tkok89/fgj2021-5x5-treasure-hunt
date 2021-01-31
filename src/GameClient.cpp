@@ -71,8 +71,9 @@ void GameClient::join()
 		printf("cannot join while hosting\n");
 		return;
 	}
-
-	connectToHost(std::string("localhost"), 50000);
+    // riku "192.168.2.43"), janne .59
+    connectToHost(std::string("localhost"), 50000);
+    
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
@@ -97,7 +98,7 @@ sf::Packet& operator <<(sf::Packet& packet, const GameNetState& state)
 {
 	packet << sf::Uint8(state.players.size());
 	for (NetPlayer player : state.players)
-		packet << player.position << player.velocity << player.id;
+		packet << player.position << player.velocity << player.id << player.score;
 	return packet;
 }
 
@@ -111,7 +112,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 	for (sf::Uint8 number = 0; number < playerAmount; number++)
 	{
 		NetPlayer player;
-		packet >> player.position >> player.velocity >> player.id;
+		packet >> player.position >> player.velocity >> player.id >> player.score;
 		state.players.push_back(player);
 	}
 	return packet;
@@ -131,7 +132,7 @@ void GameClient::updateGameState(const GameNetState &state)
 }
 
 // host received 
-void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity)
+void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score)
 {
 	gameNetState.unread = true;
 	for (NetPlayer &playah : gameNetState.players)
@@ -140,6 +141,7 @@ void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f
 		{
 			playah.position = position;
 			playah.velocity = velocity;
+            playah.score = score;
 			//printf("\tsocket: %hu, id: %hu x: %f, y: %f\n", playah.socketIndex, playah.id, playah.position.x, playah.position.y);
 
 		}
@@ -160,6 +162,7 @@ void GameClient::sendFrequentDataToHost()
 	positionPacket << PacketUpdatePositionToHost;
 	positionPacket << me->position;
 	positionPacket << me->velocity;
+    positionPacket << me->score;
 	
 	clientSocket.send(positionPacket);
 }
@@ -223,9 +226,11 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 	case PacketUpdatePositionToHost:
 	{
 		sf::Vector2f position, velocity;
+        sf::Uint16 score;
 		receivedPacket >> position;
 		receivedPacket >> velocity;
-		updatePlayerPositionAndVelocity(socketIndex, position, velocity);
+        receivedPacket >> score;
+		updatePlayerPositionAndVelocity(socketIndex, position, velocity, score);
 		break;
 	}
 	case PacketKnowYourself:

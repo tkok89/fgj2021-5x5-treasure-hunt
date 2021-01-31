@@ -10,3 +10,9 @@ sf::Vector2f getMousePos()
 }
 
 
+float getRandomNormal01() {
+    static std::random_device rd;
+    static std::default_random_engine rng(rd());
+    static std::normal_distribution<float> distribution(0.5f, 0.2f);
+    return distribution(rng);
+}

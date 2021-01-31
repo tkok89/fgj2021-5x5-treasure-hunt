@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <assert.h>
+#include <random>
 
 struct Map;
 
@@ -21,3 +22,5 @@ inline sf::Vector2f lerpVector2f(sf::Vector2f a, sf::Vector2f b, float t){
 inline float clamp01(float a){
     return a > 0 ? (a > 1 ? 1 : a) : 0;
 }
+
+float getRandomNormal01();
