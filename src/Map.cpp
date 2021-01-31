@@ -271,7 +271,7 @@ static void renderItems()
         float t = treasure.health / maxHealth;
         
         if(t > 0.99f) continue;
-        float h = 0.2   3f;
+        float h = 0.23f;
         pos.y -= itemSize.y * 0.6f - h;
         sf::Vector2f hPos = Camera::worldToScreenPos(pos);
         GuiRendering::image(&Resources::getResources().healthBack, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x, h)));
