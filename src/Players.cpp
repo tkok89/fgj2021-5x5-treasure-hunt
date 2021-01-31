@@ -79,6 +79,10 @@ Player& getPlayer(int index){
     return players[index];
 }
 
+Player& getOwnPlayer(){
+    return players[ownPlayerId];
+}
+
 
 void Player::updatePlayer(float deltaTime, bool ownPlayer){
     if(!activePlayer) return;

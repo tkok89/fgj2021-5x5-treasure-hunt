@@ -33,7 +33,7 @@ void Game::update(sf::Time elapsedTime)
 	GameClient::getClient().update();
 
     // Update camera
-    Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getPlayer(0).posX, getPlayer(0).posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
+    Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
     debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
 
     // Network
@@ -50,7 +50,7 @@ void Game::update(sf::Time elapsedTime)
             for (NetPlayer& player : state.players)
             {
                 if(player.id != activePlayer->id){
-                    Player otherP = getPlayer(player.id);
+                    Player &otherP = getPlayer(player.id);
                     otherP.activePlayer = true;
                     otherP.posX = player.position.x;
                     otherP.posY = player.position.y;
