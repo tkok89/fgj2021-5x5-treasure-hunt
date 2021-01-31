@@ -42,7 +42,8 @@ private:
         sf::Vector2f pos;
     };
     // my treasures
-    // std::vector<PlayerTreasure> myTreasures = 
+    int treasureCount = 0;
+    PlayerTreasure myTreasures[26];
 };
 
 void initializePlayers (float startX, float startY);
