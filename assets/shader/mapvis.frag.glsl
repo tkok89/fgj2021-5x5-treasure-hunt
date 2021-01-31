@@ -48,7 +48,8 @@ void main()
 	float light = 0;
 	if (reached)
 	{
-		light = 1;
+		float dist = length(uv - playerPos);
+		light = 1 - dist / 0.1;
 	}
 
 	vec4 colorOut = mapPx * vec4(vec3(light), 1); //vec4(light, texture2D(mapSDFTex, playerPos).x, mapPx.r, 1);
