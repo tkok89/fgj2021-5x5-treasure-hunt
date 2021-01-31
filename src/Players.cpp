@@ -46,7 +46,7 @@ static int ownPlayerId = 0;
 
 void initializePlayers (float startX, float startY) {
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
-        players[i].index = 0;
+        players[i].index = i;
         players[i].posX = startX;
         players[i].posY = startY;
         players[i].velocityX = 0;
@@ -138,7 +138,7 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     
     debugstring = "x " + std::to_string(posX) +
     " y " + std::to_string(posY) +
-    " closestEver " + std::to_string(closestEver) +
+    " name " + std::to_string(index) +
     " distance " + std::to_string(distance);
 }
 

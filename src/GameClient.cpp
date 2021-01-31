@@ -72,7 +72,7 @@ void GameClient::join()
 		return;
 	}
 
-	connectToHost(std::string("localhost"), 50000);
+	connectToHost(std::string("192.168.2.26"), 50000);
 }
 
 sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
