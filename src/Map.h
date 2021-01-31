@@ -22,7 +22,8 @@ enum class ItemState : sf::Uint8
 	// muokatkaa/tehk‰‰ jotai n‰il lol, synkkaan n‰‰ t vesa
 	OnWorld,
 	Carried,
-	Usable
+	Usable,
+	Destructed
 };
 
 
