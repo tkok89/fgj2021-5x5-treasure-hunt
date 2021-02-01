@@ -7,7 +7,7 @@
 
 extern sf::Vector2f g_resolution;
 extern std::string g_currentTextInput;
-
+extern sf::Clock timeFromStart;
 class Game
 {
 public:

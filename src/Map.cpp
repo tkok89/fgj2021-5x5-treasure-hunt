@@ -295,10 +295,11 @@ void Map::draw()
 	float maxStepLength = (float)kernelSize / (float)mapSDFTexture.getSize().x;
 
 	//std::cout << playerPosInMapNorm.x << ", " << playerPosInMapNorm.y << std::endl;
-	
-    if(lightsOn)
+
+	if(lightsOn)
 	{
 		const bool hotloading = false;
+		const bool fullscreenMapShader = false;
 		if (hotloading)
 		{
 			bool success = mapVisShader->loadFromFile(
@@ -311,26 +312,24 @@ void Map::draw()
 				GuiRendering::image(&texture, -0.5f, -0.5f, 1, 1);
 				return;
 			}
+		}
 
-			mapVisShader->setUniform("mapTex", texture);
-			mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
-			mapVisShader->setUniform("playerPos", playerPosInMapNorm);
-			mapVisShader->setUniform("maxStepLength", maxStepLength);
+		mapVisShader->setUniform("mapTex", texture);
+		mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
+		mapVisShader->setUniform("playerPos", playerPosInMapNorm);
+		mapVisShader->setUniform("maxStepLength", maxStepLength);
+		mapVisShader->setUniform("time", timeFromStart.getElapsedTime().asSeconds());
 
-			//std::cout << "max step length " << maxStepLength << std::endl;
-
+		if (fullscreenMapShader)
 			GuiRendering::imageShaded(&texture, -0.5f, -0.5f, 1, 1, mapVisShader.get());
-		}
 		else
-		{
 			GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
-		}
-        
-    }
-    else{
-        GuiRendering::image(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y);
-    }
-	
+	}
+	else
+	{
+		GuiRendering::image(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y);
+	}
+
 	renderItems();
 
 	GuiRendering::popClipRect();

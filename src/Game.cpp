@@ -14,12 +14,13 @@
 #include "GameClient.h"
 #include "Map.h"
 
+std::string g_currentTextInput;
 sf::Vector2f g_resolution{ 1280,720 };
 sf::Clock syncClock;
 sf::Clock timeFromStart;
 sf::Time syncCycle = sf::seconds(0.1f);
-std::string g_currentTextInput;
 bool Game::showDebugText = false;
+
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
