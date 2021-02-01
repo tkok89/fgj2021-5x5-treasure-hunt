@@ -6,16 +6,18 @@ Move your character with Arrow keys. Use mouse to start game with buttons at the
 
 
 # Building on Linux
-Just works I guess
+Just works - I guess
 
 # Building on Windows
-Open "local folder" like a root
-Should notice cmake automatically
-Select from solution Explorer "switch views" > cmake target
-Select ggj21 (executable) Add debug config and add  "currentDir": "${projectDir}" under "configuration" array
-Then select ggj21 (executable) > generate cache
-Then you can select ggj21.exe as a startup item and go on pressing Debug-buttons
+- Open "local folder" like a root
+- Should notice cmake automatically
+- Select from solution Explorer "switch views" > cmake target
+- Select ggj21 (executable) Add debug config and add  "currentDir": "${projectDir}" under "configuration" array
+- Then select ggj21 (executable) > generate cache
+- Then you can select ggj21.exe as a startup item and go on pressing Debug-buttons
 
+## missing OpenAL32.dll (Windows)
+- Select ggj21 (executable) Add debug config and add  "currentDir": "${projectDir}" under "configuration" array
 
 # Building on a Mac
 
