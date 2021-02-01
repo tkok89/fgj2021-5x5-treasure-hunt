@@ -298,14 +298,33 @@ void Map::draw()
 	
     if(lightsOn)
 	{
-        mapVisShader->setUniform("mapTex", texture);
-        mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
-        mapVisShader->setUniform("playerPos", playerPosInMapNorm);
-        mapVisShader->setUniform("maxStepLength", maxStepLength);
+		const bool hotloading = false;
+		if (hotloading)
+		{
+			bool success = mapVisShader->loadFromFile(
+				Resources::getResourcePath("assets/shader/mapvis.frag.glsl"),
+				sf::Shader::Type::Fragment
+			);
 
-        //std::cout << "max step length " << maxStepLength << std::endl;
+			if (!success)
+			{
+				GuiRendering::image(&texture, -0.5f, -0.5f, 1, 1);
+				return;
+			}
 
-        GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
+			mapVisShader->setUniform("mapTex", texture);
+			mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
+			mapVisShader->setUniform("playerPos", playerPosInMapNorm);
+			mapVisShader->setUniform("maxStepLength", maxStepLength);
+
+			//std::cout << "max step length " << maxStepLength << std::endl;
+
+			GuiRendering::imageShaded(&texture, -0.5f, -0.5f, 1, 1, mapVisShader.get());
+		}
+		else
+		{
+			GuiRendering::imageShaded(&texture, topLeft.x, topLeft.y, screenMapSize.x, screenMapSize.y, mapVisShader.get());
+		}
         
     }
     else{
