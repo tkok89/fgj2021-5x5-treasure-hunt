@@ -5,6 +5,7 @@ uniform sampler2D mapSDFTex;
 uniform vec2 playerPos;
 uniform float maxStepLength;
 uniform float time;
+uniform vec4 lights[2];
 
 const vec4 pParam = vec4( 17.0*17.0, 34.0, 1.0, 7.0);
 const float pi = 3.141;
@@ -93,7 +94,7 @@ bool raymarch(vec2 fromPos, vec2 toPos, out vec2 curPos, out float minStep)
 	curPos = fromPos;
 	vec2 rayDir = normalize(toPos - fromPos);
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 24; ++i)
 	{
 		float stepLength = min((texture2D(mapSDFTex, curPos).x - 0.45f) * maxStepLength, maxStepLength);
 		minStep = min(stepLength, minStep);
@@ -121,30 +122,37 @@ void main()
 
 	vec4 mapPx = texture2D(mapTex, uv);
 
-	float light = 0;
-	float jitterCount = 16;
-	for (float i = 0; i < jitterCount; ++i)
+	float lightTotal = 0;
+
+	for (int lightIndex = 0; lightIndex < lights.length(); ++lightIndex)
 	{
-		float jt = i / jitterCount;
-		vec2 jitteredPlayerPos = playerPos + vec2(sin(jt * pi2 + time * 128), cos(jt * pi2 + time * 128)) * 0.002;
+		vec4 light = lights[lightIndex];
+		vec2 lightPos = light.xy;
 
-		vec2 hitPos;
-		float minStep;
-		bool reached = raymarch(uv, jitteredPlayerPos, hitPos, minStep);
-
-		float rayLight = 0;
-		if (reached)
+		float jitterCount = 8;
+		for (float jitterIndex = 0; jitterIndex < jitterCount; ++jitterIndex)
 		{
-			float dist = length(uv - playerPos);
-			rayLight = 1 - dist / 0.1;
-			//light *= min(1, minStep / 0.0025);
-		}
+			float jt = jitterIndex / jitterCount;
+			vec2 lightPosJittered = lightPos + vec2(sin(jt * pi2 + time * 9), cos(jt * pi2 + time * 9)) * 0.002;
 
-		light += rayLight / jitterCount;
+			vec2 hitPos;
+			float minStep;
+			bool reached = raymarch(lightPosJittered, uv, hitPos, minStep);
+
+			float rayLight = 0;
+			if (reached)
+			{
+				float dist = length(uv - playerPos);
+				rayLight = 1 - dist / 0.1;
+				//light *= min(1, minStep / 0.0025);
+			}
+
+			lightTotal += rayLight / jitterCount;
+		}
 	}
 	
 	float simplex = (simplexNoise2(uv * 512) + 1) / 2;
-	vec4 colorOut = (mapPx + vec4(vec3(simplex / 3), 0)) * vec4(vec3(light), 1); //vec4(light, texture2D(mapSDFTex, playerPos).x, mapPx.r, 1);
+	vec4 colorOut = (mapPx + vec4(vec3(simplex / 3), 0)) * vec4(vec3(lightTotal), 1); //vec4(light, texture2D(mapSDFTex, playerPos).x, mapPx.r, 1);
 
 	gl_FragColor =  colorOut;
 }

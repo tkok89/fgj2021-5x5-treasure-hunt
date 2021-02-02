@@ -231,6 +231,46 @@ sf::Vector2f mapToWorldPos(sf::Vector2i mapPos)
 	return sf::Vector2f(x, y);
 }
 
+sf::Glsl::Vec2 worldToMapUV(sf::Vector2f worldPos)
+{
+	return sf::Glsl::Vec2(
+		worldPos.x / mapSize.x + 0.5f,
+		worldPos.y / mapSize.y + 0.5f
+	);
+}
+
+static std::vector<sf::Glsl::Vec4> getLightsForShading(const Map &map)
+{
+	static const size_t lights_count_max = 4;
+
+	std::vector<sf::Glsl::Vec4> lights;
+
+	auto playerPos = sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY);
+	lights.push_back({ playerPos.x, playerPos.y, 1, 0.01 });
+
+/*
+	for (auto treasure : map.treasures)
+	{
+		auto pos = worldToMapUV(treasure.pos);
+		lights.push_back({ pos.x, pos.y, 1, 0.01 });
+	}
+	*/
+
+	for (auto shop : map.shops)
+	{
+		auto pos = worldToMapUV(shop);
+		lights.push_back({ pos.x, pos.y, 1, 0.02 });
+	}
+
+/*
+	std::sort(lights.begin(), lights.end(), [=](auto a, auto b) {
+
+	});
+*/
+
+	return lights;
+}
+
 static void drawColor(sf::Vector2f p, sf::Color c)
 {
 	GuiRenderInfo guiRenderInfo;
@@ -286,12 +326,6 @@ void Map::draw()
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 
-	sf::Vector2i playerPosInMapI = worldToMapPos(sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY));
-	sf::Vector2f playerPosInMapNorm(
-		float(playerPosInMapI.x) / float(image.getSize().x),
-		float(playerPosInMapI.y) / float(image.getSize().y)
-	);
-
 	float maxStepLength = (float)kernelSize / (float)mapSDFTexture.getSize().x;
 
 	//std::cout << playerPosInMapNorm.x << ", " << playerPosInMapNorm.y << std::endl;
@@ -316,9 +350,13 @@ void Map::draw()
 
 		mapVisShader->setUniform("mapTex", texture);
 		mapVisShader->setUniform("mapSDFTex", mapSDFTexture);
-		mapVisShader->setUniform("playerPos", playerPosInMapNorm);
+		mapVisShader->setUniform("playerPos", worldToMapUV(sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY)));
 		mapVisShader->setUniform("maxStepLength", maxStepLength);
 		mapVisShader->setUniform("time", timeFromStart.getElapsedTime().asSeconds());
+		{
+			std::vector<sf::Glsl::Vec4> lightList = getLightsForShading(*this);
+			mapVisShader->setUniformArray("lights", lightList.data(), lightList.size());
+		}
 
 		if (fullscreenMapShader)
 			GuiRendering::imageShaded(&texture, -0.5f, -0.5f, 1, 1, mapVisShader.get());
