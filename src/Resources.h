@@ -28,15 +28,15 @@ enum class SoundResourceName : uint32_t
 	o_oui,
 	peepeep,
 	togglebutton_1,
-	togglebutton_2
+	togglebutton_2,
 };
 
-enum OrthogonalDirection: uint32_t
+enum class OrthogonalDirection: uint32_t
 {
-    Left = 0,
-    Up = 1,
-    Right = 2,
-    Down = 3
+    Left,
+    Up,
+    Right,
+    Down,
 };
 
 enum class ShaderResourceName
@@ -66,8 +66,8 @@ struct Resources
     sf::Texture healthFront;
     sf::Texture healthBack;
     sf::Texture rock;
-    sf::Texture playerTextures[4];
-    sf::Texture friendTextures[4];
+	std::unordered_map<OrthogonalDirection, sf::Texture> playerTextures;
+	std::unordered_map<OrthogonalDirection, sf::Texture> friendTextures;
 	sf::Font font;
 
 	std::unordered_map<SoundResourceName, sf::SoundBuffer> soundEffects;

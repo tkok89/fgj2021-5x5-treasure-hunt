@@ -61,7 +61,7 @@ public:
 	static bool connectedToHost;
 	static bool acceptingConnections;
 	static bool gameOn;
-	static short connectedClientAmount;
+	static unsigned short connectedClientAmount;
 	static GameNetState gameNetState;
 	static sf::Uint8 myPlayerId;
 private:
@@ -73,3 +73,5 @@ private:
 	std::thread *acceptConnectionsThread;
 	sf::TcpSocket clientSocket;
 };
+
+void listenerThread(unsigned short port, bool& accept, unsigned short& clientAmount);

@@ -66,7 +66,7 @@ static float findDistanceToEdge(sf::Vector2i pos, sf::Image &image)
 	if (nearest.x == -1)
 		return findWalls ? 1000.0f : -1000.0f;
 
-	const float result = sqrtf(nearestDist);
+	const float result = sqrtf((float)nearestDist);
 	return findWalls ? result : -result;
 }
 
@@ -327,7 +327,7 @@ void Map::draw()
 	sf::Vector2f topLeft = Camera::worldToScreenPos(-mapSize * 0.5f);
 	sf::Vector2f screenMapSize = Camera::worldToScreenSize(mapSize);
 
-	sf::Vector2i playerPosInMapI = worldToMapPos(sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY));
+	sf::Vector2i playerPosInMapI = worldToMapPos(getOwnPlayer().pos);
 	sf::Vector2f playerPosInMapNorm(
 		float(playerPosInMapI.x) / float(image.getSize().x),
 		float(playerPosInMapI.y) / float(image.getSize().y)

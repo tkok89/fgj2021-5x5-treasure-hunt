@@ -24,7 +24,7 @@ bool Game::showDebugText = false;
 Game::Game()
 {
 	m_guiText.setFont(Resources::getResources().font);
-    initializePlayers(Map::getShopPos().x, Map::getShopPos().y);
+    initializePlayers(Map::getShopPos());
     timeFromStart.restart();
     Mankka::getMankka().playMusic(MusicEnvName::ingame);
 }
@@ -38,8 +38,7 @@ void Game::update(sf::Time elapsedTime)
 	GameClient::getClient().update();
 
     // Update camera
-    Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), sf::Vector2f(getOwnPlayer().posX, getOwnPlayer().posY), clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
-    debugText = "Lerp " + std::to_string(clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond));
+    Camera::setCameraPos(lerpVector2f(Camera::getCameraPos(), getOwnPlayer().pos, clamp01(elapsedTime.asSeconds() * cameraLerpPerSecond)));
     // when moved
     if( magnitudeVector2( getOwnPlayer().realInputVelocity) > 0.3f){
         lastMove = timeFromStart.getElapsedTime().asSeconds();
@@ -61,7 +60,7 @@ void Game::update(sf::Time elapsedTime)
     if(activePlayer != nullptr){
         debugText += " Has active " + std::to_string(activePlayer->id);
         Player p = setActivePlayerIndex(activePlayer->id);
-        activePlayer->position = sf::Vector2f(p.posX, p.posY);
+        activePlayer->position = p.pos;
         activePlayer->velocity = p.realInputVelocity;
         activePlayer->score = p.score;
         activePlayer->randomId = p.frameId;
@@ -75,10 +74,8 @@ void Game::update(sf::Time elapsedTime)
                     Player& otherP = getPlayer(player.id);
                     if(otherP.frameId != player.randomId){
                         otherP.activePlayer = true;
-                        otherP.posX = player.position.x;
-                        otherP.posY = player.position.y;
-                        otherP.inputVelocityX = player.velocity.x;
-                        otherP.inputVelocityY = player.velocity.y;
+                        otherP.pos = player.position;
+                        otherP.inputVelocity = player.velocity;
                         otherP.score = player.score;
                         otherP.frameId = player.randomId;
                     }
@@ -225,7 +222,7 @@ void printfHorrorString()
        stateString.append(std::to_string(playah.velocity.y));
        stateString.append(std::string(")\n "));
    }
-   GuiRendering::text(stateString, 0.02f, 0.4, -0.3);
+   GuiRendering::text(stateString, 0.02f, 0.4f, -0.3f);
 }
 
 void Game::draw(sf::RenderWindow& window)

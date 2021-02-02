@@ -20,8 +20,8 @@ namespace
 {
 
 static const float maxSpeed = 10;
-static const float idleSpeed = 0.01;
-static const float inputLerp = 0.5f;
+static const float idleSpeed = 0.01f;
+static const float inputLerp = 0.2f;
 static const float accelerationLerp = 0.5f;
 
 inline float distanceXY(float x0, float y0, float x1, float y1){
@@ -42,17 +42,14 @@ static Player players[8];
 static int ownPlayerId = 0;
 }
 
-void initializePlayers (float startX, float startY) {
+void initializePlayers (sf::Vector2f startPos) {
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
         players[i].index = i;
         players[i].score = 0;
         players[i].frameId = 0;
-        players[i].posX = startX;
-        players[i].posY = startY;
-        players[i].velocityX = 0;
-        players[i].velocityY = 0;
-        players[i].inputVelocityX =0;
-        players[i].inputVelocityY =0;
+        players[i].pos = startPos;
+        players[i].velocity = sf::Vector2f(0, 0);
+        players[i].inputVelocity = sf::Vector2f(0, 0);
     }
     players[0].activePlayer = true;
 }
@@ -109,57 +106,53 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
             verticalMove /= magnitude;
         }
         // lerp input
-        inputVelocityX = clamp11(lerp(inputVelocityX, horizontalMove, inputLerp));
-        inputVelocityY = clamp11(lerp(inputVelocityY, verticalMove, inputLerp));
+        inputVelocity = sf::Vector2f(
+            clamp11(lerp(inputVelocity.x, horizontalMove, inputLerp)),
+            clamp11(lerp(inputVelocity.y, verticalMove, inputLerp))
+            );
         realInputVelocity = sf::Vector2f(horizontalMove, verticalMove);
         // update frame counter
         ++frameId;
     }
     // accelerate
-    velocityX = lerp(inputVelocityX * maxSpeed, velocityX, accelerationLerp);
-    velocityY = lerp(inputVelocityY * maxSpeed, velocityY, accelerationLerp);
+    velocity =  lerpVector2f(inputVelocity * maxSpeed, velocity, accelerationLerp);
     // move
-    float newPosX = posX + velocityX * deltaTime;
-    float newPosY = posY + velocityY * deltaTime;
+    sf::Vector2f newPos = pos + velocity * deltaTime;
     
     // get nearest collision
-    sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(newPosX, newPosY));
+    sf::Vector2f collisionPosition = g_map->nearestCollision(newPos);
     // if closer than player size move back
-    sf::Vector2f direction = collisionPosition - sf::Vector2f(newPosX, newPosY);
+    sf::Vector2f direction = collisionPosition - newPos;
     float distance = distanceXY(0, 0, direction.x, direction.y);
     if(distance < closestEver){
         closestEver  = distance;
     }
-    if(distance < 0.02f || !Map::isInMapArea(newPosX, newPosY)){
+    if(distance < 0.02f || !Map::isInMapArea(newPos)){
         // inside a wall
-        newPosX = Map::getShopPos().x;
-        newPosY = Map::getShopPos().y;
+        newPos = Map::getShopPos();
     }
     else if(distance < 0.5f * colliderSizeMultiplier * size){
         // Collision omg
-        velocityX = 0;
-        velocityY = 0;
-        sf::Vector2f newGoodPosition = sf::Vector2f(newPosX, newPosY) - (colliderSizeMultiplier * size * 0.5f - distance) * (direction / distance);
-        newPosY = newGoodPosition.y;
-        newPosX = newGoodPosition.x;
+        velocity = sf::Vector2f(0, 0);
+        sf::Vector2f newGoodPosition = newPos - (colliderSizeMultiplier * size * 0.5f - distance) * (direction / distance);
+        newPos = newGoodPosition;
     }
-    posX = newPosX;
-    posY = newPosY;
+    pos = newPos;
     
-    debugstring = "x " + std::to_string((int)posX) +
-    " y " + std::to_string((int)posY) +
-    " iVX " + std::to_string(inputVelocityX) +
-    " iVY " + std::to_string(inputVelocityY) +
+    debugstring = "x " + std::to_string((int)pos.x) +
+    " y " + std::to_string((int)pos.y) +
+    " iVX " + std::to_string(inputVelocity.x) +
+    " iVY " + std::to_string(inputVelocity.y) +
     // " name " + std::to_string(index) +
     " score " + std::to_string(score);
     //new position ready, check if any world object is nearby
-    Treasure* nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(newPosX, newPosY));
+    Treasure* nearestTreasurePtr = g_map->nearestCollectible(newPos);
     if (!nearestTreasurePtr)
         return;
 
     Treasure& nearestTreasure = *nearestTreasurePtr;
 
-    float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(newPosX, newPosY) -  nearestTreasure.pos);
+    float distanceToNearestTreasure = magnitudeVector2(newPos -  nearestTreasure.pos);
     float debugH = 0;
     if(distanceToNearestTreasure < laser.range && ownPlayer){
         // start the drill
@@ -179,10 +172,10 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
     // update treasure trail
     bool inSellingDistances = false;
     auto shopPos = Map::getShopPos();
-    if(magnitudeVector2(shopPos-sf::Vector2f(newPosX, newPosY)) < sellingDistance){
+    if(magnitudeVector2(shopPos - newPos) < sellingDistance){
         inSellingDistances = treasureCount > 0;
     }
-    sf::Vector2f previous(posX, posY);
+    sf::Vector2f previous = pos;
     for(int i =  0; i < treasureCount - inSellingDistances ? 1 : 0; ++i){
         float distanceToPrevious = magnitudeVector2(myTreasures[i].pos - previous);
         if(distanceToPrevious > treasureMaxDistance){
@@ -230,53 +223,50 @@ void Player::drawPlayer(bool debug, bool own){
     
     // what direction
     OrthogonalDirection direction = latestDirection;
-    if(fabs( velocityX) > fabs(velocityY)) {
-        if(fabs(velocityX) > idleSpeed) {
-            direction = velocityX > 0 ? OrthogonalDirection::Right : OrthogonalDirection::Left;
+    if(fabs(velocity.x) > fabs(velocity.y)) {
+        if(fabs(velocity.x) > idleSpeed) {
+            direction = velocity.x > 0 ? OrthogonalDirection::Right : OrthogonalDirection::Left;
         }
     }
     else{
-        if(fabs(velocityY) > idleSpeed) {
-            direction = velocityY > 0 ? OrthogonalDirection::Down : OrthogonalDirection::Up;
+        if(fabs(velocity.y) > idleSpeed) {
+            direction = velocity.y > 0 ? OrthogonalDirection::Down : OrthogonalDirection::Up;
         }
     }
     latestDirection = direction;
     
     float playerSizeOnScreen  = Camera::worldToScreenSize(sf::Vector2f(size,size)).x;
     GuiRendering::image(own ? &Resources::getResources().getPlayerTexture(index, direction)
-                        : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(posX - 0.5f * size, posY - 0.5f * size), playerSizeOnScreen, playerSizeOnScreen);
+                        : &Resources::getResources().getFriendTexture(index, direction), Camera::worldToScreenPos(pos.x - 0.5f * size, pos.y - 0.5f * size), playerSizeOnScreen, playerSizeOnScreen);
     
     //check if any world object is nearby
-    Treasure *nearestTreasurePtr = g_map->nearestCollectible(sf::Vector2f(posX, posY));
+    Treasure *nearestTreasurePtr = g_map->nearestCollectible(pos);
     if (nearestTreasurePtr)
     {
         Treasure& nearestTreasure = *nearestTreasurePtr;
-        float distanceToNearestTreasure = magnitudeVector2(sf::Vector2f(posX, posY) - nearestTreasure.pos);
+        float distanceToNearestTreasure = magnitudeVector2(pos - nearestTreasure.pos);
         if (distanceToNearestTreasure < laser.range) {
             // start the drill
             float t = 1 - distanceToNearestTreasure / laser.range;
             float power = lerp(laser.startPower, laser.maxPower, t);
             float timesPerFrame = lerp(laser.timesPerFrameMin, laser.timesPerFrameMax, t);
             for (float f = 0; f < timesPerFrame; ++f) {
-                sf::Vector2f start(posX + (getRandomNormal01() * 2 - 1) * laser.startSize,
-                    posY + (getRandomNormal01() * 2 - 1) * laser.startSize);
-                sf::Vector2f end(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
-                    nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
-                sf::Vector2f end2(nearestTreasure.pos.x + (getRandomNormal01() * 2 - 1) * laser.endSize,
-                    nearestTreasure.pos.y + (getRandomNormal01() * 2 - 1) * laser.endSize);
+                sf::Vector2f start(pos + sf::Vector2f(getRandomNormal01() * 2 - 1 , (getRandomNormal01() * 2 - 1)) * laser.startSize);
+                sf::Vector2f end(nearestTreasure.pos + sf::Vector2f(getRandomNormal01() * 2 - 1, (getRandomNormal01() * 2 - 1)) * laser.endSize);
+                sf::Vector2f end2(nearestTreasure.pos + sf::Vector2f(getRandomNormal01() * 2 - 1, getRandomNormal01() * 2 - 1) * laser.endSize);
 
                 GuiRendering::triangle(Camera::worldToScreenPos(start), Camera::worldToScreenPos(end), Camera::worldToScreenPos(end2), sf::Color::White);
             }
         }
         if(debug)
-            GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(nearestTreasure.pos));
+            GuiRendering::line(Camera::worldToScreenPos(pos), Camera::worldToScreenPos(nearestTreasure.pos));
         
     }
     if(debug){
-        GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(posX, posY - 0.1f));
-        sf::Vector2f collisionPosition = g_map->nearestCollision(sf::Vector2f(posX, posY));
+        GuiRendering::text(debugstring.c_str(), 0.02f,  Camera::worldToScreenPos(pos.x, pos.y - 0.1f));
+        sf::Vector2f collisionPosition = g_map->nearestCollision(pos);
         collisionPosition.x += getRandomNormal01();
-        GuiRendering::line(Camera::worldToScreenPos(posX, posY), Camera::worldToScreenPos(collisionPosition));
+        GuiRendering::line(Camera::worldToScreenPos(pos), Camera::worldToScreenPos(collisionPosition));
     }
     
 }

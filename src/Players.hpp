@@ -15,10 +15,7 @@ struct Player {
     int index;
     sf::Uint16 score, frameId;
     bool activePlayer = false;
-    float posX, posY;
-    float velocityX, velocityY;
-    sf::Vector2f realInputVelocity;
-    float inputVelocityX, inputVelocityY;
+    sf::Vector2f pos, velocity, inputVelocity, realInputVelocity;
     std::string debugstring;
     OrthogonalDirection latestDirection = OrthogonalDirection::Down;
     void updatePlayer(float deltaTime, bool ownPlayer);
@@ -39,9 +36,9 @@ private:
     } laser;
     
     struct PlayerTreasure{
-        Item item;
-        sf::Vector2f pos;
-        sf::Uint8 id;
+        Item item = Item::NumOfItems;
+        sf::Vector2f pos = sf::Vector2f(0,0);
+        sf::Uint8 id = 0;
     };
     // my treasures
     int treasureCount = 0;
@@ -51,7 +48,7 @@ private:
     const float soldDistance = 0.01f;
 };
 
-void initializePlayers (float startX, float startY);
+void initializePlayers (sf::Vector2f startPos);
 void updatePlayers(float deltaTime);
 void drawPlayers(bool showDebugText);
 Player& setActivePlayerIndex(int newActivePlayerId);

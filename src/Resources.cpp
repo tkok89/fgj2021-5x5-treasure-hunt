@@ -168,22 +168,23 @@ sf::Texture& Resources::getFriendTexture(int pIndex, OrthogonalDirection directi
 
 std::unique_ptr<sf::Music> Resources::getMusic(MusicResourceName resName) const
 {
-    auto getPath = [](MusicResourceName name) {
-        switch (name)
-        {
-            case MusicResourceName::thebiisi:
-            return getResourcePath("assets/music/thebiisi.ogg");
+	auto getPath = [](MusicResourceName name) {
+		switch (name)
+		{
+		case MusicResourceName::thebiisi:
+			return getResourcePath("assets/music/thebiisi.ogg");
 
-            case MusicResourceName::pimpom:
-            return getResourcePath("assets/music/PIMPOM.ogg");
+		case MusicResourceName::pimpom:
+			return getResourcePath("assets/music/PIMPOM.ogg");
 
-            case MusicResourceName::syntti:
-            return getResourcePath("assets/music/syntti.ogg");
-
-            case MusicResourceName::syntti130:
-            return getResourcePath("assets/music/syntti130bpm.ogg");
-        }
-    };
+		case MusicResourceName::syntti:
+			return getResourcePath("assets/music/syntti.ogg");
+		case MusicResourceName::syntti130:
+        default:
+			return getResourcePath("assets/music/syntti130bpm.ogg");
+           
+		}
+	};
 
     std::unique_ptr<sf::Music> music;
     music.reset(new sf::Music());
