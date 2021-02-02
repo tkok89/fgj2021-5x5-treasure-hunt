@@ -31,12 +31,12 @@ enum class SoundResourceName : uint32_t
 	togglebutton_2,
 };
 
-enum class OrthogonalDirection: uint32_t
+enum class OrthogonalDirection : uint32_t
 {
-    Left,
-    Up,
-    Right,
-    Down,
+	Left,
+	Up,
+	Right,
+	Down,
 };
 
 enum class ShaderResourceName
@@ -44,7 +44,7 @@ enum class ShaderResourceName
 	mapVis
 };
 
-extern sf::Texture *g_placeholder;
+extern sf::Texture* g_placeholder;
 
 enum class MusicResourceName : uint32_t
 {
@@ -56,16 +56,16 @@ enum class MusicResourceName : uint32_t
 
 struct Resources
 {
-	static Resources &getResources()
+	static Resources& getResources()
 	{
 		static Resources resources;
 		return resources;
 	}
 
-    sf::Texture placeholder;
-    sf::Texture healthFront;
-    sf::Texture healthBack;
-    sf::Texture rock;
+	sf::Texture placeholder;
+	sf::Texture healthFront;
+	sf::Texture healthBack;
+	sf::Texture rock;
 	std::unordered_map<OrthogonalDirection, sf::Texture> playerTextures;
 	std::unordered_map<OrthogonalDirection, sf::Texture> friendTextures;
 	sf::Font font;
@@ -75,15 +75,15 @@ struct Resources
 	std::string mapName;
 
 	std::unique_ptr<sf::Music> getMusic(MusicResourceName musicResourceName) const;
-    sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
-    sf::Texture& getFriendTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+	sf::Texture& getPlayerTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
+	sf::Texture& getFriendTexture(int pIndex, OrthogonalDirection direction); // 0 left, 1 up, 2 right, 3 down
 	std::unique_ptr<sf::Shader> getShader(ShaderResourceName name) const;
 	sf::Texture shopTexture;
 
-	static sf::Texture &getItemTexture(Item item);
-	static sf::Texture &getShopTexture() { return getResources().shopTexture; };
+	static sf::Texture& getItemTexture(Item item);
+	static sf::Texture& getShopTexture() { return getResources().shopTexture; };
 
-	static std::string getResourcePath(const char *assetPath);
+	static std::string getResourcePath(const char* assetPath);
 
 private:
 	Resources();

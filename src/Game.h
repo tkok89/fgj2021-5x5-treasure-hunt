@@ -19,7 +19,7 @@ public:
 	void gui(sf::RenderWindow& window);
 
 	static void textInput(sf::Uint32 unicode);
-	
+
 
 
 	static sf::String getName()
@@ -37,16 +37,16 @@ public:
 		g_resolution.x = x;
 		g_resolution.y = y;
 	}
-    
-    static bool showDebugText;
+
+	static bool showDebugText;
 private:
 
 	sf::Text m_guiText;
 	Map map;
-    float cameraLerpPerSecond = 5;
-    std::string debugText;
-    float cameraMinSize = 10;
-    float lastMove = 0;
-    float maxSize = 40;
-    float zoomDuration = 30;
+	float cameraLerpPerSecond = 5;
+	std::string debugText;
+	float cameraMinSize = 10;
+	float lastMove = 0;
+	float maxSize = 40;
+	float zoomDuration = 30;
 };

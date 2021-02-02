@@ -14,106 +14,106 @@
 #include "Players.hpp"
 #include <algorithm>
 
-Map *g_map = nullptr;
+Map* g_map = nullptr;
 
 namespace
 {
 
-static const sf::Color wallColor { 0xb9, 0x7a, 0x57, 0xFF };
-static const int kernelSize = 128;
+	static const sf::Color wallColor{ 0xb9, 0x7a, 0x57, 0xFF };
+	static const int kernelSize = 128;
 
-static int max(int a, int b)
-{
-	return a > b ? a : b;
-}
-
-static int min(int a, int b)
-{
-	return a < b ? a : b;
-}
-
-static float findDistanceToEdge(sf::Vector2i pos, sf::Image &image)
-{
-	const bool findWalls = image.getPixel(pos.x, pos.y) != wallColor;
-
-	int nearestDist = 1000000;
-	sf::Vector2i nearest(-1, -1);
-
-	int xStart = max(0, pos.x - kernelSize / 2);
-	int xEnd = min(image.getSize().x - 1, pos.x + kernelSize / 2);
-	int yStart = max(0, pos.y - kernelSize / 2);
-	int yEnd = min(image.getSize().y - 1, pos.y + kernelSize / 2);
-	
-	for (int y = yStart; y < yEnd; ++y)
-	for (int x = xStart; x < xEnd; ++x)
+	static int max(int a, int b)
 	{
-		sf::Vector2i diff = sf::Vector2i(x - pos.x, y - pos.y);
-		int dist = diff.x * diff.x + diff.y * diff.y;
-		if (dist > nearestDist)
-			continue;
-
-		sf::Color c = image.getPixel(x, y);
-		bool isWall = (c == wallColor);
-		if (isWall != findWalls)
-			continue;
-
-		nearestDist = dist;
-		nearest.x = x;
-		nearest.y = y;
-		continue;
+		return a > b ? a : b;
 	}
 
-	if (nearest.x == -1)
-		return findWalls ? 1000.0f : -1000.0f;
-
-	const float result = sqrtf((float)nearestDist);
-	return findWalls ? result : -result;
-}
-
-sf::Image generateSDF(sf::Image image)
-{
-	sf::Image sdf;
-	if (sdf.loadFromFile(Resources::getResourcePath("assets/sdf.png")))
+	static int min(int a, int b)
 	{
-		std::cout << "Sdf loaded from cache." << std::endl;
+		return a < b ? a : b;
+	}
+
+	static float findDistanceToEdge(sf::Vector2i pos, sf::Image& image)
+	{
+		const bool findWalls = image.getPixel(pos.x, pos.y) != wallColor;
+
+		int nearestDist = 1000000;
+		sf::Vector2i nearest(-1, -1);
+
+		int xStart = max(0, pos.x - kernelSize / 2);
+		int xEnd = min(image.getSize().x - 1, pos.x + kernelSize / 2);
+		int yStart = max(0, pos.y - kernelSize / 2);
+		int yEnd = min(image.getSize().y - 1, pos.y + kernelSize / 2);
+
+		for (int y = yStart; y < yEnd; ++y)
+			for (int x = xStart; x < xEnd; ++x)
+			{
+				sf::Vector2i diff = sf::Vector2i(x - pos.x, y - pos.y);
+				int dist = diff.x * diff.x + diff.y * diff.y;
+				if (dist > nearestDist)
+					continue;
+
+				sf::Color c = image.getPixel(x, y);
+				bool isWall = (c == wallColor);
+				if (isWall != findWalls)
+					continue;
+
+				nearestDist = dist;
+				nearest.x = x;
+				nearest.y = y;
+				continue;
+			}
+
+		if (nearest.x == -1)
+			return findWalls ? 1000.0f : -1000.0f;
+
+		const float result = sqrtf((float)nearestDist);
+		return findWalls ? result : -result;
+	}
+
+	sf::Image generateSDF(sf::Image image)
+	{
+		sf::Image sdf;
+		if (sdf.loadFromFile(Resources::getResourcePath("assets/sdf.png")))
+		{
+			std::cout << "Sdf loaded from cache." << std::endl;
+			return sdf;
+		}
+
+		std::cout << "Generating sdf." << std::endl;
+		sdf = image;
+
+		const float maxLength = float(kernelSize) / 2.0f;
+
+		for (uint32_t y = 0; y < image.getSize().y; ++y)
+		{
+			std::cout << "Map SDF generation progress: " << y << "/" << image.getSize().y
+				<< " (" << ((float)y / (float)image.getSize().y) * 100.f << " %)" << std::endl;
+
+			for (uint32_t x = 0; x < image.getSize().x; ++x)
+			{
+				sf::Vector2i pos((int)x, (int)y);
+				const float length = findDistanceToEdge(pos, image);
+				const bool negative = length < 0;
+				const float absLength = negative ? -length : length;
+				const float absLengthNorm = (absLength < maxLength) ? absLength / maxLength : 1.0f;
+				const float lengthNorm = negative ? -absLengthNorm : absLengthNorm;
+
+				const float value = 127 + lengthNorm * 127;
+				const uint8_t valueU8 = uint8_t(value);
+				assert(127 + lengthNorm * 127 >= 0 && 127 + lengthNorm * 127 < 255);
+
+				sdf.setPixel(x, y, sf::Color(valueU8, valueU8, valueU8, 255));
+			}
+		}
+
+		bool success = sdf.saveToFile(Resources::getResourcePath("assets/sdf.png"));
+		if (!success)
+			std::cerr << "generate SDF done. Failed to save. :(" << std::endl;
+		else
+			std::cout << "generate SDF done. Cached." << std::endl;
+
 		return sdf;
 	}
-
-	std::cout << "Generating sdf." << std::endl;
-	sdf = image;
-
-	const float maxLength = float(kernelSize) / 2.0f;
-
-	for (uint32_t y = 0; y < image.getSize().y; ++y)
-	{
-		std::cout << "Map SDF generation progress: " << y << "/" << image.getSize().y
-			<< " (" << ((float)y/(float)image.getSize().y) * 100.f << " %)" << std::endl;
-
-		for (uint32_t x = 0; x < image.getSize().x; ++x)
-		{
-			sf::Vector2i pos((int)x, (int)y);
-			const float length = findDistanceToEdge(pos, image);
-			const bool negative = length < 0;
-			const float absLength = negative ? -length : length;
-			const float absLengthNorm = (absLength < maxLength) ? absLength / maxLength : 1.0f;
-			const float lengthNorm = negative ? -absLengthNorm : absLengthNorm;
-
-			const float value = 127 + lengthNorm * 127;
-			const uint8_t valueU8 = uint8_t(value);
-			assert(127 + lengthNorm * 127 >= 0 && 127 + lengthNorm * 127 < 255);
-
-			sdf.setPixel(x, y, sf::Color(valueU8, valueU8, valueU8, 255));
-		}
-	}
-
-	bool success = sdf.saveToFile(Resources::getResourcePath("assets/sdf.png"));
-	if (!success)
-		std::cerr << "generate SDF done. Failed to save. :(" << std::endl;
-	else
-		std::cout << "generate SDF done. Cached." << std::endl;
-
-	return sdf;
-}
 
 }
 
@@ -242,7 +242,7 @@ void Map::randomize()
 		assert(ok);
 		shops.push_back(p);
 	}
-	
+
 	sf::Uint8 treasureIdCounter = 0;
 	for (Treasure& treasure : treasures)
 	{
@@ -250,7 +250,7 @@ void Map::randomize()
 		treasure.id = treasureIdCounter;
 		netTreasure.id = treasureIdCounter;
 		treasureIdCounter++;
-		
+
 		netTreasure.position = treasure.pos;
 		netTreasure.itemType = treasure.item;
 		netTreasure.itemState = ItemState::OnWorld;
@@ -291,7 +291,7 @@ static void drawColor(sf::Vector2f p, sf::Color c)
 
 static void renderItems()
 {
-    // Draw shop
+	// Draw shop
 	{
 		sf::Vector2f s = Camera::worldToScreenSize(itemSize) * 4.0f;
 		sf::Vector2f p = Camera::worldToScreenPos(Map::getShopPos()) - s * 0.5f;
@@ -299,23 +299,23 @@ static void renderItems()
 	}
 
 	sf::Vector2f s = Camera::worldToScreenSize(itemSize);
-	for (const Treasure &treasure : g_map->treasures)
+	for (const Treasure& treasure : g_map->treasures)
 	{
-        
-        float t = treasure.health / maxHealth;
-        auto pos = treasure.pos - itemSize * 0.5f;
+
+		float t = treasure.health / maxHealth;
+		auto pos = treasure.pos - itemSize * 0.5f;
 		sf::Vector2f p = Camera::worldToScreenPos(pos);
-        auto img = t < 0.1f ? &Resources::getItemTexture(treasure.item) : &Resources::getResources().rock;
+		auto img = t < 0.1f ? &Resources::getItemTexture(treasure.item) : &Resources::getResources().rock;
 		GuiRendering::image(img, p, s.x, s.y);
-        
-        // Health
-        
-        if(t > 0.99f) continue;
-        float h = 0.23f;
-        pos.y -= itemSize.y * 0.6f - h;
-        sf::Vector2f hPos = Camera::worldToScreenPos(pos);
-        GuiRendering::image(&Resources::getResources().healthBack, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x, h)));
-        GuiRendering::image(&Resources::getResources().healthFront, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x*t, h)));
+
+		// Health
+
+		if (t > 0.99f) continue;
+		float h = 0.23f;
+		pos.y -= itemSize.y * 0.6f - h;
+		sf::Vector2f hPos = Camera::worldToScreenPos(pos);
+		GuiRendering::image(&Resources::getResources().healthBack, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x, h)));
+		GuiRendering::image(&Resources::getResources().healthFront, hPos, Camera::worldToScreenSize(sf::Vector2f(itemSize.x * t, h)));
 	}
 }
 
@@ -337,7 +337,7 @@ void Map::draw()
 
 	//std::cout << playerPosInMapNorm.x << ", " << playerPosInMapNorm.y << std::endl;
 
-	if(lightsOn)
+	if (lightsOn)
 	{
 		const bool hotloading = false;
 		const bool fullscreenMapShader = false;
@@ -397,7 +397,7 @@ void Map::draw()
 	}
 #endif
 	Treasure* treasurePtr = Map::nearestCollectible(worldMouse);
-    if(Game::showDebugText && treasurePtr)
+	if (Game::showDebugText && treasurePtr)
 	{
 		sf::Vector2f collision = treasurePtr->pos;
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
@@ -412,7 +412,7 @@ void Map::draw()
 		}
 	}
 #ifdef DEBUG_SHOP_POSITION
-    if(Game::showDebugText)
+	if (Game::showDebugText)
 	{
 		sf::Vector2f collision = Map::nearestShop(worldMouse);
 		sf::Vector2f collisionOnScreen = Camera::worldToScreenPos(collision);
@@ -429,7 +429,7 @@ void Map::draw()
 #endif
 }
 
-static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image &image, bool acceptBorders)
+static sf::Vector2f nearestColorImpl(sf::Vector2f pos, sf::Color item, sf::Image& image, bool acceptBorders)
 {
 	sf::Vector2i center = worldToMapPos(pos);
 	int nearestDist = 1000000;
@@ -477,7 +477,7 @@ sf::Vector2f Map::nearestCollision(sf::Vector2f pos)
 Treasure* Map::nearestCollectible(sf::Vector2f pos)
 {
 	float nearestDist = 10000000000.0f;
-    Treasure* nearest = nullptr;
+	Treasure* nearest = nullptr;
 	for (Treasure& treasure : treasures)
 	{
 		sf::Vector2f diff = treasure.pos - pos;
@@ -532,7 +532,7 @@ Item Map::pickupNearestCollectible(sf::Vector2f pos)
 		return Item::JewelS;
 
 	Treasure& treasure = treasures[nearest];
-	
+
 	GameClient::getClient().heyIChangedTreasure(treasure.id, treasure.pos, ItemState::Carried);
 	treasures.erase(treasures.begin() + nearest);
 	return treasure.item;
@@ -541,7 +541,7 @@ Item Map::pickupNearestCollectible(sf::Vector2f pos)
 sf::Color Map::getColor(sf::Vector2f pos)
 {
 	sf::Vector2i mapPos = worldToMapPos(pos);
-	if (mapPos.x < 0 || mapPos.x >= (float)image.getSize().x || mapPos.y < 0 || mapPos.y > (float)image.getSize().y)
+	if (mapPos.x < 0 || mapPos.x >= (float)image.getSize().x || mapPos.y < 0 || mapPos.y >(float)image.getSize().y)
 		return sf::Color(0, 0, 0, 0);
 
 	sf::Color color = image.getPixel(mapPos.x, mapPos.y);

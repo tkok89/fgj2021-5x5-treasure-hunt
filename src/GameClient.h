@@ -10,11 +10,11 @@ struct NetPlayer
 	sf::Uint8 id = 0;
 	sf::Uint16 score = 0;
 	sf::Uint16 randomId = 0;
-	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
+	sf::Vector2f position = sf::Vector2f(492942.f, 29595229.f);
 	sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f);
 	std::vector<sf::Uint8> colledtedTreasures;
 	NetPlayer() {};
-    NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++){};
+	NetPlayer(short socketIndex) :socketIndex(socketIndex), id(idCounter++) {};
 };
 
 struct NetTreasure
@@ -55,7 +55,7 @@ public:
 	void sendFrequentDataToHost();
 	void heyIChangedTreasure(sf::Uint8 treasureId, sf::Vector2f position, ItemState state);
 	void sendGameState(GameNetState state);
-	NetPlayer *getMyPlayer();
+	NetPlayer* getMyPlayer();
 	static GameClient& getClient();
 	static bool imHost;
 	static bool connectedToHost;
@@ -67,10 +67,10 @@ public:
 private:
 	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
-	void updateGameState(const GameNetState &packet);
+	void updateGameState(const GameNetState& packet);
 	void updatePlayerPositionAndVelocity(short playerNumber, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score, sf::Uint16 randomId);
 	void updateTreasure(sf::Uint8 treasureId, ItemState state, sf::Vector2f position);
-	std::thread *acceptConnectionsThread;
+	std::thread* acceptConnectionsThread;
 	sf::TcpSocket clientSocket;
 };
 

@@ -17,7 +17,7 @@ GameClient& GameClient::getClient()
 	return gameclient;
 }
 
-NetPlayer *GameClient::getMyPlayer()
+NetPlayer* GameClient::getMyPlayer()
 {
 	for (NetPlayer& playah : GameClient::gameNetState.players)
 	{
@@ -47,7 +47,7 @@ void GameClient::host()
 		printf("Cannot host, already connected to host!\n");
 		return;
 	}
-	
+
 	startAcceptingConnections(50000);
 }
 
@@ -67,9 +67,9 @@ void GameClient::joinDefault()
 	//connectToHost(std::string("192.168.2.26"), 50000);
 	// rike
 	//connectToHost(std::string("192.168.2.43"), 50000);
-    //janne
-    //connectToHost(std::string("192.168.2.59"), 50000);
-    //vesa
+	//janne
+	//connectToHost(std::string("192.168.2.59"), 50000);
+	//vesa
    // connectToHost(std::string("192.168.2.84"), 50000);
 	// koti
 	connectToHost(std::string("localhost"), 50000);
@@ -105,12 +105,12 @@ sf::Packet& operator >>(sf::Packet& packet, PacketType& packetType)
 	return packet;
 }
 
-sf::Packet& operator <<(sf::Packet& packet, const sf::Vector2f &floatVec)
+sf::Packet& operator <<(sf::Packet& packet, const sf::Vector2f& floatVec)
 {
 	return packet << floatVec.x << floatVec.y;
 }
 
-sf::Packet& operator >>(sf::Packet& packet, sf::Vector2f &floatVec)
+sf::Packet& operator >>(sf::Packet& packet, sf::Vector2f& floatVec)
 {
 	return packet >> floatVec.x >> floatVec.y;
 }
@@ -143,7 +143,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 	{
 		NetPlayer player;
 		packet >> player.position >> player.velocity >> player.id >> player.score >> player.randomId;
-		
+
 		sf::Uint8 treasureAmount;
 		packet >> treasureAmount;
 		for (sf::Uint8 treasureNumbah = 0; treasureNumbah < treasureAmount; treasureNumbah++)
@@ -154,7 +154,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 		}
 		state.players.push_back(player);
 	}
-	
+
 	sf::Uint8 treasureAmount;
 	packet >> treasureAmount;
 
@@ -174,7 +174,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 }
 
 // client received
-void GameClient::updateGameState(const GameNetState &state)
+void GameClient::updateGameState(const GameNetState& state)
 {
 	gameNetState = state;
 	gameNetState.unread = true;
@@ -190,13 +190,13 @@ void GameClient::updateGameState(const GameNetState &state)
 void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score, sf::Uint16 randomId)
 {
 	gameNetState.unread = true;
-	for (NetPlayer &playah : gameNetState.players)
+	for (NetPlayer& playah : gameNetState.players)
 	{
 		if (playah.socketIndex == socketIndex)
 		{
 			playah.position = position;
 			playah.velocity = velocity;
-            playah.score = score;
+			playah.score = score;
 			playah.randomId = randomId;
 		}
 	}
@@ -243,11 +243,11 @@ void GameClient::heyIChangedTreasure(sf::Uint8 treasureId, sf::Vector2f position
 // Client -> host
 void GameClient::sendFrequentDataToHost()
 {
-	NetPlayer *me = GameClient::getClient().getMyPlayer();
+	NetPlayer* me = GameClient::getClient().getMyPlayer();
 	if (!me)
 		return;
 
-	if (imHost) 
+	if (imHost)
 		return;
 
 	sf::Packet positionPacket;
@@ -256,7 +256,7 @@ void GameClient::sendFrequentDataToHost()
 	positionPacket << me->velocity;
 	positionPacket << me->score;
 	positionPacket << me->randomId;
-	
+
 	clientSocket.send(positionPacket);
 }
 
@@ -265,12 +265,12 @@ void GameClient::sendGameState(GameNetState state)
 {
 	if (!imHost)
 		return;
-	
+
 	sf::Packet sendPacket;
 	sendPacket << PacketUpdateGameState;
 	sendPacket << state;
 
-	for (sf::TcpSocket *socket : sockets)
+	for (sf::TcpSocket* socket : sockets)
 	{
 		socket->send(sendPacket);
 	}
@@ -294,13 +294,13 @@ void GameClient::update()
 			receivePacket(*sockets[i], i);
 		}
 	}
-	else if(connectedToHost)
+	else if (connectedToHost)
 	{
 		receivePacket(clientSocket, 77);
 	}
 }
 
-void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
+void GameClient::receivePacket(sf::TcpSocket& socket, const short socketIndex)
 {
 	sf::Packet receivedPacket;
 	if (socket.receive(receivedPacket) != sf::Socket::Status::Done)
@@ -331,7 +331,7 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 		sf::Uint16 randomId;
 		receivedPacket >> position;
 		receivedPacket >> velocity;
-        receivedPacket >> score;
+		receivedPacket >> score;
 		receivedPacket >> randomId;
 		updatePlayerPositionAndVelocity(socketIndex, position, velocity, score, randomId);
 		break;
@@ -341,7 +341,7 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 		sf::Uint8 treasureId;
 		sf::Uint8 treasureState;
 		sf::Vector2f treasurePosition;
-		
+
 		receivedPacket >> treasureId;
 		receivedPacket >> treasureState;
 		receivedPacket >> treasurePosition;
@@ -356,7 +356,7 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 	}
 }
 
-void listenerThread(unsigned short port, bool &accept, unsigned short &clientAmount)
+void listenerThread(unsigned short port, bool& accept, unsigned short& clientAmount)
 {
 	sf::TcpListener listener;
 	if (listener.listen(port) != sf::Socket::Done)
@@ -370,10 +370,10 @@ void listenerThread(unsigned short port, bool &accept, unsigned short &clientAmo
 	}
 	while (accept)
 	{
-		sf::TcpSocket *socket = new sf::TcpSocket();
+		sf::TcpSocket* socket = new sf::TcpSocket();
 		sf::Socket::Status status = listener.accept(*socket);
-	
-		if(status == sf::Socket::Done)
+
+		if (status == sf::Socket::Done)
 		{
 			socket->setBlocking(false);
 			printf("New Friend appeared :-)\n Accepted connection from remote address %s \n", socket->getRemoteAddress().toString().c_str());
@@ -418,18 +418,18 @@ void GameClient::stopAcceptingConnections()
 void GameClient::connectToHost(std::string ip, unsigned short port)
 {
 	resetState();
-	
+
 	printf("Connecting to address %s:%hu ... ", ip.c_str(), port);
 	sf::Socket::Status status = clientSocket.connect(ip, port);
 	if (status != sf::Socket::Done)
 	{
 		printf("failed, error code %u :(\n", status);
-		/* 
+		/*
 		Done,         ///< The socket has sent / received the data
-        NotReady,     ///< The socket is not ready to send / receive data yet
-        Partial,      ///< The socket sent a part of the data
-        Disconnected, ///< The TCP socket has been disconnected
-        Error         ///< An unexpected error happened
+		NotReady,     ///< The socket is not ready to send / receive data yet
+		Partial,      ///< The socket sent a part of the data
+		Disconnected, ///< The TCP socket has been disconnected
+		Error         ///< An unexpected error happened
 		*/
 	}
 	else
