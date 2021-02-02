@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "GameClient.h"
 #include "Players.hpp"
+#include <algorithm>
 
 Map *g_map = nullptr;
 
@@ -136,44 +137,84 @@ Map::Map()
 
 void Map::randomize()
 {
+	std::random_device rd;
+	std::default_random_engine rng(rd());
 	const sf::Vector2f topLeft = mapSize / -2.0f;
 	const sf::Vector2f tileSize = mapSize / 5.0f;
-	static std::default_random_engine rng;
 
 	treasures.clear();
+	bool useRandomItems = false;
+	std::vector items = {
+		Item::JewelS,
+		Item::JewelS,
+		Item::JewelS,
+		Item::JewelS,
+		Item::JewelS,
+
+		Item::JewelM,
+		Item::JewelM,
+		Item::JewelM,
+		Item::JewelM,
+
+		Item::JewelL,
+		Item::JewelL,
+		Item::JewelL,
+
+		Item::AfrikanTahti,
+
+		Item::FontinaCheese,
+		Item::FontinaCheese,
+		Item::FontinaCheese,
+		Item::FontinaCheese,
+
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+		Item::Dynamite,
+	};
+	std::shuffle(items.begin(), items.end(), rng);
 
 	for (int i = 0; i < 25; ++i)
 	{
-		std::uniform_int_distribution<int> itemDistribution((int)Item::JewelS, (int)Item::Dynamite);
-		std::uniform_real_distribution<float> distribution(0.05f, 0.95f);
+		Item item = items[i];
+		if (useRandomItems) {
+			std::uniform_int_distribution<int> itemDistribution((int)Item::JewelS, (int)Item::NumOfItems - 1);
+			std::uniform_real_distribution<float> distribution(0.05f, 0.95f);
+			Item item = Item(itemDistribution(rng));
+		}
+
 		int x = i % 5;
 		int y = i / 5;
-		Item item = Item(itemDistribution(rng));
-
 		sf::Vector2f p;
-		p.x = topLeft.x + tileSize.x * (x + distribution(rng));
-		p.y = topLeft.y + tileSize.y * (y + distribution(rng));
+		p.x = topLeft.x + tileSize.x * (x + getRandomNormal01());
+		p.y = topLeft.y + tileSize.y * (y + getRandomNormal01());
 		bool ok = false;
 		for (int retry = 0; retry < 100; ++retry)
 		{
 			sf::Vector2f dist = nearestCollision(p) - p;
-			if (dist.x * dist.x + dist.y * dist.y > 0.5f)
+			if (dist.x * dist.x + dist.y * dist.y > itemSize.x * itemSize.x)
 			{
 				ok = true;
 				break;
 			}
 
-			p.x = topLeft.x + tileSize.x * (x + distribution(rng));
-			p.y = topLeft.y + tileSize.y * (y + distribution(rng));
+			p.x = topLeft.x + tileSize.x * (x + getRandomNormal01());
+			p.y = topLeft.y + tileSize.y * (y + getRandomNormal01());
 		}
 
 		if (ok)
 			treasures.push_back({ item, p });
 	}
 
-	std::uniform_int_distribution<int> itemDistribution(0, (int)treasures.size() - 1);
-	int afrikanTahdenPaikka = itemDistribution(rng);
-	treasures[afrikanTahdenPaikka].item = Item::AfrikanTahti;
+	if (useRandomItems) {
+		std::uniform_int_distribution<int> itemDistribution(0, (int)treasures.size() - 1);
+		int afrikanTahdenPaikka = itemDistribution(rng);
+		treasures[afrikanTahdenPaikka].item = Item::AfrikanTahti;
+	}
 
 	shops.clear();
 

@@ -151,6 +151,9 @@ Resources::Resources()
     success = itemTextures[Item::AfrikanTahti].loadFromFile(getResourcePath("assets/afrikantahti.png"));
     assert(success);
 
+    success = itemTextures[Item::FontinaCheese].loadFromFile(getResourcePath("assets/fontina.png"));
+    assert(success);
+
     success = shopTexture.loadFromFile(getResourcePath("assets/shop.png"));
     assert(success);
 }

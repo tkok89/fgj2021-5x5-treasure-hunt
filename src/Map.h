@@ -16,6 +16,8 @@ enum class Item : sf::Uint8
 	JewelL,
 	Dynamite,
 	AfrikanTahti,
+	FontinaCheese,
+	NumOfItems,
 };
 
 enum class ItemState : sf::Uint8
