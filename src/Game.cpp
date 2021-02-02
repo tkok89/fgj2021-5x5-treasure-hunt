@@ -64,6 +64,7 @@ void Game::update(sf::Time elapsedTime)
         activePlayer->position = sf::Vector2f(p.posX, p.posY);
         activePlayer->velocity = p.realInputVelocity;
         activePlayer->score = p.score;
+        activePlayer->randomId = p.frameId;
     
         GameNetState* state = &GameClient::gameNetState;
         if(state->unread){
@@ -71,13 +72,16 @@ void Game::update(sf::Time elapsedTime)
             for (NetPlayer& player : state->players)
             {
                 if(player.id != activePlayer->id){
-                    Player &otherP = getPlayer(player.id);
-                    otherP.activePlayer = true;
-                    otherP.posX = player.position.x;
-                    otherP.posY = player.position.y;
-                    otherP.inputVelocityX = player.velocity.x;
-                    otherP.inputVelocityY = player.velocity.y;
-                    otherP.score = player.score;
+                    Player& otherP = getPlayer(player.id);
+                    if(otherP.frameId != player.randomId){
+                        otherP.activePlayer = true;
+                        otherP.posX = player.position.x;
+                        otherP.posY = player.position.y;
+                        otherP.inputVelocityX = player.velocity.x;
+                        otherP.inputVelocityY = player.velocity.y;
+                        otherP.score = player.score;
+                        otherP.frameId = player.randomId;
+                    }
                 }
             }
             state->unread = false;

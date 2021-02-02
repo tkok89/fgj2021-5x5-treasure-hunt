@@ -13,7 +13,7 @@
 
 struct Player {
     int index;
-    sf::Uint16 score;
+    sf::Uint16 score, frameId;
     bool activePlayer = false;
     float posX, posY;
     float velocityX, velocityY;

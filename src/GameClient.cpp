@@ -120,7 +120,7 @@ sf::Packet& operator <<(sf::Packet& packet, const GameNetState& state)
 	packet << sf::Uint8(state.players.size());
 	for (NetPlayer player : state.players)
 	{
-		packet << player.position << player.velocity << player.id << player.score;
+		packet << player.position << player.velocity << player.id << player.score << player.randomId;
 		packet << sf::Uint8(player.colledtedTreasures.size());
 		for (sf::Uint8 treasureId : player.colledtedTreasures)
 			packet << treasureId;
@@ -142,7 +142,7 @@ sf::Packet& operator >>(sf::Packet& packet, GameNetState& state)
 	for (sf::Uint8 number = 0; number < playerAmount; number++)
 	{
 		NetPlayer player;
-		packet >> player.position >> player.velocity >> player.id >> player.score;
+		packet >> player.position >> player.velocity >> player.id >> player.score >> player.randomId;
 		
 		sf::Uint8 treasureAmount;
 		packet >> treasureAmount;
@@ -187,7 +187,7 @@ void GameClient::updateGameState(const GameNetState &state)
 }
 
 // host received 
-void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score)
+void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score, sf::Uint16 randomId)
 {
 	gameNetState.unread = true;
 	for (NetPlayer &playah : gameNetState.players)
@@ -197,8 +197,7 @@ void GameClient::updatePlayerPositionAndVelocity(short socketIndex, sf::Vector2f
 			playah.position = position;
 			playah.velocity = velocity;
             playah.score = score;
-			//printf("\tsocket: %hu, id: %hu x: %f, y: %f\n", playah.socketIndex, playah.id, playah.position.x, playah.position.y);
-
+			playah.randomId = randomId;
 		}
 	}
 }
@@ -255,7 +254,8 @@ void GameClient::sendFrequentDataToHost()
 	positionPacket << PacketUpdatePositionToHost;
 	positionPacket << me->position;
 	positionPacket << me->velocity;
-    positionPacket << me->score;
+	positionPacket << me->score;
+	positionPacket << me->randomId;
 	
 	clientSocket.send(positionPacket);
 }
@@ -327,11 +327,13 @@ void GameClient::receivePacket(sf::TcpSocket &socket, const short socketIndex)
 	case PacketUpdatePositionToHost:
 	{
 		sf::Vector2f position, velocity;
-        sf::Uint16 score;
+		sf::Uint16 score;
+		sf::Uint16 randomId;
 		receivedPacket >> position;
 		receivedPacket >> velocity;
         receivedPacket >> score;
-		updatePlayerPositionAndVelocity(socketIndex, position, velocity, score);
+		receivedPacket >> randomId;
+		updatePlayerPositionAndVelocity(socketIndex, position, velocity, score, randomId);
 		break;
 	}
 	case PacketUpdateTreasure:

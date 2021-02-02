@@ -8,7 +8,8 @@ struct NetPlayer
 {
 	short socketIndex = 88u;
 	sf::Uint8 id = 0;
-    sf::Uint16 score = 0;
+	sf::Uint16 score = 0;
+	sf::Uint16 randomId = 0;
 	sf::Vector2f position = sf::Vector2f(492942.f,29595229.f);
 	sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f);
 	std::vector<sf::Uint8> colledtedTreasures;
@@ -67,7 +68,7 @@ private:
 	void receivePacket(sf::TcpSocket& socket, const short socketIndex);
 	void resetState();
 	void updateGameState(const GameNetState &packet);
-	void updatePlayerPositionAndVelocity(short playerNumber, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score);
+	void updatePlayerPositionAndVelocity(short playerNumber, sf::Vector2f position, sf::Vector2f velocity, sf::Uint16 score, sf::Uint16 randomId);
 	void updateTreasure(sf::Uint8 treasureId, ItemState state, sf::Vector2f position);
 	std::thread *acceptConnectionsThread;
 	sf::TcpSocket clientSocket;

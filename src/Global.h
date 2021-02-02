@@ -28,3 +28,7 @@ float getRandomNormal01();
 inline float magnitudeVector2(sf::Vector2f vec){
     return sqrt(vec.x * vec.x + vec.y * vec.y);
 }
+
+inline float lerp(float a, float b, float t) {
+    return a * (1 - t) + t * b;
+}

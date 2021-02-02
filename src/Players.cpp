@@ -24,10 +24,6 @@ static const float idleSpeed = 0.01;
 static const float inputLerp = 0.5f;
 static const float accelerationLerp = 0.5f;
 
-inline float lerp(float a, float b, float t){
-    return a * (1-t) + t * b;
-}
-
 inline float distanceXY(float x0, float y0, float x1, float y1){
     return sqrt((x0-x1)*(x0-x1) + (y0-y1)*(y0-y1));
 }
@@ -50,6 +46,7 @@ void initializePlayers (float startX, float startY) {
     for(int i = 0; i < sizeof(players)/sizeof(players[0]); i++){
         players[i].index = i;
         players[i].score = 0;
+        players[i].frameId = 0;
         players[i].posX = startX;
         players[i].posY = startY;
         players[i].velocityX = 0;
@@ -115,6 +112,8 @@ void Player::updatePlayer(float deltaTime, bool ownPlayer){
         inputVelocityX = clamp11(lerp(inputVelocityX, horizontalMove, inputLerp));
         inputVelocityY = clamp11(lerp(inputVelocityY, verticalMove, inputLerp));
         realInputVelocity = sf::Vector2f(horizontalMove, verticalMove);
+        // update frame counter
+        ++frameId;
     }
     // accelerate
     velocityX = lerp(inputVelocityX * maxSpeed, velocityX, accelerationLerp);
